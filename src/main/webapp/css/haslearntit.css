@@ -1,5 +1,5 @@
 body {
-	background: #1f1f1f url('img/background.jpg') repeat-x;
+	background: #1f1f1f url('../img/background.jpg') repeat-x;
 }
 
 img {
@@ -82,7 +82,7 @@ header .label {
 }
 
 #search {
-	background: url(img/search.jpg) no-repeat;
+	background: url('../img/search.jpg') no-repeat;
 	width: 328px;
 	float: left;
 }
@@ -105,7 +105,7 @@ header .label {
 }
 
 #logout {
-	background: url(img/logout-bg.jpg) no-repeat;
+	background: url('../img/logout-bg.jpg') no-repeat;
 	width: 139px;
 	float: right;
 	cursor: pointer;
@@ -241,6 +241,7 @@ header .label {
 
 .clickable-text {
 	border-bottom: 1px dashed;
+	cursor: pointer;
 }
 
 #wall {
@@ -339,7 +340,7 @@ header .label {
 .comment-first-photo {
 	vertical-align: middle;
 	display: table-cell;
-	margin-left: 20px;	
+	margin-left: 20px;
 	width: 35px;
 	clear: both;
 	float: left;
@@ -348,5 +349,16 @@ header .label {
 .comment-first-text {
 	vertical-align: middle;
 	display: table-cell;
-	padding-left: 20px;	
+	padding-left: 20px;
+}
+
+.dropdown {
+	position: absolute;
+	display: none;
+	background-color: #eaeaea;
+	border: 1px #aaa solid;
+}
+
+.dropdown-selection {
+	font-size: 16pt;
 }
