@@ -55,6 +55,15 @@
 				$('#dropdown-' + dropdown.attr("id")).text(selection);
 				hideDiv(dropdown);
 			});
+			
+			$(".comment-textfield").submit(function() {			
+				var date = new Date();
+				$(this).parent().parent().prepend(
+						'<div class="entry-photo"><img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" /></div>' +
+                        '<div class="entry-text comment-container"><a class="comment-author" href="#">Paweł Lipiński</a><br /><p class="comment-text">'+  
+                        $('#' + $(this).parent().parent().attr('id') + '-input').val() + 
+                        '</p><span class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</span></div><div class="entry-hr"></div>');
+			});
 		});
 	}
 	google.setOnLoadCallback(OnLoad);
@@ -158,11 +167,8 @@
                                 <a href="#" style="color: #aaa;" onclick="$('#comment-1').show();">Leave a comment</a>
                             </div>
                             <div id="comment-1" class="comment-box comments" style="display: table; display: none;">
-                                <div class="comment-first-photo">
-                                    <img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" />
-                                </div>
-                                <div class="comment-first-text">
-                                    <input type="text" placeholder="Leave a comment..." style="width: 300px; height: 25px;" />
+                                <div class="comment-input">
+                                    <form class="comment-textfield"><input type="text" id="comment-1-input" placeholder="Leave a comment..." style="width: 300px; height: 25px;"/></form>
                                 </div>
                             </div>
                         </div>
