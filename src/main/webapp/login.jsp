@@ -16,7 +16,7 @@
     </form>
     <form action="j_spring_openid_security_check" method="post">
      <input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
-     <input type="image" src="/img/social/google.png" />
+     <input type="image" src="/resources/img/social/google.png" />
     </form>
 </body>
 </html>

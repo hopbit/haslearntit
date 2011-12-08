@@ -7,7 +7,7 @@
 
     <mvc:annotation-driven validator="validator"/>
     <ctx:component-scan base-package="it.haslearnt.controller" annotation-config="true"/>
-    <mvc:resources mapping="/img/**" location="/img/"/>
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <!-- validation -->
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>

@@ -2,6 +2,8 @@
 target
 tmp
 *.iml
+*.ipr
+*.iws
 .project
 .classpath
 .settings
