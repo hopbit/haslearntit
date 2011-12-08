@@ -37,6 +37,7 @@ public class UserRegistration {
             model.addAttribute("userRegistrationForm", form);
             return "redirect:registration";
         }
+
         User user = new User()
                 .withName(form.getName())
                 .withEmail(form.getEmail())
