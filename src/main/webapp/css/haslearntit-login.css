@@ -12,7 +12,7 @@ header {
 	margin-top: 5px;
 	margin-left: 10px;
 	margin-right: 10px;
-	height: 43px;
+	height: 90px;
 	padding: 0;
 }
 
@@ -20,16 +20,9 @@ input {
 	color: #777;
 }
 
-input[type='submit'] {
-	padding: 8px 15px 8px 15px;
-	color: #fff;
-	background-color: #777;
-	text-decoration: none;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border: none;
-	position: relative;
-	cursor: pointer;
+label {
+	margin-top: 10px;
+	margin-bottom: 5px;
 }
 
 .emphasized {
@@ -62,126 +55,45 @@ input[type='submit'] {
 }
 
 header div {
-	height: 43px;
+	height: 90px;
 }
 
 header .label {
-	font-size: 14pt;
+	font-size: 18pt;
 	margin-top: 12px;
 	color: #d9d9d9;
 	display: block;
-	text-align: center;
+	line-height: 130%;	
+}
+
+#login-subtitle {
+	margin-left: 30px;
+	width: 500px;
+	float: left;
 }
 
 #main {
-	display: block;
+	display: inline;
 	overflow: hidden;
 	float: left;
 	position: relative;
 	background-color: #fff;
 	padding: 0;
 	margin: 0;
-	width: 100%;	
-	min-height: 1100px;
-}
-
-#search {
-	background: url('../img/search.jpg') no-repeat;
-	width: 328px;
-	float: left;
-}
-
-#search .label {
-	width: 100px;
-}
-
-#searchForm {
-	position: relative;
-	top: -22px;
-	left: 120px;
-}
-
-#searchForm input {
-	margin: 0;
-	padding: 0;
-	height: 21px;
-	width: 173px;
-}
-
-#profile {
-	border: #FFF;
-	width: 272px;
-	float: left;
-}
-
-#logout {
-	background: url('../img/logout-bg.jpg') no-repeat;
-	width: 139px;
-	float: right;
-}
-
-#logout .label {
 	width: 100%;
+	min-height: 820px;
 }
 
-#photo {
-	margin-left: 10px;
+#top ul {
+	list-style-type: none;		  	  
+	font-size: 16pt;	
 }
 
-#photo img {
-	border: 3px #555 solid;
-	height: 130px;
-}
-
-#main-stats {
-	background-color: #eaeaea;
-	margin-right: 10px;
-	margin-top: 20px;
-	display: block;
-	height: 70px;
-	width: 300px;
-}
-
-#main-follow-button {
-	background-color: #eaeaea;
-	margin-right: 140px;
-	margin-top: 20px;
-	display: block;
-	height: 70px;
-	width: 80px;
-}
-
-#follow-button {
-	width: 80px;
-	height: 100%;
-	display: table;
-	cursor: pointer;
-}
-
-.follow-image {
-	background: url('../img/follow-arrow.png') no-repeat right top;	
-}
-
-.unfollow-image {
-	background: url('../img/unfollow-arrow.png') no-repeat right top;	
-}
-
-#follow-label {
-	font-size: 14pt;
-	vertical-align: bottom;
-	display: table-cell;
-	padding-bottom: 5px;
-	padding-left: 5px;
-}
-
-#sidebar-container {
-	margin: 0 auto;
-	width: 1120px;
-	overflow: hidden;
-	position: absolute;
-	top: 230px;
-	margin-left: -80px;
-	z-index: -1;
+#top li {
+	background: url('../img/login-arrow.jpg') no-repeat;
+	padding-left: 50px;
+	padding-top: 5px;	
+	height: 36px;
 }
 
 .underline {
@@ -191,16 +103,17 @@ header .label {
 .sidebar {
 	background-color: #eaeaea;
 	display: block;
-	width: 160px;
+	width: 250px;
 	color: #777;
 	z-index: 10;
 }
 
 .sidebar .title {
-	text-align: center;
+	text-align: left;
 	font-size: 18pt;
 	margin-top: 10px;
 	margin-bottom: 15px;
+	margin-left: 20px;
 }
 
 .sidebar ol {

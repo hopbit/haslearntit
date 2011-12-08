@@ -20,17 +20,9 @@
 
 <script type="text/javascript">
 	google.load("jquery", "1.7.1");
-	google.load("jqueryui", "1.8.16");
 
 	function OnLoad() {
 		$(document).ready(function() {
-			$("#datepicker").datepicker({
-				   onSelect: function(dateText, inst) {
-					   $('#dropdown-choose-date').text(dateText);
-					   hideDiv($(this));
-				   }
-				});
-
 			$("div.clickable").click(function() {
 				window.location = $(this).attr("url");
 			});
@@ -84,7 +76,7 @@
 <body>
     <div class="row">
         <div id="main">
-            <header style="background: url('img/button-bg.jpg') repeat-x;">
+            <header id="page-header" style="background: url('img/button-bg.jpg') repeat-x;">
                 <div class="left">
                     <img src="img/logo.jpg" />
                 </div>
@@ -96,10 +88,10 @@
                         </form>
                     </div>
                 </div>
-                <div id="profile" class="clickable" url="http://google.com/?q=profile">
-                <span class="label">Profile</span>
+                <div id="profile" class="clickable" url="wall.html">
+                <span class="label">Timeline</span>
                 </div>
-                <div id="logout" class="clickable" url="http://google.com/?q=logout">
+                <div id="logout" class="clickable" url="login-page.html">
                     <span class="label">Logout</span>
                 </div>
             </header>
@@ -259,7 +251,6 @@
             </section>
         </section>
     </div>
-    <div id="datepicker" class="dropdown"></div>    
     <div class="dropdown" style="width: 190px; height: 55px;" id="choose-type">
         <ul style="list-style: none; line-height: 150%;">
             <li><a href="#" class="dropdown-selection">I've been learning</a></li>
