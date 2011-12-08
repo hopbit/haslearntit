@@ -15,7 +15,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.1.0.M2</spring.version>
-        <spring-security.version>3.1.0.RC3</spring-security.version>
+        <spring-security.version>3.0.5.RELEASE</spring-security.version> <!-- 3.1.0.RC3 -->
         <spring-social.version>1.0.0.RELEASE</spring-social.version>
 		<slf4j.version>1.6.1</slf4j.version>
 	</properties>
@@ -43,6 +43,13 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
+		</repository>
+		<!-- For Hibernate Validator -->
+		<repository>
+			<id>org.jboss.repository.release</id>
+			<name>JBoss Maven Release Repository</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+			<snapshots><enabled>false</enabled></snapshots>
 		</repository>
 	</repositories>
 
@@ -135,33 +142,6 @@
             <version>${spring.version}</version>
         </dependency>
 
-        <!-- spring social -->
-        <dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-core</artifactId>
-            <version>${spring-social.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-web</artifactId>
-            <version>${spring-social.version}</version>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-facebook</artifactId>
-            <version>${spring-social.version}</version>
-        </dependency>
-        Dependency conflict with.
-        Here:        org.codehaus.jackson:jackson-mapper-asl:jar:1.8.5:compile
-        In org.apache.cassandra:cassandra-all:jar:1.0.0:compile: org.codehaus.jackson:jackson-core-asl:jar:1.4.0:compile
-        -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.1.2</version>
-        </dependency>
-
         <!-- spring security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -189,7 +169,23 @@
             <version>${spring-security.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.openid4java</groupId>
+            <artifactId>openid4java</artifactId>
+            <version>0.9.6</version>
+        </dependency>
 
+        <!--  JSR 303 Validator -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+        <dependency> <!-- yes, you may be surprised to see hibernate dependency here, but we need a JEE validator, and this one does the job -->
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.1.0.Final</version>
+		</dependency>
 
         <!-- aspectj -->
         <dependency>
