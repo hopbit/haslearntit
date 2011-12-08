@@ -7,6 +7,7 @@
 
     <mvc:annotation-driven/>
     <ctx:component-scan base-package="it.haslearnt" annotation-config="true"/>
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
     <mvc:default-servlet-handler/>
 
 </beans>
