@@ -300,6 +300,7 @@ header .label {
 	font-size: 10pt;
 	color: #aaa;
 	position: relative;
+	float: right;
 }
 
 .entry-hr {
