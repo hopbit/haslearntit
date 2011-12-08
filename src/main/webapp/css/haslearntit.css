@@ -108,7 +108,7 @@ header .label {
 	width: 173px;
 }
 
-#profile {	
+#profile {
 	border: #FFF;
 	width: 272px;
 	float: left;
@@ -117,7 +117,7 @@ header .label {
 #logout {
 	background: url('../img/logout-bg.jpg') no-repeat;
 	width: 139px;
-	float: right;	
+	float: right;
 }
 
 #logout .label {
@@ -144,11 +144,34 @@ header .label {
 
 #main-follow-button {
 	background-color: #eaeaea;
-	margin-right: 200px;
+	margin-right: 140px;
 	margin-top: 20px;
 	display: block;
 	height: 70px;
 	width: 80px;
+}
+
+#follow-button {
+	width: 80px;
+	height: 100%;
+	display: table;
+	cursor: pointer;
+}
+
+.follow-image {
+	background: url('../img/follow-arrow.png') no-repeat right top;	
+}
+
+.unfollow-image {
+	background: url('../img/unfollow-arrow.png') no-repeat right top;	
+}
+
+#follow-label {
+	font-size: 14pt;
+	vertical-align: bottom;
+	display: table-cell;
+	padding-bottom: 5px;
+	padding-left: 5px;
 }
 
 #sidebar-container {
@@ -354,6 +377,10 @@ header .label {
 
 .comment-text {
 	color: #777;
+}
+
+.comment-container {
+	width: 305px;
 }
 
 .comment-first-photo {

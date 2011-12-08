@@ -55,6 +55,18 @@
 				$('#dropdown-' + dropdown.attr("id")).text(selection);
 				hideDiv(dropdown);
 			});
+			
+			$("#follow-button").click(function() {
+				if ($(this).hasClass('follow-image')) {
+    				$(this).removeClass('follow-image');
+    				$(this).addClass('unfollow-image');
+    				$('#follow-label').text('Unfollow!');
+				} else {
+    				$(this).removeClass('unfollow-image');
+    				$(this).addClass('follow-image');
+    				$('#follow-label').text('Follow!');					
+				}
+			});
 		});
 	}
 	google.setOnLoadCallback(OnLoad);
@@ -105,8 +117,8 @@
                     <h2 style="font-size: 18pt;">has 512 points</h2>
                 </div>
                 <div class="right" id="main-follow-button">                    
-                    <div class="left rounded clickable" url="http://google.com/?q=follow" style="width: 80px; height: 100%; display: table; background: url('img/follow-arrow.png') no-repeat right top;">                        
-                        <p style="font-size: 14pt; vertical-align: bottom;display: table-cell; padding-bottom: 10px; padding-left: 5px;">
+                    <div id="follow-button" class="left rounded follow-image">                        
+                        <p id="follow-label">
                             Follow!
                         </p>
                     </div>
@@ -119,11 +131,11 @@
                 <div id="wall" style="display: table; width: 100%">
                     <div class="entry-box">
                         <div class="entry-photo">
-                            <img src="http://gravatar.com/avatar/b36fee01ac1166d8dd46f3c2e7649be6" />
+                            <img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" />
                         </div>
                         <div style="display: table; float: left;">
                             <div class="entry-text">
-                                <a href="#">Krzysztof Jelski</a> has been learning <span class="emphasized">HTML &amp; CSS</span> today.<br />
+                                <a href="#">Paweł Lipiński</a> has been learning <span class="emphasized">HTML &amp; CSS</span> today.<br />
                                 It was easy and it took him 3 hours (of total 18 hours)<br /> He earned 15 points!
                             </div>
                             <div class="comment-box">
@@ -143,29 +155,29 @@
                     <div class="entry-box">
                         <div class="entry-photo">
                             <img
-                                src="http://getfile0.posterous.com/getfile/files.posterous.com/temp-2011-11-28/pzdCuyqueJleCnqxvqIvexsIAFhkqzkpbitCmGnDdAtBFDcuGmpadftfaDlr/15.jpg.thumb100.jpg?content_part=pid___0" />
+                                src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" />
                         </div>
                         <div style="display: table; float: left;">
                             <div class="entry-text">
-                                <a href="#">Piotr Przybylak</a> has been learning <span class="emphasized">Kamasutra</span> today.<br /> It
-                                was hard and it took him 23 hours (of total 152738392 hours)<br /> He earned 69 points!
+                                <a href="#">Paweł Lipiński</a> has been learning <span class="emphasized">Java</span> today.<br /> It
+                                was hard and it took him 3 hours (of total 6 hours)<br /> He earned 6 points!
                             </div>
                             <div class="comment-box comments">
                                 <div class="entry-photo">
                                     <img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" />
                                 </div>
-                                <div class="entry-text">
+                                <div class="entry-text comment-container">
                                     <a class="comment-author" href="#">Paweł Lipiński</a><br />
-                                    <p class="comment-text">"So let's do it like they do it on Discovery channel"</p>
+                                    <p class="comment-text">Ale się napracowałem!</p>
                                     <span class="entry-date">Dzisiaj, 7:15</span>
                                 </div>
                                 <div class="entry-hr"></div>
                                 <div class="entry-photo">
                                     <img src="http://gravatar.com/avatar/49f4023a979fe8e47c7b639697f86f00" />
                                 </div>
-                                <div class="entry-text">
+                                <div class="entry-text comment-container">
                                     <a class="comment-author" href="#">Jakub Nabrdalik</a><br />
-                                    <p class="comment-text">Daj lepiej linka do tej strony z Viagrą...</p>
+                                    <p class="comment-text">Stary, spróbuj lepiej BASIC'a</p>
                                     <span class="entry-date">Dzisiaj, 7:15</span>
                                 </div>
                                 <div class="entry-hr"></div>
@@ -183,9 +195,9 @@
             </section>
         </div>
 
-        <section id="left-sidebar" class="sidebar">
+        <section id="left-sidebar" class="sidebar rounded">
             <section>
-                <p class="title">You're following:</p>
+                <p class="title">Following:</p>
                 <table>
                     <tr>
                         <td class="img"><img src="http://gravatar.com/avatar/b36fee01ac1166d8dd46f3c2e7649be6" /></td>
@@ -206,7 +218,7 @@
             </section>
             <hr />
             <section>
-                <p class="title">Your followers:</p>
+                <p class="title">Followers:</p>
                 <table>
                     <tr>
                         <td class="img"><img src="http://gravatar.com/avatar/b36fee01ac1166d8dd46f3c2e7649be6" /></td>
@@ -224,54 +236,26 @@
                 <p class="center-horizontal">
                     <a href="#">See more...</a>
                 </p>
-            </section>
-            <hr />
-            <section>
-                <p class="title">Invite friends:</p>
-                <form id="inviteForm">
-                    <input type="email"><br />
-                    <p style="font-size: 10pt; text-align: center;">Type your friend's email</p>
-                    <p style="font-size: 14pt; text-align: center; margin-bottom: 20px;">
-                        <input type="submit" value="INVITE" />
-                    </p>
-                </form>
-            </section>
+            </section>            
         </section>
-        <section id="right-sidebar" class="sidebar">
+        <section id="right-sidebar" class="sidebar rounded">
             <section>
-                <p class="title">Trends:</p>
+                <p class="title">Skills:</p>
                 <ol>
-                    <li><a href="#">JAVA cośtam</a><br />128 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
-                    <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
+                    <li><a href="#">JAVA cośtam</a><br />128 points</li>
+                    <li><a href="#">MySQL cośtam</a><br />110 points</li>
+                    <li><a href="#">HTML5 &amp; CSS3</a><br />98 points</li>
                 </ol>
             </section>
             <hr />
-            <section>
-                <p class="title">Top 5 users:</p>
-                <table>
-                    <tr>
-                        <td class="img"><img src="http://gravatar.com/avatar/b36fee01ac1166d8dd46f3c2e7649be6" /></td>
-                        <td class="name"><a href="#">Krzysiek Jelski</a> <br />(1200)</td>
-                    </tr>
-                    <tr>
-                        <td class="img"><img src="http://gravatar.com/avatar/49f4023a979fe8e47c7b639697f86f00" /></td>
-                        <td class="name"><a href="#">Jakub Nabrdalik</a><br />(1023)</td>
-                    </tr>
-                    <tr>
-                        <td class="img"><img src="http://gravatar.com/avatar/69eec1703cac03acdd3f80637c6a2b7e" /></td>
-                        <td class="name"><a href="#">Tomasz Bartczak</a><br />(918)</td>
-                    </tr>
-                </table>
-            </section>
-            <hr />
-            <section>
-                <p class="title">Suggestions:</p>
-                <ol>
-                    <li><a href="#">JAVA cośtam</a><br />128 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
-                    <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
-                </ol>
+            <section style="padding-left: 10px; padding-bottom: 10px;">
+                <p class="title">Statistics:</p>
+                <span style="color: #777;">Training time:</span><br/>
+                <span style="color: #999;"><span class="underline">This week:</span> 5 minutes</span><br/>
+                <span style="color: #999;"><span class="underline">This month:</span> 15 minutes</span><br/>                
+                <span style="color: #999;"><span class="underline">This year:</span> 15 hours</span><br/><br/>                
+                <span style="color: #777;">Total time:</span><br/>
+                <span style="color: #999;">20 days, 15 hours,<br/>15 minutes</span><br/>                               
             </section>
         </section>
     </div>
