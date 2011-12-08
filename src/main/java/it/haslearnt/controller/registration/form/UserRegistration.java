@@ -37,13 +37,15 @@ public class UserRegistration {
             model.addAttribute("userRegistrationForm", form);
             return "redirect:registration";
         }
-
-        User user = new User()
-                .withName(form.getName())
-                .withEmail(form.getEmail())
-                .withPassword(form.getPassword());
-
+        User user = createUser(form);
         userRepository.save(user);
         return "redirect:/user/" + form.getName();
+    }
+
+    private User createUser(UserRegistrationForm form) {
+        return new User()
+                    .withName(form.getName())
+                    .withEmail(form.getEmail())
+                    .withPassword(form.getPassword());
     }
 }

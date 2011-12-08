@@ -39,39 +39,46 @@ public class OpenIdUserRegistration {
     public String getRegistrationForm(Model model, HttpSession session) {
         NormalizedOpenIdAttributes normalizedOpenIdAttributes = (NormalizedOpenIdAttributes) session.getAttribute(SessionKeys.openIdAttributes);
         throwExceptionIfNoOpenId(normalizedOpenIdAttributes);
+        UserOpenIdRegistrationForm form = createPrepopulatedForm(normalizedOpenIdAttributes);
+        model.addAttribute("userRegistrationForm", form);
+        return "registration/openIdForm";
+    }
 
+    private UserOpenIdRegistrationForm createPrepopulatedForm(NormalizedOpenIdAttributes normalizedOpenIdAttributes) {
+        UserOpenIdRegistrationForm form = new UserOpenIdRegistrationForm();
         String email = normalizedOpenIdAttributes.getEmailAddress();
         String name = normalizedOpenIdAttributes.getLoginReplacement();
-
-        UserOpenIdRegistrationForm form = new UserOpenIdRegistrationForm();
         form.setEmail(email);
         form.setName(name);
-        model.addAttribute("userRegistrationForm", form);
-
-        return "registration/openIdForm";
+        return form;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public String register(@Valid UserOpenIdRegistrationForm form, Errors errors, Model model, HttpSession session) {
-        NormalizedOpenIdAttributes normalizedOpenIdAttributes = (NormalizedOpenIdAttributes) session.getAttribute(SessionKeys.openIdAttributes);
-        throwExceptionIfNoOpenId(normalizedOpenIdAttributes);
-
         if (errors.hasErrors()) {
             model.addAttribute("userRegistrationForm", form);
             return "redirect:registration";
         }
 
+        NormalizedOpenIdAttributes normalizedOpenIdAttributes = (NormalizedOpenIdAttributes) session.getAttribute(SessionKeys.openIdAttributes);
+        throwExceptionIfNoOpenId(normalizedOpenIdAttributes);
+        saveUser(form);
+        saveOpenIdUser(form, normalizedOpenIdAttributes);
+        return "redirect:/user/" + form.getName();
+    }
+
+    private void saveUser(UserOpenIdRegistrationForm form) {
         User user = new User()
                 .withName(form.getName())
                 .withEmail(form.getEmail())
                 .withPassword("You will never gonna get it");
         userRepository.save(user);
+    }
 
+    private void saveOpenIdUser(UserOpenIdRegistrationForm form, NormalizedOpenIdAttributes normalizedOpenIdAttributes) {
         UserOpenId userOpenId = new UserOpenId(normalizedOpenIdAttributes.getUserLocalIdentifier())
                 .withName(form.getName());
         userOpenIdRepository.save(userOpenId);
-
-        return "redirect:/user/" + form.getName();
     }
 
     private void throwExceptionIfNoOpenId(NormalizedOpenIdAttributes normalizedOpenIdAttributes) {
