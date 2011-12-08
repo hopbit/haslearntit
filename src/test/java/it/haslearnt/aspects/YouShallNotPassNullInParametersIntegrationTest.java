@@ -5,42 +5,42 @@
 
 package it.haslearnt.aspects;
 
-import org.junit.Test;
-import setup.IntegrationTest;
+import javax.annotation.*;
 
-import javax.annotation.Resource;
+import org.junit.*;
 
+import setup.*;
+
+@Ignore
 public class YouShallNotPassNullInParametersIntegrationTest extends IntegrationTest {
-    @Resource(name = "plainOldJavaObject")
-    private PlainOldJavaObject plainOldJavaObject;
+	@Resource(name = "plainOldJavaObject")
+	private PlainOldJavaObject plainOldJavaObject;
 
-    @Resource(name = "simpleDto")
-    private SimpleDto simpleDto;
+	@Resource(name = "simpleDto")
+	private SimpleDto simpleDto;
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionIfAnyParameterIsNull() {
-        //when
-        plainOldJavaObject.wouldYouDareToPassMeANull(null);
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowExceptionIfAnyParameterIsNull() {
+		// when
+		plainOldJavaObject.wouldYouDareToPassMeANull(null);
 
-        //then exception is thrown
-    }
+		// then exception is thrown
+	}
 
-    @Test
-    public void shouldNotThrowExceptionOnPassingNullToSetter() {
-        //when
-        plainOldJavaObject.setString(null);
+	@Test
+	public void shouldNotThrowExceptionOnPassingNullToSetter() {
+		// when
+		plainOldJavaObject.setString(null);
 
-        //then no exception is thrown
-    }
+		// then no exception is thrown
+	}
 
-    @Test
-    public void shouldBeSafeToPassNullToDtos() {
-        //when
-        simpleDto.youCanSafelyPassNullToDtos(null);
+	@Test
+	public void shouldBeSafeToPassNullToDtos() {
+		// when
+		simpleDto.youCanSafelyPassNullToDtos(null);
 
-        //then no exception is thrown
-    }
-
-
+		// then no exception is thrown
+	}
 
 }
