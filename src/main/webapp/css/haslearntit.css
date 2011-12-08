@@ -57,6 +57,10 @@ input[type='submit'] {
 	margin-right: 20px;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
 header div {
 	height: 43px;
 }
@@ -104,11 +108,16 @@ header .label {
 	width: 173px;
 }
 
+#profile {	
+	border: #FFF;
+	width: 272px;
+	float: left;
+}
+
 #logout {
 	background: url('../img/logout-bg.jpg') no-repeat;
 	width: 139px;
-	float: right;
-	cursor: pointer;
+	float: right;	
 }
 
 #logout .label {
