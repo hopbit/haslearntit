@@ -29,8 +29,8 @@
 				window.location = $(this).attr("url");
 			});
 
-			$('#google-click').click(function() {
-				$('#google-form').submit();
+			$('.service-image').click(function() {
+				$('#' + $(this).attr('id') + '-form').submit();
 			});
 		});
 	}
@@ -73,13 +73,17 @@
                 style="float: right; height: 270px; margin-right: 50px; margin-top: 10px; background-color: #eac79f; color: #555;">
                 <p class="title">Sign in using your favourite service:</p>
                 <div style="margin-left: 20px; width:200px; margin-bottom: 30px;">
-                    <img src="img/social/facebook.png"/>
-                    <img id="google-click" src="img/social/google.png"/>
-                    <img src="img/social/openid.png"/>
+                    <img id="facebook" class="service-image" src="img/social/facebook.png"/>
+                    <img id="google" class="service-image" src="img/social/google.png"/>
+                    <img id="openid" class="service-image" src="img/social/openid.png"/>
                     
                     <form id="google-form" action="j_spring_openid_security_check" method="post">                        
                         <input name="googleOpenId" type="hidden"/>
                         <input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
+                    </form>    
+                    <form id="openid-form" action="j_spring_openid_security_check" method="post">                                                
+                    </form>    
+                    <form id="facebook-form" action="j_spring_openid_security_check" method="post">                                                
                     </form>    
                 </div>
                 <p class="title" style="margin-bottom: 0px;">OpenID mastah?:</p>
