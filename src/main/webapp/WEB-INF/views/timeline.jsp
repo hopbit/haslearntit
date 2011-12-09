@@ -117,7 +117,7 @@
                 <div id="profile" class="clickable" url="user">
                 <span class="label">Profile</span>
                 </div>
-                <div id="logout" class="clickable" url="login">
+                <div id="logout" class="clickable" url="logout">
                     <span class="label">Logout</span>
                 </div>
             </header>
