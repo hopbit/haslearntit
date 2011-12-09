@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class EntryController {
 
-    @Autowired
-    EntryRepository entryRepository;
+	@Autowired
+	EntryRepository entryRepository;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
-    public String submit(@RequestParam String when, @RequestParam String text, @RequestParam String difficulty) {
-        entryRepository.save(new Entry().today().iveLearnt(text).andItWas(difficulty));
-        return "timeline";
-    }
+	@RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
+	public String submit(@RequestParam String when, @RequestParam String text, @RequestParam String difficulty) {
+		entryRepository.save(new Entry().when(when).iveLearnt(text).andItWas(difficulty));
+		return "timeline";
+	}
 }

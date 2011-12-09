@@ -12,55 +12,59 @@ import org.apache.commons.lang.builder.ToStringStyle;
 @Entity("Entries")
 public class Entry extends EntityWithGeneratedId {
 
-    @Column("skill")
-    private String skill;
+	@Column("skill")
+	private String skill;
 
-    @Column("when")
-    private String when;
+	@Column("when")
+	private String when;
 
-    @Column("difficulty")
-    private String difficulty;
+	@Column("difficulty")
+	private String difficulty;
 
-    public String what() {
-        return skill;
-    }
+	public String what() {
+		return skill;
+	}
 
-    public String when() {
-        return when;
-    }
+	public String when() {
+		return when;
+	}
 
-    public String howDifficult() {
-        return difficulty;
-    }
+	public String howDifficult() {
+		return difficulty;
+	}
 
-    public Entry iveLearnt(String skill) {
-        this.skill = skill;
-        return this;
-    }
+	public Entry iveLearnt(String skill) {
+		this.skill = skill;
+		return this;
+	}
 
-    public Entry today() {
-        this.when = "today";
-        return this;
-    }
+	public Entry today() {
+		return when("today");
+	}
 
-    public Entry andItWas(String difficulty) {
-        this.difficulty = difficulty;
-        return this;
-    }
+	public Entry andItWas(String difficulty) {
+		this.difficulty = difficulty;
+		return this;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(this, obj);
+	}
 
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
 
-    @Override
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SIMPLE_STYLE);
-    }
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SIMPLE_STYLE);
+	}
+
+	public Entry when(String when) {
+		this.when = when;
+		return this;
+	}
 
 }
