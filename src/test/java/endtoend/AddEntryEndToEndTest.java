@@ -27,6 +27,7 @@ public class AddEntryEndToEndTest extends IntegrationTest {
         driver = new FirefoxDriver();
 
         driver.navigate().to("http://localhost:" + PORT + "/");
+
         driver.findElement(By.id("submit-entry")).submit();
 
     }

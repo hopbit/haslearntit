@@ -13,8 +13,8 @@ public class EntryController {
     EntryRepository entryRepository;
 
     @RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
-    public String submit(@RequestParam String when, @RequestParam String skill, @RequestParam String difficulty) {
-        entryRepository.save(new Entry().today().iveLearnt(skill).andItWas(difficulty));
-        return "/";
+    public String submit(@RequestParam String when, @RequestParam String text, @RequestParam String difficulty) {
+        entryRepository.save(new Entry().today().iveLearnt(text).andItWas(difficulty));
+        return "timeline";
     }
 }
