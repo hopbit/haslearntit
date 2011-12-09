@@ -13,9 +13,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>3.1.0.M2</spring.version>
-        <spring-security.version>3.0.5.RELEASE</spring-security.version> <!-- 3.1.0.RC3 -->
-        <spring-social.version>1.0.0.RELEASE</spring-social.version>
+		<spring.version>3.1.0.RC1</spring.version>
+		<spring-security.version>3.0.5.RELEASE</spring-security.version> <!-- 3.1.0.RC3 -->
+		<spring-social.version>1.0.0.RELEASE</spring-social.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<jetty.version>6.1.22</jetty.version>
 		<aspectj.version>1.6.9</aspectj.version>
@@ -50,7 +50,21 @@
 			<id>org.jboss.repository.release</id>
 			<name>JBoss Maven Release Repository</name>
 			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-			<snapshots><enabled>false</enabled></snapshots>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<!-- For testing against latest Spring snapshots -->
+		<repository>
+			<id>org.springframework.maven.snapshot</id>
+			<name>Spring Maven Snapshot Repository</name>
+			<url>http://maven.springframework.org/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -89,14 +103,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.9</version>
-                <!--
-				<configuration>
-					<forkMode>once</forkMode>
-					<useSystemClassLoader>true</useSystemClassLoader>
-					<parallel>classes</parallel>
-					<threadCount>9</threadCount>
-				</configuration>
-				-->
+				<!-- <configuration> <forkMode>once</forkMode> <useSystemClassLoader>true</useSystemClassLoader> 
+					<parallel>classes</parallel> <threadCount>9</threadCount> </configuration> -->
 			</plugin>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -145,35 +153,36 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-        <!-- spring security -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${spring-security.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>${spring-security.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-openid</artifactId>
-            <version>${spring-security.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${spring-security.version}</version>
-        </dependency>
+		<!-- spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-openid</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
 
-        <!--  JSR 303 Validator -->
+		<!-- JSR 303 Validator -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
 		</dependency>
-        <dependency> <!-- yes, you may be surprised to see hibernate dependency here, but we need a JEE validator, and this one does the job -->
+		<dependency> <!-- yes, you may be surprised to see hibernate dependency here, but we need 
+				a JEE validator, and this one does the job -->
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.1.0.Final</version>
@@ -288,7 +297,7 @@
 		</dependency>
 		<dependency>
 			<groupId>net.sf.appinfo</groupId>
-		    <artifactId>appinfo</artifactId>
+			<artifactId>appinfo</artifactId>
 			<version>0.5.2</version>
 		</dependency>
 
@@ -315,6 +324,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test-mvc</artifactId>
+			<version>1.0.0.BUILD-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 
