@@ -29,6 +29,9 @@
 				window.location = $(this).attr("url");
 			});
 
+			$('.service-image').click(function() {
+				$('#' + $(this).attr('id') + '-form').submit();
+			});
 		});
 	}
 	google.setOnLoadCallback(OnLoad);
@@ -67,15 +70,29 @@
             </section>
 
             <section id="login" class="sidebar rounded"
-                style="float: right; height: 250px; margin-right: 50px; margin-top: 20px; background-color: #eac79f; color: #555;">
-                <p class="title">Sign in with your favourite service:</p>
-                <div style="margin-left: 20px; align:left; width:200px;">
-                    <form action="j_spring_openid_security_check" method="post">
-                        <input name="googleOpenId" type="image" src="/resources/img/social/google.png"/>
+                style="float: right; height: 270px; margin-right: 50px; margin-top: 10px; background-color: #eac79f; color: #555;">
+                <p class="title">Sign in using your favourite service:</p>
+                <div style="margin-left: 20px; width:200px; margin-bottom: 30px;">
+                    <img id="facebook" class="service-image" src="img/social/facebook.png"/>
+                    <img id="google" class="service-image" src="img/social/google.png"/>
+                    <img id="openid" class="service-image" src="img/social/openid.png"/>
+                    
+                    <form id="google-form" action="j_spring_openid_security_check" method="post">                        
+                        <input name="googleOpenId" type="hidden"/>
                         <input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
-                    </form>
-                    <img src="/resources/img/social/facebook.png"/>
-                    <img src="/resources/img/social/openid.png"/>
+                    </form>    
+                    <form id="openid-form" action="j_spring_openid_security_check" method="post">                                                
+                    </form>    
+                    <form id="facebook-form" action="j_spring_openid_security_check" method="post">                                                
+                    </form>    
+                </div>
+                <p class="title" style="margin-bottom: 0px;">OpenID mastah?:</p>
+                <div style="margin-left: 20px; width:200px;">
+                    <form action="j_spring_openid_security_check" method="post"  style="text-align: left; margin-top: 0px;">
+                        <label for="openid_identifier">Gimme your OpenId:</label>
+                        <input name="openid_identifier" maxlength="100" type="text" style="width:100%;"/>
+                        <input type="submit" value="Sign in" style="float: right; width:60px;"/>
+                    </form>                
                 </div>
 
                 <!--
@@ -91,7 +108,7 @@
 
             <div class="clear"></div>
 
-            <section id="" class="sidebar rounded" style="float: left; height: 300px; margin-left: 50px;">
+            <section id="" class="sidebar rounded" style="float: left; height: 300px; margin-left: 200px;">
                 <p class="title">Trends:</p>
                 <ol>
                     <li><a href="#">JAVA cośtam</a><br />128 users</li>
@@ -101,7 +118,7 @@
                     <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
                 </ol>
             </section>
-            <section class="sidebar rounded" style="float: left; height: 300px;">
+            <section class="sidebar rounded" style="float: left; height: 300px; margin-left: 20px;">
                 <p class="title">Top 5 users:</p>
                 <table>
                     <tr>
@@ -126,17 +143,6 @@
                     </tr>
                 </table>
             </section>
-
-            <section id="sign up" class="sidebar rounded"
-                style="float: right; height: 300px; margin-right: 50px; background-color: #8babba; color: #555;">
-                <p class="title">Are you OpenID mastah?:<br/></p>
-                <form action="j_spring_openid_security_check" method="post"  style="text-align: left; margin-left: 20px;">
-                    <label for="openid_identifier">Gimme your OpenId:</label>
-                    <input name="openid_identifier" maxlength="100" type="text" style="width:200px;"/>
-                    <input type="submit" value="Sign in" style="float: right; margin-right: 23px; width:60px; top: -7px;"/>
-                </form>
-            </section>
-
             
             <div class="clear"></div>
             <div id="footer" style="margin-left: 50px;">HasLearnt.it &copy; 2011</div>
