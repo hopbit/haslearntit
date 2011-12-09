@@ -114,10 +114,10 @@
                         </form>
                     </div>
                 </div>
-                <div id="profile" class="clickable" url="user.html">
+                <div id="profile" class="clickable" url="user.jsp">
                 <span class="label">Profile</span>
                 </div>
-                <div id="logout" class="clickable" url="login-page.html">
+                <div id="logout" class="clickable" url="login.jsp">
                     <span class="label">Logout</span>
                 </div>
             </header>
@@ -130,7 +130,7 @@
                 </div>
                 <div class="left left-margin">
                     <h1>
-                        Hello <span class="emphasized" style="font-size: 24pt">Pawel Lipinski</span>!
+                        Hello <span class="emphasized" style="font-size: 24pt">Paweł Lipiński</span>!
                     </h1>
                     <h2>What have you learned since your last visit?</h2>
                 </div>

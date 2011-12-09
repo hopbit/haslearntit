@@ -88,10 +88,10 @@
                         </form>
                     </div>
                 </div>
-                <div id="profile" class="clickable" url="wall.html">
+                <div id="profile" class="clickable" url="timeline.jsp">
                 <span class="label">Timeline</span>
                 </div>
-                <div id="logout" class="clickable" url="login-page.html">
+                <div id="logout" class="clickable" url="login.jsp">
                     <span class="label">Logout</span>
                 </div>
             </header>
