@@ -13,11 +13,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>3.1.0.M2</spring.version>
-		<spring-security.version>3.1.0.RC3</spring-security.version>
+		<spring.version>3.1.0.RC1</spring.version>
+		<spring-security.version>3.0.5.RELEASE</spring-security.version> <!-- 3.1.0.RC3 -->
 		<spring-social.version>1.0.0.RELEASE</spring-social.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<jetty.version>6.1.22</jetty.version>
+		<jetty.version>8.1.0.RC0</jetty.version>
 		<aspectj.version>1.6.9</aspectj.version>
 	</properties>
 
@@ -41,6 +41,27 @@
 			<id>maven.scale7.org</id>
 			<name>Scale7 Maven Repo</name>
 			<url>https://github.com/s7/mvnrepo/raw/master</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<!-- For Hibernate Validator -->
+		<repository>
+			<id>org.jboss.repository.release</id>
+			<name>JBoss Maven Release Repository</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<!-- For testing against latest Spring snapshots -->
+		<repository>
+			<id>org.springframework.maven.snapshot</id>
+			<name>Spring Maven Snapshot Repository</name>
+			<url>http://maven.springframework.org/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -82,12 +103,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.9</version>
-				<configuration>
-					<forkMode>once</forkMode>
-					<useSystemClassLoader>true</useSystemClassLoader>
-					<parallel>classes</parallel>
-					<threadCount>9</threadCount>
-				</configuration>
+				<!-- <configuration> <forkMode>once</forkMode> <useSystemClassLoader>true</useSystemClassLoader> 
+					<parallel>classes</parallel> <threadCount>9</threadCount> </configuration> -->
 			</plugin>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -136,27 +153,6 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- spring social -->
-		<dependency>
-			<groupId>org.springframework.social</groupId>
-			<artifactId>spring-social-core</artifactId>
-			<version>${spring-social.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.social</groupId>
-			<artifactId>spring-social-web</artifactId>
-			<version>${spring-social.version}</version>
-		</dependency>
-		<!-- <dependency> <groupId>org.springframework.social</groupId> <artifactId>spring-social-facebook</artifactId> 
-			<version>${spring-social.version}</version> </dependency> Dependency conflict 
-			with. Here: org.codehaus.jackson:jackson-mapper-asl:jar:1.8.5:compile In 
-			org.apache.cassandra:cassandra-all:jar:1.0.0:compile: org.codehaus.jackson:jackson-core-asl:jar:1.4.0:compile -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.1.2</version>
-		</dependency>
-
 		<!-- spring security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -178,10 +174,18 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>${spring-security.version}</version>
 		</dependency>
+
+		<!-- JSR 303 Validator -->
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-crypto</artifactId>
-			<version>${spring-security.version}</version>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+		<dependency> <!-- yes, you may be surprised to see hibernate dependency here, but we need 
+				a JEE validator, and this one does the job -->
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.1.0.Final</version>
 		</dependency>
 
 		<!-- aspectj -->
@@ -270,7 +274,19 @@
 					<groupId>javax.servlet</groupId>
 					<artifactId>servlet-api</artifactId>
 				</exclusion>
+				<!-- we already have httpclient 4.1.2 -->
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
 			</exclusions>
+		</dependency>
+		<!-- Explicit dependency to http client - it's included from selenium in 
+			scope tests, but cassandra needs it in runtime -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.1.2</version>
 		</dependency>
 
 		<!-- Google Guava -->
@@ -303,6 +319,12 @@
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>hamcrest-core</artifactId>
+					<groupId>org.hamcrest</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -322,26 +344,46 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test-mvc</artifactId>
+			<version>1.0.0.BUILD-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Jetty for end-to-end tests -->
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty</artifactId>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
 			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-util</artifactId>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
 			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-management</artifactId>
-			<version>${jetty.version}</version>
-			<scope>test</scope>
+			<artifactId>jsp-2.1-glassfish</artifactId>
+			<version>2.1.v20100127</version>
 		</dependency>
+
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.eclipse.jetty</groupId> -->
+		<!-- <artifactId>jetty-util</artifactId> -->
+		<!-- <version>${jetty.version}</version> -->
+		<!-- <scope>test</scope> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.eclipse.jetty</groupId> -->
+		<!-- <artifactId>jetty-management</artifactId> -->
+		<!-- <version>${jetty.version}</version> -->
+		<!-- <scope>test</scope> -->
+		<!-- </dependency> -->
 		<!-- Selenium for end-to-end tests -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -349,6 +391,14 @@
 			<version>2.14.0</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+			<version>2.2.2</version>
+		</dependency>		
 	</dependencies>
+
+
 
 </project>

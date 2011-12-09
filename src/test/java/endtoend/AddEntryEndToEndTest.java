@@ -1,32 +1,38 @@
 package endtoend;
 
+import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.server.bio.*;
+import org.eclipse.jetty.webapp.*;
 import org.junit.*;
-import org.junit.runner.*;
-import org.mortbay.jetty.*;
-import org.mortbay.jetty.bio.*;
-import org.mortbay.jetty.webapp.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.*;
-import org.springframework.test.context.*;
-import org.springframework.test.context.junit4.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/ioc/testContext.xml", "classpath:/ioc/backend/applicationContext.xml" })
-public class AddEntryEndToEndTest {
+import setup.*;
+
+public class AddEntryEndToEndTest extends IntegrationTest {
 
 	private static final int PORT = 6345;
+	private WebDriver driver;
+	private Server server;
 
 	@Test
-	@Ignore
 	public void shouldAddEntry() throws Exception {
-		Server server = createServer();
+		server = createServer();
 		addContextToServer(server);
 		server.start();
 
-		WebDriver driver = new FirefoxDriver();
+		driver = new FirefoxDriver();
 
-		driver.navigate().to("http://localhost:" + PORT + "/hello");
+		driver.navigate().to("http://localhost:" + PORT + "/");
 
+		driver.findElement(By.id("entry")).submit();
+
+	}
+
+	@After
+	public void shutdownSeleniumAndServer() throws Exception {
+		driver.close();
+		server.stop();
 	}
 
 	private static Server createServer() {
@@ -42,10 +48,10 @@ public class AddEntryEndToEndTest {
 	}
 
 	private static void addContextToServer(Server server) {
-		WebAppContext bb = new WebAppContext();
-		bb.setServer(server);
-		bb.setContextPath("/");
-		bb.setWar("src/main/webapp");
-		server.addHandler(bb);
+		WebAppContext webAppContext = new WebAppContext();
+		webAppContext.setServer(server);
+		webAppContext.setContextPath("/");
+		webAppContext.setWar("src/main/webapp");
+		server.setHandler(webAppContext);
 	}
 }

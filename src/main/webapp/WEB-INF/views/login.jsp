@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<%@ page contentType="text/html; charset=UTF-8" %><!DOCTYPE HTML>
 <html>
 <head>
 <meta charset=utf-8>
@@ -29,6 +29,9 @@
 				window.location = $(this).attr("url");
 			});
 
+			$('.service-image').click(function() {
+				$('#' + $(this).attr('id') + '-form').submit();
+			});
 		});
 	}
 	google.setOnLoadCallback(OnLoad);
@@ -67,8 +70,32 @@
             </section>
 
             <section id="login" class="sidebar rounded"
-                style="float: right; height: 250px; margin-right: 50px; margin-top: 20px; background-color: #eac79f; color: #555;">
-                <p class="title">Sign in:<br/></p>
+                style="float: right; height: 270px; margin-right: 50px; margin-top: 10px; background-color: #eac79f; color: #555;">
+                <p class="title">Sign in using your favourite service:</p>
+                <div style="margin-left: 20px; width:200px; margin-bottom: 30px;">
+                    <img id="facebook" class="service-image" src="img/social/facebook.png"/>
+                    <img id="google" class="service-image" src="img/social/google.png"/>
+                    <img id="openid" class="service-image" src="img/social/openid.png"/>
+                    
+                    <form id="google-form" action="j_spring_openid_security_check" method="post">                        
+                        <input name="googleOpenId" type="hidden"/>
+                        <input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
+                    </form>    
+                    <form id="openid-form" action="j_spring_openid_security_check" method="post">                                                
+                    </form>    
+                    <form id="facebook-form" action="j_spring_openid_security_check" method="post">                                                
+                    </form>    
+                </div>
+                <p class="title" style="margin-bottom: 0px;">OpenID mastah?:</p>
+                <div style="margin-left: 20px; width:200px;">
+                    <form action="j_spring_openid_security_check" method="post"  style="text-align: left; margin-top: 0px;">
+                        <label for="openid_identifier">Gimme your OpenId:</label>
+                        <input name="openid_identifier" maxlength="100" type="text" style="width:100%;"/>
+                        <input type="submit" value="Sign in" style="float: right; width:60px;"/>
+                    </form>                
+                </div>
+
+                <!--
                 <form action="wall.html" style="text-align: left; margin-left: 20px;">
                     <label for="j_username">Your login:</label>
                     <input type="text" name="j_username" placeholder="username..." style="width:200px;"/><label for="j_password">Your password:</label>
@@ -76,21 +103,22 @@
                     <input type='checkbox' name='_spring_security_remember_me'/> Remember me
                     <input type="submit" value="Sign in" style="float: right; margin-right: 23px; width:60px; top: -7px;"/>
                 </form>
+                -->
             </section>
 
             <div class="clear"></div>
 
-            <section id="" class="sidebar rounded" style="float: left; height: 300px; margin-left: 50px;">
+            <section id="" class="sidebar rounded" style="float: left; height: 300px; margin-left: 200px;">
                 <p class="title">Trends:</p>
                 <ol>
-                    <li><a href="#">JAVA cośtam</a><br />128 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
+                    <li><a href="#">JAVA coÅtam</a><br />128 users</li>
+                    <li><a href="#">MySQL coÅtam</a><br />110 users</li>
                     <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
+                    <li><a href="#">MySQL coÅtam</a><br />110 users</li>
                     <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
                 </ol>
             </section>
-            <section class="sidebar rounded" style="float: left; height: 300px;">
+            <section class="sidebar rounded" style="float: left; height: 300px; margin-left: 20px;">
                 <p class="title">Top 5 users:</p>
                 <table>
                     <tr>
@@ -114,18 +142,6 @@
                         <td class="name"><a href="#">Tomasz Bartczak</a><br />918 points</td>
                     </tr>
                 </table>
-            </section>
-            <section id="sign up" class="sidebar rounded"
-                style="float: right; height: 300px; margin-right: 50px; background-color: #8babba; color: #555;">
-                <p class="title">Sign up:<br/></p>
-                <form method="post" action="" style="text-align: left; margin-left: 20px;">
-                    <label for="username">Your user name:</label>
-                    <input type="text" name="username" placeholder="username..." style="width:200px;"/><label for="password">Your password:</label>
-                    <input type="password" name="password" placeholder="password..." style="width:200px;"/>
-                    <label for="email">Your email:</label>
-                    <input type="email" name="email" placeholder="john@doe.com" style="width:200px;"/>
-                    <input type="submit" value="Sign up" style="float: right; margin-right: 23px; width:60px; margin-top: 20px;"/>
-                </form>
             </section>
             
             <div class="clear"></div>

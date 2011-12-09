@@ -20,6 +20,16 @@ input {
 	color: #777;
 }
 
+h1 {
+	font-size: 26pt;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+h2 {
+	font-size: 18pt;
+}
+
 input[type='submit'] {
 	padding: 8px 15px 8px 15px;
 	color: #fff;
@@ -81,7 +91,7 @@ header .label {
 	background-color: #fff;
 	padding: 0;
 	margin: 0;
-	width: 100%;	
+	width: 100%;
 	min-height: 1100px;
 }
 
@@ -159,11 +169,11 @@ header .label {
 }
 
 .follow-image {
-	background: url('../img/follow-arrow.png') no-repeat right top;	
+	background: url('../img/follow-arrow.png') no-repeat right top;
 }
 
 .unfollow-image {
-	background: url('../img/unfollow-arrow.png') no-repeat right top;	
+	background: url('../img/unfollow-arrow.png') no-repeat right top;
 }
 
 #follow-label {
@@ -280,6 +290,18 @@ header .label {
 	height: 110px;
 }
 
+.entry-form-line {
+	background-color: #eaeaea;
+	display: table;
+	position: relative;
+	top: 10px;
+	left: 40px;
+	width: 600px;
+	height: 40px;
+	font-size: 16pt;
+	margin-bottom: 10px;
+}
+
 .clickable-text {
 	border-bottom: 1px dashed;
 	cursor: pointer;
@@ -287,6 +309,8 @@ header .label {
 
 #wall {
 	margin-top: 25px;
+	display: table;
+	width: 100%
 }
 
 .entry-box {
@@ -324,6 +348,10 @@ header .label {
 	color: #aaa;
 	position: relative;
 	float: right;
+}
+
+.entry-date img {
+	margin-top: 10px;
 }
 
 .entry-hr {
@@ -373,14 +401,21 @@ header .label {
 
 .comment-author {
 	color: #555;
+	padding-bottom: 5px;
 }
 
 .comment-text {
 	color: #777;
 }
 
+.comment-textfield input {
+	width: 300px;
+	height: 25px;
+}
+
 .comment-container {
 	width: 305px;
+	position: relative;
 }
 
 .comment-first-photo {
@@ -398,6 +433,13 @@ header .label {
 	padding-left: 20px;
 }
 
+.delete-comment {
+	right: 0px;
+	top: 0px;
+	position: absolute;
+	cursor: pointer;
+}
+
 .dropdown {
 	position: absolute;
 	display: none;
@@ -407,4 +449,19 @@ header .label {
 
 .dropdown-selection {
 	font-size: 16pt;
+}
+
+#choose-time {
+	width: 120px;
+	height: 80px;
+}
+
+#choose-level {
+	width: 120px;
+	height: 80px;
+}
+
+#choose-type {
+	width: 190px;
+	height: 55px;
 }

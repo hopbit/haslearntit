@@ -10,9 +10,13 @@ import it.haslearnt.cassandra.mapping.*;
 @Entity("Users")
 public class User {
 	@Id
-	private String email;
-	@Column
+	private String name;
+
+    @Column
 	private String hashedPassword;
+
+    @Column
+    private String email;
 
 	public String email() {
 		return email;
@@ -21,6 +25,10 @@ public class User {
 	public String password() {
 		return hashedPassword;
 	}
+
+    public String name() {
+        return name;
+    }
 
 	public User withEmail(String email) {
 		this.email = email;
@@ -31,4 +39,9 @@ public class User {
 		this.hashedPassword = password;
 		return this;
 	}
+
+    public User withName(String name) {
+        this.name = name;
+        return this;
+    }
 }

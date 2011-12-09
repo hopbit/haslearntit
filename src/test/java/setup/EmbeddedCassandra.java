@@ -5,10 +5,10 @@
 
 package setup;
 
+import java.io.IOException;
+
 import org.apache.cassandra.thrift.CassandraDaemon;
 import org.apache.thrift.transport.TTransportException;
-
-import java.io.IOException;
 
 class EmbeddedCassandra implements Runnable {
     private CassandraDaemon cassandraDaemon;
@@ -18,6 +18,7 @@ class EmbeddedCassandra implements Runnable {
         cassandraDaemon.init(null);
     }
 
+    @Override
     public void run() {
         cassandraDaemon.start();
     }

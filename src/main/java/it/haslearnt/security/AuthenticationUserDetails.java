@@ -6,21 +6,21 @@
 package it.haslearnt.security;
 
 import it.haslearnt.user.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
-
-import org.springframework.security.core.*;
-import org.springframework.security.core.userdetails.*;
+import java.util.Collection;
+import java.util.HashSet;
 
 @SuppressWarnings("serial")
 public class AuthenticationUserDetails implements UserDetails {
-	private final String login;
+	private final String userName;
 	private final String passwordHash;
 	private final boolean enabled;
 	private HashSet<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
 
 	public AuthenticationUserDetails(User user) {
-		this.login = user.email();
+		this.userName = user.name();
 		this.passwordHash = user.password();
 		this.enabled = true;
 		this.grantedAuthorities.addAll(new HashSet<GrantedAuthority>());
@@ -38,7 +38,7 @@ public class AuthenticationUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return login;
+		return userName;
 	}
 
 	@Override
@@ -59,9 +59,5 @@ public class AuthenticationUserDetails implements UserDetails {
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
-	}
-
-	public String getLogin() {
-		return login;
 	}
 }

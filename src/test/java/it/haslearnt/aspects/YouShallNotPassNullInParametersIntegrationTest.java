@@ -5,13 +5,11 @@
 
 package it.haslearnt.aspects;
 
-import javax.annotation.*;
+import org.junit.Test;
+import setup.IntegrationTest;
 
-import org.junit.*;
+import javax.annotation.Resource;
 
-import setup.*;
-
-@Ignore
 public class YouShallNotPassNullInParametersIntegrationTest extends IntegrationTest {
 	@Resource(name = "plainOldJavaObject")
 	private PlainOldJavaObject plainOldJavaObject;
