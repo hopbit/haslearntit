@@ -5,6 +5,8 @@
 
 package it.haslearnt.controller;
 
+import java.util.Random;
+
 import org.apache.cassandra.thrift.ConsistencyLevel;
 import org.scale7.cassandra.pelops.Bytes;
 import org.scale7.cassandra.pelops.Mutator;
@@ -16,20 +18,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Random;
-
 @Controller
 public class HomeController {
 
     @Autowired
     private IThriftPool pool;
-    
+
     @Autowired
     @Qualifier("appInfoText")
     private String appInfoText;
 
-    //TODO: get it out or make it shine
-    @RequestMapping("/")
+    // TODO: get it out or make it shine
+    @RequestMapping("/app-info")
     public String home(Model model) {
         Long t0 = System.currentTimeMillis();
         for (int row = 0; row < 100; row++) {
@@ -55,11 +55,10 @@ public class HomeController {
         model.addAttribute("writeSpeed", 20000000 / writeTime);
         model.addAttribute("readSpeed", 20000000 / readTime);
 
-        //TODO: MZA: Should be moved to the footer
+        // TODO: MZA: Should be moved to the footer
         model.addAttribute("appInfoText", appInfoText);
 
         return "home";
     }
-
 
 }

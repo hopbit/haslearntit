@@ -1,11 +1,12 @@
 package endtoend;
 
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.bio.SocketConnector;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.After;
 import org.junit.Test;
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.bio.SocketConnector;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -25,14 +26,15 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 
         driver = new FirefoxDriver();
 
-        driver.navigate().to("http://localhost:" + PORT + "/hello");
+        driver.navigate().to("http://localhost:" + PORT + "/");
+        driver.findElement(By.id("submit-entry")).submit();
 
     }
 
     @After
     public void shutdownSeleniumAndServer() throws Exception {
-        driver.close();
-        server.stop();
+        // driver.close();
+        server.join();
     }
 
     private static Server createServer() {
@@ -52,6 +54,6 @@ public class AddEntryEndToEndTest extends IntegrationTest {
         webAppContext.setServer(server);
         webAppContext.setContextPath("/");
         webAppContext.setWar("src/main/webapp");
-        server.addHandler(webAppContext);
+        server.setHandler(webAppContext);
     }
 }

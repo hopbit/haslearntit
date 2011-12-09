@@ -17,7 +17,7 @@
 		<spring-security.version>3.0.5.RELEASE</spring-security.version> <!-- 3.1.0.RC3 -->
 		<spring-social.version>1.0.0.RELEASE</spring-social.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<jetty.version>6.1.22</jetty.version>
+		<jetty.version>8.1.0.RC0</jetty.version>
 		<aspectj.version>1.6.9</aspectj.version>
 	</properties>
 
@@ -281,7 +281,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- Explicit dependency to http client - it's included from selenium in scope tests, but cassandra needs it in runtime -->
+		<!-- Explicit dependency to http client - it's included from selenium in 
+			scope tests, but cassandra needs it in runtime -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -318,6 +319,12 @@
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>hamcrest-core</artifactId>
+					<groupId>org.hamcrest</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -346,23 +353,37 @@
 
 		<!-- Jetty for end-to-end tests -->
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty</artifactId>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
 			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-util</artifactId>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
 			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty-management</artifactId>
-			<version>${jetty.version}</version>
-			<scope>test</scope>
+			<artifactId>jsp-2.1-glassfish</artifactId>
+			<version>2.1.v20100127</version>
 		</dependency>
+
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.eclipse.jetty</groupId> -->
+		<!-- <artifactId>jetty-util</artifactId> -->
+		<!-- <version>${jetty.version}</version> -->
+		<!-- <scope>test</scope> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.eclipse.jetty</groupId> -->
+		<!-- <artifactId>jetty-management</artifactId> -->
+		<!-- <version>${jetty.version}</version> -->
+		<!-- <scope>test</scope> -->
+		<!-- </dependency> -->
 		<!-- Selenium for end-to-end tests -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
