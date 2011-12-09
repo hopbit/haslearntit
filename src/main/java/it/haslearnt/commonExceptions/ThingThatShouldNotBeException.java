@@ -3,6 +3,7 @@ package it.haslearnt.commonExceptions;
 /**
  * Thrown when runtime reaches some code that should not be reached no matter what.
  */
+@SuppressWarnings("serial")
 public class ThingThatShouldNotBeException extends RuntimeException {
     public ThingThatShouldNotBeException() {
     }
