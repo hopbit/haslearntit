@@ -12,7 +12,9 @@ public class EntryControllerTest {
     @Test
     public void shouldSubmitNewEntry() throws Exception {
         EntryRepository entryRepository = mock(EntryRepository.class);
-        standaloneSetup(new EntryController(entryRepository)).build()
+        EntryController entryController = new EntryController();
+        entryController.entryRepository = entryRepository;
+        standaloneSetup(entryController).build()
                 .perform(post("/entry/submit")
                         .param("text", "new skill")
                         .param("when", "today")
