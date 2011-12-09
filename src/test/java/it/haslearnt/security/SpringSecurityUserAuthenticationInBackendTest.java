@@ -1,14 +1,14 @@
 package it.haslearnt.security;
 
+import static org.junit.Assert.*;
 import it.haslearnt.user.User;
-import org.junit.Test;
-import predefinedData.UserPredefinedData;
-import setup.IntegrationTest;
 
 import javax.annotation.Resource;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+
+import predefinedData.UserPredefinedData;
+import setup.IntegrationTest;
 
 public class SpringSecurityUserAuthenticationInBackendTest extends IntegrationTest {
     @Resource(name = "userAuthenticationInBackend")
@@ -16,79 +16,79 @@ public class SpringSecurityUserAuthenticationInBackendTest extends IntegrationTe
 
     @Test
     public void shouldReturnLoggedUser() {
-        //given
+        // given
         authenticateTestUser();
 
-        //when
+        // when
         User user = userAuthenticationInBackend.getLoggedUser();
 
-        //then
+        // then
         assertNotNull(user);
         assertEquals(UserPredefinedData.name, user.name());
     }
 
     @Test
     public void getLoggedUserShouldReturnNullWhenUserNotLogged() {
-        //when
+        // when
         User user = userAuthenticationInBackend.getLoggedUser();
 
-        //then
+        // then
         assertNull(user);
     }
 
-        @Test
+    @Test
     public void shouldReturnLoggedUserDetails() {
-        //when
+        // when
         authenticateTestUser();
 
-        //when
+        // when
         AuthenticationUserDetails userDetails = userAuthenticationInBackend.getLoggedUserDetails();
 
-        //then
+        // then
         assertNotNull(userDetails);
         assertEquals(UserPredefinedData.name, userDetails.getUsername());
     }
 
     @Test
     public void getLoggedUserCredentialsShouldReturnNullWhenUserNotLogged() {
-        //when
+        // when
         AuthenticationUserDetails userDetails = userAuthenticationInBackend.getLoggedUserDetails();
 
-        //then
+        // then
         assertNull(userDetails);
     }
 
     @Test
     public void shouldAuthenticateOnlyByName() {
-        //given
+        // given
         saveUserInDatabase();
 
-        //when
+        // when
         boolean isAuthenticated = userAuthenticationInBackend.login(UserPredefinedData.name, "magicKey");
 
-        //then
+        // then
         assertTrue(isAuthenticated);
         assertTrue(userAuthenticationInBackend.isLoggedIn());
     }
 
     @Test
     public void shouldNotAuthenticateByWrongNamse() {
-        //when
+        // when
         boolean isAuthenticated = userAuthenticationInBackend.login("I don't have this account", "magicKey");
-        //then
+        // then
         assertFalse(isAuthenticated);
         assertFalse(userAuthenticationInBackend.isLoggedIn());
     }
 
     @Test
     public void shouldLogoutUser() {
-        //given
+        // given
         authenticateTestUser();
 
-        //when
+        // when
         userAuthenticationInBackend.logout();
 
-        //then
+        // then
         assertNull(userAuthenticationInBackend.getLoggedUser());
     }
 }
