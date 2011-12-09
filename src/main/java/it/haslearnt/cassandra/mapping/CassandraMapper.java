@@ -16,14 +16,14 @@ public class CassandraMapper {
         List<EntityField> result = getFieldsAnnotatedBy(it.haslearnt.cassandra.mapping.Column.class, entity.getClass());
         for (EntityField field : result) {
             columns.add(
-                    mutator.newColumn(columnName(entity, field), field.getValueFor(entity).toString())
+                    mutator.newColumn(columnName(field), field.getValueFor(entity).toString())
                     );
         }
         return columns;
     }
 
-    private String columnName(Object entity, EntityField field) {
-        String annotationValue = field.getAnnotationValue(it.haslearnt.cassandra.mapping.Column.class, entity);
+    private String columnName(EntityField field) {
+        String annotationValue = field.getAnnotationValue(it.haslearnt.cassandra.mapping.Column.class);
 
         if ("".equals(annotationValue)) {
             annotationValue = field.name();

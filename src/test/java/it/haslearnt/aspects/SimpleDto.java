@@ -7,6 +7,6 @@ package it.haslearnt.aspects;
 
 class SimpleDto {
 
-    public void youCanSafelyPassNullToDtos(String supposedToBeNull) {
-    }
+	public void youCanSafelyPassNullToDtos(@SuppressWarnings("unused") String supposedToBeNull) {
+	}
 }

@@ -6,9 +6,9 @@
 package it.haslearnt.aspects;
 
 class PlainOldJavaObject {
-    public void wouldYouDareToPassMeANull(String supposedToBeNull) {
-    }
+	public void wouldYouDareToPassMeANull(@SuppressWarnings("unused") String supposedToBeNull) {
+	}
 
-    public void setString(String string) {
-    }
+	public void setString(@SuppressWarnings("unused") String string) {
+	}
 }

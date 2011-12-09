@@ -77,14 +77,14 @@ public class CassandraRepository<ENTITY> extends CassandraMapper {
                 entity.getClass());
 
         for (EntityField field : entityColumns) {
-            if (fieldIsAnnotatedWithThisColumn(column, field, entity)) {
+            if (fieldIsAnnotatedWithThisColumn(column, field)) {
                 field.setValueFor(entity, getColumnStringValue(column));
             }
         }
     }
 
-    private boolean fieldIsAnnotatedWithThisColumn(Column column, EntityField field, ENTITY entity) {
-        String annotationValue = field.getAnnotationValue(it.haslearnt.cassandra.mapping.Column.class, entity);
+    private boolean fieldIsAnnotatedWithThisColumn(Column column, EntityField field) {
+        String annotationValue = field.getAnnotationValue(it.haslearnt.cassandra.mapping.Column.class);
         if ("".equals(annotationValue)) {
             annotationValue = field.name();
         }

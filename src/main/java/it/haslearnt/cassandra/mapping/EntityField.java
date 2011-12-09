@@ -29,7 +29,7 @@ public class EntityField {
 		}
 	}
 
-	public String getAnnotationValue(Class<? extends Annotation> annotationClass, Object entity) {
+	public String getAnnotationValue(Class<? extends Annotation> annotationClass) {
 		Annotation annotation = field.getAnnotation(annotationClass);
 
 		try {

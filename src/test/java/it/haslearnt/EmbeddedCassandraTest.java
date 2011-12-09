@@ -31,6 +31,6 @@ public class EmbeddedCassandraTest extends IntegrationTest {
 		// then
 		Column column = selector.getColumnFromRow("Notes", "#1", Bytes.fromLong(1), ConsistencyLevel.ONE);
 		assertNotNull(column);
-		assertEquals("test", Bytes.toUTF8(column.value));
+		assertEquals("test", Bytes.toUTF8(column.getValue()));
 	}
 }
