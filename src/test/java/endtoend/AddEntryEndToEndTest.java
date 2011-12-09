@@ -1,6 +1,5 @@
 package endtoend;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mortbay.jetty.Connector;
@@ -13,8 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/ioc/testContext.xml", "classpath:/ioc/backend/applicationContext.xml" })
-@Ignore
+@ContextConfiguration(locations = { "classpath:/ioc/testContext.xml", "classpath:/ioc/backend/applicationContext.xml",
+        "classpath:/ioc/frontend/dispatcher-servlet.xml" })
 public class AddEntryEndToEndTest {
 
     private static final int PORT = 6345;
@@ -44,10 +43,10 @@ public class AddEntryEndToEndTest {
     }
 
     private static void addContextToServer(Server server) {
-        WebAppContext bb = new WebAppContext();
-        bb.setServer(server);
-        bb.setContextPath("/");
-        bb.setWar("src/main/webapp");
-        server.addHandler(bb);
+        WebAppContext webAppContext = new WebAppContext();
+        webAppContext.setServer(server);
+        webAppContext.setContextPath("/");
+        webAppContext.setWar("src/main/webapp");
+        server.addHandler(webAppContext);
     }
 }
