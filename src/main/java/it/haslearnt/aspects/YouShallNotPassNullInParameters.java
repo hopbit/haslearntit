@@ -15,8 +15,9 @@ import static org.springframework.util.Assert.notNull;
 public class YouShallNotPassNullInParameters {
     @Before("it.haslearnt.aspects.Pointcuts.allPublicMethodsExceptSettersAndDtos()")
     public void throwExceptionIfAnyParameterIsNull(JoinPoint joinPoint) {
-        for(Object argument : joinPoint.getArgs()) {
-            notNull(argument);
+        for (int i = 0; i < joinPoint.getArgs().length; i++) {
+            Object argument = joinPoint.getArgs()[i];
+            notNull(argument, "Argument at index " + i + " (of method called at this joinpoint) cannot be null");
         }
     }
 }
