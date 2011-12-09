@@ -1,15 +1,15 @@
 package it.haslearnt.security.openid;
 
-import static org.springframework.util.Assert.*;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.openid.OpenIDAttribute;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 
-public class NormalizedOpenIdAttributesBuilder {
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.springframework.util.Assert.notNull;
+
+class NormalizedOpenIdAttributesBuilder {
     private Set<String> emailAddressAttributeNames = new HashSet<String>();
     private Set<String> firstNameAttributeNames = new HashSet<String>();
     private Set<String> lastNameAttributeNames = new HashSet<String>();
@@ -38,8 +38,7 @@ public class NormalizedOpenIdAttributesBuilder {
         return null;
     }
 
-    private boolean setContainsAndAttributeHasValue(Set<String> emailAddressAttributeNames,
-            OpenIDAttribute openIDAttribute) {
+    private boolean setContainsAndAttributeHasValue(Set<String> emailAddressAttributeNames, OpenIDAttribute openIDAttribute) {
         return emailAddressAttributeNames.contains(openIDAttribute.getName()) && attributeHasValue(openIDAttribute);
     }
 
@@ -71,7 +70,7 @@ public class NormalizedOpenIdAttributesBuilder {
     private String getNameFromFirstAndLast(OpenIDAuthenticationToken openIdAuthenticationToken, String separator) {
         String firstName = getAttributeValue(openIdAuthenticationToken, firstNameAttributeNames);
         String lastName = getAttributeValue(openIdAuthenticationToken, lastNameAttributeNames);
-        return StringUtils.join(new String[] { firstName, lastName }, separator);
+        return StringUtils.join(new String[]{firstName, lastName}, separator);
     }
 
     public void setEmailAddressAttributeNames(Set<String> emailAddressAttributeNames) {

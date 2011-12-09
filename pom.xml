@@ -274,18 +274,7 @@
 					<groupId>javax.servlet</groupId>
 					<artifactId>servlet-api</artifactId>
 				</exclusion>
-				<!-- we already have httpclient 4.1.2 -->
-				<exclusion>
-					<groupId>org.apache.httpcomponents</groupId>
-					<artifactId>httpclient</artifactId>
-				</exclusion>
 			</exclusions>
-		</dependency>
-		<!-- Explicit dependency to http client - it's included from selenium in scope tests, but cassandra needs it in runtime -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.1.2</version>
 		</dependency>
 
 		<!-- Google Guava -->
