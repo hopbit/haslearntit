@@ -5,31 +5,43 @@
 
 package it.haslearnt.cassandra;
 
+import static it.haslearnt.cassandra.CassandraColumnFamilyManager.addColumnFamilyIfNeeded;
+import static it.haslearnt.cassandra.CassandraColumnFamilyManager.recreateColumnFamily;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.scale7.cassandra.pelops.spring.CommonsBackedPoolFactoryBean;
 
 public class CassandraConnectionProvider extends CommonsBackedPoolFactoryBean {
 
-    private boolean clean = false;
+	private boolean clean = false;
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        CassandraKeyspaceManager.ensureKeyspace(getCluster(), getKeyspace());
-        if (clean) {
-            CassandraColumnFamilyManager.recreateColumnFamily(getCluster(), getKeyspace(), "Notes", "LongType");
-            CassandraColumnFamilyManager.recreateColumnFamily(getCluster(), getKeyspace(), "Entries", "UTF8Type");
-            CassandraColumnFamilyManager.recreateColumnFamily(getCluster(), getKeyspace(), "UserEntries", "UTF8Type");
-            CassandraColumnFamilyManager.recreateColumnFamily(getCluster(), getKeyspace(), "Users", "UTF8Type");
-            CassandraColumnFamilyManager.recreateColumnFamily(getCluster(), getKeyspace(), "UserOpenId", "UTF8Type");
-        } else {
-            CassandraColumnFamilyManager.addColumnFamilyIfNeeded(getCluster(), getKeyspace(), "Notes", "LongType");
-            CassandraColumnFamilyManager.addColumnFamilyIfNeeded(getCluster(), getKeyspace(), "Entries", "UTF8Type");
-            CassandraColumnFamilyManager.addColumnFamilyIfNeeded(getCluster(), getKeyspace(), "Users", "UTF8Type");
-            CassandraColumnFamilyManager.addColumnFamilyIfNeeded(getCluster(), getKeyspace(), "UserOpenId", "UTF8Type");
-        }
-        super.afterPropertiesSet();
-    }
+	@SuppressWarnings("serial")
+	Map<String, String> columnFamilyToComparator = new HashMap<String, String>() {
+		{
+			put("Notes", "LongType");
+			put("Entries", "UTF8Type");
+			put("UserEntries", "UTF8Type");
+			put("Users", "UTF8Type");
+			put("UserOpenId", "UTF8Type");
+		}
+	};
 
-    public void setClean(boolean clean) {
-        this.clean = clean;
-    }
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		CassandraKeyspaceManager.ensureKeyspace(getCluster(), getKeyspace());
+		for (String columnFamily : columnFamilyToComparator.keySet()) {
+			if (clean) {
+				recreateColumnFamily(getCluster(), getKeyspace(), columnFamily, columnFamilyToComparator.get(columnFamily));
+			} else {
+				addColumnFamilyIfNeeded(getCluster(), getKeyspace(), columnFamily, columnFamilyToComparator.get(columnFamily));
+			}
+		}
+		super.afterPropertiesSet();
+	}
+
+	public void setClean(boolean clean) {
+		this.clean = clean;
+	}
 }
