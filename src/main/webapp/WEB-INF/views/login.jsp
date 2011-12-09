@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<%@ page contentType="text/html; charset=UTF-8" %><!DOCTYPE HTML>
 <html>
 <head>
 <meta charset=utf-8>
@@ -111,10 +111,10 @@
             <section id="" class="sidebar rounded" style="float: left; height: 300px; margin-left: 200px;">
                 <p class="title">Trends:</p>
                 <ol>
-                    <li><a href="#">JAVA cośtam</a><br />128 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
+                    <li><a href="#">JAVA coÅtam</a><br />128 users</li>
+                    <li><a href="#">MySQL coÅtam</a><br />110 users</li>
                     <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
+                    <li><a href="#">MySQL coÅtam</a><br />110 users</li>
                     <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
                 </ol>
             </section>

@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<%@ page contentType="text/html; charset=UTF-8" %><!DOCTYPE HTML>
 <html>
 <head>
 <meta charset=utf-8>
@@ -127,7 +127,7 @@
                         </div>
                         <div style="display: table; float: left;">
                             <div class="entry-text">
-                                <a href="#">Paweł Lipiński</a> has been learning <span class="emphasized">HTML &amp; CSS</span> today.<br />
+                                <a href="#">PaweÅ LipiÅski</a> has been learning <span class="emphasized">HTML &amp; CSS</span> today.<br />
                                 It was easy and it took him 3 hours (of total 18 hours)<br /> He earned 15 points!
                             </div>
                             <div class="comment-box">
@@ -151,7 +151,7 @@
                         </div>
                         <div style="display: table; float: left;">
                             <div class="entry-text">
-                                <a href="#">Paweł Lipiński</a> has been learning <span class="emphasized">Java</span> today.<br /> It
+                                <a href="#">PaweÅ LipiÅski</a> has been learning <span class="emphasized">Java</span> today.<br /> It
                                 was hard and it took him 3 hours (of total 6 hours)<br /> He earned 6 points!
                             </div>
                             <div class="comment-box comments">
@@ -159,8 +159,8 @@
                                     <img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" />
                                 </div>
                                 <div class="entry-text comment-container">
-                                    <a class="comment-author" href="#">Paweł Lipiński</a><br />
-                                    <p class="comment-text">Ale się napracowałem!</p>
+                                    <a class="comment-author" href="#">PaweÅ LipiÅski</a><br />
+                                    <p class="comment-text">Ale siÄ napracowaÅem!</p>
                                     <span class="entry-date">Dzisiaj, 7:15</span>
                                 </div>
                                 <div class="entry-hr"></div>
@@ -169,7 +169,7 @@
                                 </div>
                                 <div class="entry-text comment-container">
                                     <a class="comment-author" href="#">Jakub Nabrdalik</a><br />
-                                    <p class="comment-text">Stary, spróbuj lepiej BASIC'a</p>
+                                    <p class="comment-text">Stary, sprÃ³buj lepiej BASIC'a</p>
                                     <span class="entry-date">Dzisiaj, 7:15</span>
                                 </div>
                                 <div class="entry-hr"></div>
@@ -234,8 +234,8 @@
             <section>
                 <p class="title">Skills:</p>
                 <ol>
-                    <li><a href="#">JAVA cośtam</a><br />128 points</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 points</li>
+                    <li><a href="#">JAVA coÅtam</a><br />128 points</li>
+                    <li><a href="#">MySQL coÅtam</a><br />110 points</li>
                     <li><a href="#">HTML5 &amp; CSS3</a><br />98 points</li>
                 </ol>
             </section>
