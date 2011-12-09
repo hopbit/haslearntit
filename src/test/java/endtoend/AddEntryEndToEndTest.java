@@ -33,8 +33,8 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 
     @After
     public void shutdownSeleniumAndServer() throws Exception {
-        // driver.close();
-        server.join();
+        driver.close();
+        server.stop();
     }
 
     private static Server createServer() {
