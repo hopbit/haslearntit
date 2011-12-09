@@ -10,7 +10,6 @@
 <link rel="stylesheet" type="text/css" href="css/css3.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/general.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/grid.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="css/forms.css" media="screen" />
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
 
 <link rel="stylesheet" type="text/css" href="css/haslearntit.css" media="screen" />
@@ -55,14 +54,36 @@
 				$('#dropdown-' + dropdown.attr("id")).text(selection);
 				hideDiv(dropdown);
 			});
+
+			$(".delete-comment").click(function(e) {
+				var id = $(this).parent().parent().attr('comment-id');				
+				$(this).parent().parent().remove();
+			});
+			
+			$("#entry").submit(function() {
+				var date = new Date();
+				$("#wall").prepend(
+					'<div class="entry-box"><div class="entry-photo"><img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" /></div>' +
+	                '<div style="display: table; float: left;"><div class="entry-text"><a href="#">Paweł Lipiński</a> ' + $('#dropdown-choose-type').text() + 
+	                '<span class="emphasized">' + $('#skill').val() + '</span> today.<br />' +
+	                'It was ' + $('#dropdown-choose-level').text() + ' and it took him ' + $('#learningtime').val() + ' ' + $('#dropdown-choose-time').text() + 
+	                '(of total 18 hours)<br /> He earned 15 points!' +
+	                '</div><div class="comment-box"><a href="#" style="color: #aaa;" onclick="$(\'#comment-1\').show();">Leave a comment</a>' +
+	                '</div><div id="comment-1" class="comment-box comments" style="display: table; display: none;"><div class="comment-input">' +
+	                '<form class="comment-textfield"><input type="text" id="comment-1-input" placeholder="Leave a comment..."/></form></div></div>' +
+	                '</div><div class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</div></div>'		        
+				);
+				return false;			
+			});
 			
 			$(".comment-textfield").submit(function() {			
 				var date = new Date();
 				$(this).parent().parent().prepend(
 						'<div class="entry-photo"><img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" /></div>' +
-                        '<div class="entry-text comment-container"><a class="comment-author" href="#">Paweł Lipiński</a><br /><p class="comment-text">'+  
+                        '<div class="entry-text comment-container"><p class="comment-author"><a href="#">Paweł Lipiński</a></p><p class="comment-text">'+  
                         $('#' + $(this).parent().parent().attr('id') + '-input').val() + 
                         '</p><span class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</span></div><div class="entry-hr"></div>');
+				return false;
 			});
 		});
 	}
@@ -108,10 +129,10 @@
                     <img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" />
                 </div>
                 <div class="left left-margin">
-                    <h1 style="font-size: 26pt; margin-bottom: 10px; margin-top: 10px;">
+                    <h1>
                         Hello <span class="emphasized" style="font-size: 24pt">Pawel Lipinski</span>!
                     </h1>
-                    <h2 style="font-size: 18pt;">What have you learned since your last visit?</h2>
+                    <h2>What have you learned since your last visit?</h2>
                 </div>
                 <div class="right" id="main-stats">
                     <div class="left" style="width: 161px; height: 100%; display: table;">
@@ -132,30 +153,28 @@
 
             <section id="content">
                 <div id="entry-form">
-                    <form>
-                    <div
-                        style="background-color: #eaeaea; display: table; position: relative; top: 10px; left: 40px; width: 600px; height: 40px; font-size: 16pt; margin-bottom: 10px;">
-                        <div style="display: table-cell; vertical-align: middle;">
-                            <span class="left-margin clickable-text" id="dropdown-choose-date" dropdown-name="datepicker"> TODAY </span> <span
+                    <form id="entry">
+                    <div class="entry-form-line">
+                        <div class="center-vertical">
+                            <span class="left-margin clickable-text" id="dropdown-choose-date" dropdown-name="datepicker">TODAY</span> <span
                                 class="left-margin clickable-text" id="dropdown-choose-type" dropdown-name="choose-type"> I've been
-                                learning </span> <span class="left-margin"> <input type="text" placeholder="Your new skill..."
+                                learning </span> <span class="left-margin"> <input id="skill" type="text" placeholder="Your new skill..."
                                 style="height: 22px; width: 200px;" />
                             </span>
                         </div>
                     </div>
-                    <div
-                        style="background-color: #eaeaea; display: table; position: relative; top: 10px; left: 40px; width: 600px; height: 40px; font-size: 16pt;">
-                        <div style="display: table-cell; vertical-align: middle;">
+                    <div class="entry-form-line">
+                        <div class="center-vertical">
                             <span class="left-margin">It was</span><span class="left-margin clickable-text" id="dropdown-choose-level"
                                 dropdown-name="choose-level">easy</span> <span class="left-margin">and it took me</span><span
-                                class="left-margin"><input type="number" placeholder="..." style="height: 22px; width: 40px;" /></span> <span
+                                class="left-margin"><input id="learningtime" type="number" placeholder="..." style="height: 22px; width: 40px;" /></span> <span
                                 class="left-margin clickable-text" id="dropdown-choose-time" dropdown-name="choose-time">minutes</span> <span
-                                class="right" style="margin-right: 20px;"><input type="submit" id="submit-entry" value="ENTER" /></span>
+                                class="right" style="margin-right: 20px;"><input type="submit" value="ENTER" /></span>
                         </div>
                     </div>
                     </form>
                 </div>
-                <div id="wall" style="display: table; width: 100%">
+                <div id="wall">
                     <div class="entry-box">
                         <div class="entry-photo">
                             <img src="http://gravatar.com/avatar/b36fee01ac1166d8dd46f3c2e7649be6" />
@@ -170,7 +189,7 @@
                             </div>
                             <div id="comment-1" class="comment-box comments" style="display: table; display: none;">
                                 <div class="comment-input">
-                                    <form class="comment-textfield"><input type="text" id="comment-1-input" placeholder="Leave a comment..." style="width: 300px; height: 25px;"/></form>
+                                    <form class="comment-textfield"><input type="text" id="comment-1-input" placeholder="Leave a comment..."/></form>
                                 </div>
                             </div>
                         </div>
@@ -183,34 +202,42 @@
                         </div>
                         <div style="display: table; float: left;">
                             <div class="entry-text">
-                                <a href="#">Piotr Przybylak</a> has been learning <span class="emphasized">Kamasutra</span> today.<br /> It
+                                <a href="#">Piotr Przybylak</a> has learnt <span class="emphasized">Kamasutra</span> today.<br /> It
                                 was hard and it took him 23 hours (of total 152738392 hours)<br /> He earned 69 points!
                             </div>
                             <div class="comment-box comments">
-                                <div class="entry-photo">
-                                    <img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" />
+                                <div comment-id="1">
+                                    <div class="entry-photo">
+                                        <img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" />
+                                    </div>
+                                    <div class="entry-text comment-container">
+                                        <div class="delete-comment"><img src="img/delete-comment.png"></div>
+                                        <p class="comment-author"><a href="#">Paweł Lipiński</a></p>
+                                        <p class="comment-text">"So let's do it like they do it on Discovery channel"</p>
+                                        <span class="entry-date">Dzisiaj, 7:15</span>
+                                    </div>
+                                    <div class="entry-hr"></div>
                                 </div>
-                                <div class="entry-text comment-container">
-                                    <a class="comment-author" href="#">Paweł Lipiński</a><br />
-                                    <p class="comment-text">"So let's do it like they do it on Discovery channel"</p>
-                                    <span class="entry-date">Dzisiaj, 7:15</span>
+                                <div comment-id="2">
+                                    <div class="entry-photo">
+                                        <img src="http://gravatar.com/avatar/49f4023a979fe8e47c7b639697f86f00" />
+                                    </div>
+                                    <div class="entry-text comment-container">
+                                        <p class="comment-author"><a href="#">Jakub Nabrdalik</a></p>
+                                        <p class="comment-text">Daj lepiej linka do tej strony z Viagrą...</p>
+                                        <span class="entry-date">Dzisiaj, 23:15</span>
+                                    </div>
+                                    <div class="entry-hr"></div>
                                 </div>
-                                <div class="entry-hr"></div>
-                                <div class="entry-photo">
-                                    <img src="http://gravatar.com/avatar/49f4023a979fe8e47c7b639697f86f00" />
-                                </div>
-                                <div class="entry-text comment-container">
-                                    <a class="comment-author" href="#">Jakub Nabrdalik</a><br />
-                                    <p class="comment-text">Daj lepiej linka do tej strony z Viagrą...</p>
-                                    <span class="entry-date">Dzisiaj, 23:15</span>
-                                </div>
-                                <div class="entry-hr"></div>
                                 <div class="comment-input">
-                                    <input type="text" placeholder="Leave a comment..." />
+                                    <form class="comment-textfield"><input type="text" placeholder="Leave a comment..." /></form>
                                 </div>
                             </div>
                         </div>
-                        <div class="entry-date">Wczoraj o 19:52</div>
+                        <div class="entry-date">
+                            Wczoraj o 19:52<br/>
+                            <img src="img/skill-complete.jpg"/>
+                        </div>
                     </div>
                     <div class="clear"></div>
                     <div id="footer">HasLearnt.it &copy; 2011</div>
@@ -338,20 +365,20 @@
         </section>
     </div>
     <div id="datepicker" class="dropdown"></div>    
-    <div class="dropdown" style="width: 190px; height: 55px;" id="choose-type">
+    <div class="dropdown" id="choose-type">
         <ul style="list-style: none; line-height: 150%;">
             <li><a href="#" class="dropdown-selection">I've been learning</a></li>
             <li><a href="#" class="dropdown-selection">I've learnt</a></li>
         </ul>
     </div>
-    <div class="dropdown" style="width: 120px; height: 80px;" id="choose-level">
+    <div class="dropdown" id="choose-level">
         <ul style="list-style: none; line-height: 150%;">
             <li><a href="#" class="dropdown-selection">easy</a></li>
             <li><a href="#" class="dropdown-selection">medium</a></li>
             <li><a href="#" class="dropdown-selection">hard</a></li>
         </ul>
     </div>
-    <div class="dropdown" style="width: 120px; height: 80px;" id="choose-time">
+    <div class="dropdown" id="choose-time">
         <ul style="list-style: none; line-height: 150%;">
             <li><a href="#" class="dropdown-selection">minutes</a></li>
             <li><a href="#" class="dropdown-selection">hours</a></li>
