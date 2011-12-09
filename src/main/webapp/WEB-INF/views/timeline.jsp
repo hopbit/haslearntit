@@ -114,10 +114,10 @@
                         </form>
                     </div>
                 </div>
-                <div id="profile" class="clickable" url="user.jsp">
+                <div id="profile" class="clickable" url="user">
                 <span class="label">Profile</span>
                 </div>
-                <div id="logout" class="clickable" url="login.jsp">
+                <div id="logout" class="clickable" url="login">
                     <span class="label">Logout</span>
                 </div>
             </header>
