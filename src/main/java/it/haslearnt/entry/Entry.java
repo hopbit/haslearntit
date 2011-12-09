@@ -50,34 +50,17 @@ public class Entry extends EntityWithGeneratedId {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        Entry other = (Entry) obj;
-        return new EqualsBuilder()
-                .append(skill, other.skill)
-                .append(when, other.when)
-                .append(difficulty, other.difficulty)
-                .isEquals();
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(skill)
-                .append(when)
-                .append(difficulty)
-                .toHashCode();
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SIMPLE_STYLE);
     }
+
 }
