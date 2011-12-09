@@ -68,7 +68,17 @@
 
             <section id="login" class="sidebar rounded"
                 style="float: right; height: 250px; margin-right: 50px; margin-top: 20px; background-color: #eac79f; color: #555;">
-                <p class="title">Sign in:<br/></p>
+                <p class="title">Sign in with your favourite service:</p>
+                <div style="margin-left: 20px; align:left; width:200px;">
+                    <form action="j_spring_openid_security_check" method="post">
+                        <input name="googleOpenId" type="image" src="/resources/img/social/google.png"/>
+                        <input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id"/>
+                    </form>
+                    <img src="/resources/img/social/facebook.png"/>
+                    <img src="/resources/img/social/openid.png"/>
+                </div>
+
+                <!--
                 <form action="wall.html" style="text-align: left; margin-left: 20px;">
                     <label for="j_username">Your login:</label>
                     <input type="text" name="j_username" placeholder="username..." style="width:200px;"/><label for="j_password">Your password:</label>
@@ -76,6 +86,7 @@
                     <input type='checkbox' name='_spring_security_remember_me'/> Remember me
                     <input type="submit" value="Sign in" style="float: right; margin-right: 23px; width:60px; top: -7px;"/>
                 </form>
+                -->
             </section>
 
             <div class="clear"></div>
@@ -115,18 +126,17 @@
                     </tr>
                 </table>
             </section>
+
             <section id="sign up" class="sidebar rounded"
                 style="float: right; height: 300px; margin-right: 50px; background-color: #8babba; color: #555;">
-                <p class="title">Sign up:<br/></p>
-                <form method="post" action="" style="text-align: left; margin-left: 20px;">
-                    <label for="username">Your user name:</label>
-                    <input type="text" name="username" placeholder="username..." style="width:200px;"/><label for="password">Your password:</label>
-                    <input type="password" name="password" placeholder="password..." style="width:200px;"/>
-                    <label for="email">Your email:</label>
-                    <input type="email" name="email" placeholder="john@doe.com" style="width:200px;"/>
-                    <input type="submit" value="Sign up" style="float: right; margin-right: 23px; width:60px; margin-top: 20px;"/>
+                <p class="title">Are you OpenID mastah?:<br/></p>
+                <form action="j_spring_openid_security_check" method="post"  style="text-align: left; margin-left: 20px;">
+                    <label for="openid_identifier">Gimme your OpenId:</label>
+                    <input name="openid_identifier" maxlength="100" type="text" style="width:200px;"/>
+                    <input type="submit" value="Sign in" style="float: right; margin-right: 23px; width:60px; top: -7px;"/>
                 </form>
             </section>
+
             
             <div class="clear"></div>
             <div id="footer" style="margin-left: 50px;">HasLearnt.it &copy; 2011</div>
