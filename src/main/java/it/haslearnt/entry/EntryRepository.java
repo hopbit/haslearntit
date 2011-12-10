@@ -37,4 +37,9 @@ public class EntryRepository extends CassandraRepository<Entry> {
 		return "entry" + noOfEntries;
 	}
 
+	public List<String> fetchEntriesBySkillName(String skillName) {
+		
+		return null;
+	}
+
 }

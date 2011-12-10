@@ -7,6 +7,7 @@ import it.haslearnt.entry.Entry.TimeType;
 
 import java.util.*;
 
+import org.fest.assertions.Assertions;
 import org.junit.*;
 import org.springframework.beans.factory.annotation.*;
 
@@ -47,5 +48,19 @@ public class NewEntryTest extends IntegrationTest {
 
 		assertThat(fetchedEntries4Tomek).containsOnly(entry, entry2);
 		assertThat(fetchedEntries4Rafal).containsOnly(entry3);
+	}
+	
+	@Test
+	@Ignore
+	public void fetchEntriesByName()  {
+		String scala1 = "scala1";
+		Entry scala = new Entry().iveLearnt(scala1).today().andItWas("hard");
+		Entry java = new Entry().iveLearnt("java").today().andItWas("easy");
+		repository.save(scala);
+		repository.save(java);
+		
+		List<String> skills = repository.fetchEntriesBySkillName("scala");
+		
+		Assertions.assertThat(skills).containsOnly(scala1);
 	}
 }
