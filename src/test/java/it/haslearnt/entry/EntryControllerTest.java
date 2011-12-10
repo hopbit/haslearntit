@@ -7,7 +7,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.*
 import static org.springframework.test.web.server.setup.MockMvcBuilders.*;
 import it.haslearnt.security.AuthenticationUserDetails;
 import it.haslearnt.security.UserAuthenticationInBackend;
-import it.haslearnt.statistics.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,7 @@ public class EntryControllerTest {
     public void setupController() {
         entryController.entryRepository = entryRepository;
         entryController.authenticationInBackend = mock(UserAuthenticationInBackend.class);
-        entryController.userStatisticsService = mock(UserStaticticsService.class);
+        entryController.userStatisticsService = mock(UserStaticticsRepository.class);
         when(entryController.authenticationInBackend.getLoggedUserDetails()).thenReturn(loggedUserDetails);
         when(loggedUserDetails.getUsername()).thenReturn("user");
     }
