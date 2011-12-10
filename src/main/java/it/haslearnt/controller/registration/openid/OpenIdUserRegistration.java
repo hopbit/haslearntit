@@ -64,7 +64,7 @@ public class OpenIdUserRegistration {
         throwExceptionIfNoOpenId(normalizedOpenIdAttributes);
         saveUser(form);
         saveOpenIdUser(form, normalizedOpenIdAttributes);
-        return "redirect:/user/" + form.getName();
+        return "redirect:/user?userName=" + form.getName();
     }
 
     private void saveUser(UserOpenIdRegistrationForm form) {

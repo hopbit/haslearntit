@@ -1,20 +1,17 @@
 package it.haslearnt.entry;
 
-import static org.apache.cassandra.thrift.ConsistencyLevel.ONE;
+import com.google.common.collect.Lists;
 import it.haslearnt.cassandra.mapping.CassandraRepository;
-
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.cassandra.thrift.Column;
-import org.apache.cassandra.thrift.SlicePredicate;
-import org.apache.cassandra.utils.ByteBufferUtil;
 import org.scale7.cassandra.pelops.Bytes;
 import org.scale7.cassandra.pelops.Mutator;
 import org.springframework.stereotype.Repository;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
+import static org.apache.cassandra.thrift.ConsistencyLevel.ONE;
+import static org.springframework.util.Assert.hasText;
+import static org.springframework.util.Assert.isTrue;
 
 @Repository
 public class EntryRepository extends CassandraRepository<Entry> {
@@ -26,6 +23,11 @@ public class EntryRepository extends CassandraRepository<Entry> {
 			entries.add(load(Bytes.toUTF8(column.getValue())));
 		}
 		return entries;
+	}
+
+    public List<Entry> fetchForUser(String user, int limit, int offset) {
+        isTrue(limit > 0); isTrue(offset >= 0); hasText(user);
+        return fetchForUser(user);
 	}
 
 	public void saveEntry(Entry entry, String user) {

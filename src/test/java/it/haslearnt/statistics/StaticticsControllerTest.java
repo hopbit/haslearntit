@@ -1,6 +1,7 @@
-package it.haslearnt.controller;
+package it.haslearnt.statistics;
 
-import it.haslearnt.service.UserStaticticsService;
+import it.haslearnt.statistics.StaticticsController;
+import it.haslearnt.statistics.UserStaticticsRepository;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class StaticticsControllerTest {
 
-    private UserStaticticsService service = Mockito.mock(UserStaticticsService.class);
+    private UserStaticticsRepository service = Mockito.mock(UserStaticticsRepository.class);
     private StaticticsController controler = new StaticticsController();
 
     @Before

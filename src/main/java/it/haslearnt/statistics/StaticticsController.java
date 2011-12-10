@@ -1,6 +1,5 @@
-package it.haslearnt.controller;
+package it.haslearnt.statistics;
 
-import it.haslearnt.service.UserStaticticsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class StaticticsController {
 
     @Autowired
-    UserStaticticsService userStaticticsService;
+    UserStaticticsRepository userStaticticsService;
 
     public StaticticsController() {
     }

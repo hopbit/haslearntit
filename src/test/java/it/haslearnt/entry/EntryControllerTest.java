@@ -7,99 +7,124 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.*
 import static org.springframework.test.web.server.setup.MockMvcBuilders.*;
 import it.haslearnt.security.AuthenticationUserDetails;
 import it.haslearnt.security.UserAuthenticationInBackend;
-import it.haslearnt.service.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsRepository;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.ui.ModelMap;
+import org.springframework.test.web.server.request.DefaultRequestBuilder;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class EntryControllerTest {
 
-    private EntryController entryController = new EntryController();
-    private EntryRepository entryRepository = mock(EntryRepository.class);
-    private AuthenticationUserDetails loggedUserDetails = mock(AuthenticationUserDetails.class);
+	private static final String USER_NAME = "user";
+	private EntryController entryController = new EntryController();
+	private EntryRepository entryRepository = mock(EntryRepository.class);
+	private AuthenticationUserDetails loggedUserDetails = mock(AuthenticationUserDetails.class);
 
-    @Before
-    public void setupController() {
-        entryController.entryRepository = entryRepository;
-        entryController.authenticationInBackend = mock(UserAuthenticationInBackend.class);
-        entryController.userStatisticsService = mock(UserStaticticsService.class);
-        when(entryController.authenticationInBackend.getLoggedUserDetails()).thenReturn(loggedUserDetails);
-        when(loggedUserDetails.getUsername()).thenReturn("user");
-    }
+	@Before
+	public void setupController() {
+		entryController.entryRepository = entryRepository;
+		entryController.authenticationInBackend = mock(UserAuthenticationInBackend.class);
+		entryController.userStatisticsService = mock(UserStaticticsRepository.class);
+		when(entryController.authenticationInBackend.getLoggedUserDetails()).thenReturn(loggedUserDetails);
+		when(loggedUserDetails.getUsername()).thenReturn(USER_NAME);
+	}
 
-    @Test
-    public void shouldSubmitNewEntry() throws Exception {
-        standaloneSetup(entryController)
-                .build()
-                .perform(
-                        post("/entry/submit").param("text", "new skill").param("when", "yesterday")
-                                .param("difficulty", "easy").param("learningtime", "20"))
-                .andExpect(status().isOk());
+	@Test
+	public void shouldSubmitNewEntry() throws Exception {
+		standaloneSetup(entryController)
+				.build()
+				.perform(
+						post("/entry/submit")
+								.param("text", "new skill")
+								.param("when", "yesterday")
+								.param("difficulty", "easy")
+								.param("learningtime", "20")
+				)
+				.andExpect(status().isOk());
 
-        verify(entryRepository).save(
-                new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy")
-                        .itTook(20, Entry.TimeType.MINUTES));
-    }
+		verify(entryRepository).saveEntry(
+				new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy")
+						.itTook(20, Entry.TimeType.MINUTES).build(), USER_NAME);
 
-    @Test
-    public void shouldSubmitNewCompletedEntry() throws Exception {
-        standaloneSetup(entryController)
-                .build()
-                .perform(
-                        post("/entry/submit")
-                                .param("text", "new skill")
-                                .param("when", "yesterday")
-                                .param("difficulty", "easy")
-                                .param("learningtime", "20")
-                                .param("completed", "true")
-                )
-                .andExpect(status().isOk());
+	}
 
-        verify(entryRepository).save(
-                new Entry().when("yesterday").iveLearnt("new skill").itTook(20, Entry.TimeType.MINUTES)
-                        .andItWas("easy").andIveCompleted());
-    }
+	@Test
+	public void shouldSubmitNewCompletedEntry() throws Exception {
+		standaloneSetup(entryController)
+				.build()
+				.perform(
+						defaultNewEntryPostRequest()
+								.param("completed", "true")
+				)
+				.andExpect(status().isOk());
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void shouldFetchSkillsListByName() throws Exception {
-        String suggestedSkill = "scala1";
-        when(entryRepository.fetchSkills()).thenReturn(Arrays.asList(suggestedSkill, "java"));
-        ModelMap model = createInputModel("scala");
+		verify(entryRepository).saveEntry(
+				defaultEntry().andIveCompleted().build(), USER_NAME);
+	}
 
-        String fetchEntryListByName = entryController.fetchEntryListByName(model);
+	private Entry defaultEntry() {
+		return new Entry().when("yesterday").iveLearnt("new skill").itTook(20, Entry.TimeType.MINUTES)
+				.andItWas("easy");
+	}
 
-        List<String> skills = (List<String>) model.get(EntryController.FOUND_SKILLS_KEY);
-        assertThat(EntryController.SUGGESTIONS_SKILLS_VIEW).isEqualTo(fetchEntryListByName);
-        assertThat(skills).containsOnly(suggestedSkill);
-    }
+	private DefaultRequestBuilder defaultNewEntryPostRequest() {
+		return post("/entry/submit")
+				.param("text", "new skill")
+				.param("when", "yesterday")
+				.param("difficulty", "easy")
+				.param("learningtime", "20");
+	}
 
-    @Test
-    public void shouldUpdateTotalLearningTimeForUser() throws Exception {
+	@Test
+	public void shouldFetchSuggestedSkillsBasicCase() throws Exception {
+		String foundSkill = "scala1";
+		mockRepositoryShouldFetchSkills(foundSkill, "java");
 
-        standaloneSetup(entryController)
-                .build()
-                .perform(
-                        post("/entry/submit")
-                                .param("text", "new skill")
-                                .param("when", "yesterday")
-                                .param("difficulty", "easy")
-                                .param("learningtime", "100")
-                                .param("completed", "true")
-                )
-                .andExpect(status().isOk());
+		String suggestedSkills = entryController.fetchSuggestedSkills("scala");
 
-        verify(entryController.userStatisticsService).addLearningTimeForUser("user", 100);
+		List<String> skills = getSkillsFromJson(suggestedSkills);
+		assertThat(skills).containsOnly(foundSkill);
+	}
 
-    }
+	@Test
+	public void shouldFetchSuggestedSkillsVerifyCaseInsensitive() throws Exception {
+		String foundSkill = "scala123";
+		mockRepositoryShouldFetchSkills(foundSkill, "java");
 
-    private ModelMap createInputModel(String skillName) {
-        ModelMap model = new ModelMap();
-        model.put(EntryController.SKILL_KEY, skillName);
-        return model;
-    }
+		String suggestedSkills = entryController.fetchSuggestedSkills("ScAlA");
+
+		List<String> skills = getSkillsFromJson(suggestedSkills);
+		assertThat(skills).containsOnly(foundSkill);
+	}
+
+	private void mockRepositoryShouldFetchSkills(String... skills) {
+		when(entryRepository.fetchSkills()).thenReturn(Arrays.asList(skills));
+	}
+
+	private List<String> getSkillsFromJson(String suggestedSkills) {
+		return new Gson().fromJson(suggestedSkills, new TypeToken<List<String>>() {
+		}.getType());
+	}
+
+	@Test
+	public void shouldUpdateTotalLearningTimeForUser() throws Exception {
+
+		standaloneSetup(entryController)
+				.build()
+				.perform(
+						defaultNewEntryPostRequest()
+								.param("completed", "true")
+				)
+				.andExpect(status().isOk());
+
+		verify(entryController.userStatisticsService).addLearningTimeForUser(USER_NAME, 20);
+
+	}
+
 }

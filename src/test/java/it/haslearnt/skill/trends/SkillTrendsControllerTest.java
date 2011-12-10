@@ -25,10 +25,8 @@ public class SkillTrendsControllerTest {
 
 		standaloneSetup(controller).build()
 				.perform(get("/skill/trends"))
-				.andExpect(status().isOk())
-				.andExpect(model().attribute("skills", skillTrends));
+				.andExpect(status().isOk());
 
 		verify(repository).loadTop(5);
 	}
-
 }

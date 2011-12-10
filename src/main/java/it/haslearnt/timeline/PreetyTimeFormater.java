@@ -4,6 +4,7 @@ public class PreetyTimeFormater {
 
 
     public static final int MINUTES_PER_HOUR = 60;
+    private static final int ONE_MINUTE = 1;
 
     public String formatMinutes(int minutes) {
         return generateHours(minutes) + generateMinutes(minutes);
@@ -17,6 +18,10 @@ public class PreetyTimeFormater {
     }
 
     private String generateMinutes(int minutes) {
-        return minutes % MINUTES_PER_HOUR + " minutes";
+        String postfix = " minute" ;
+        if (minutes > ONE_MINUTE) {
+            postfix += "s";
+        }
+        return minutes % MINUTES_PER_HOUR + postfix;
     }
 }
