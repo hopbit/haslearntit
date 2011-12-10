@@ -17,7 +17,7 @@ public class TimelineController {
 	@Autowired
 	public EntryRepository entryRepository;
 	@Autowired
-	public UserAuthenticationInBackend securityBackend;
+    public UserAuthenticationInBackend userAuthenticationInBackend;
 
 	@RequestMapping("/")
 	public ModelAndView mainTimelineView() {

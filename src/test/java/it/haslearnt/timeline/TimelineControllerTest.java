@@ -24,23 +24,23 @@ import com.google.common.collect.Lists;
 import org.springframework.web.servlet.ModelAndView;
 
 public class TimelineControllerTest {
+
 	TimelineController controller = new TimelineController();
+
 	ArrayList<Entry> entries = Lists.newArrayList(new Entry().today().iveLearnt("java").andItWas("easy"));
 	User user = new User().withName("user");
 
 	@Before
 	public void setUp() throws Exception {
 		controller.entryRepository = mock(EntryRepository.class);
-		controller.securityBackend = mock(SpringSecurityUserAuthenticationInBackend.class);
-
+		controller.userAuthenticationInBackend = mock(SpringSecurityUserAuthenticationInBackend.class);
 	}
 
 	@Test
     @Ignore
 	public void shouldServeTimelineView() throws Exception {
-
+		when(controller.userAuthenticationInBackend.getLoggedUser()).thenReturn(user);
 		when(controller.entryRepository.fetchForUser("user")).thenReturn(entries);
-		when(controller.securityBackend.getLoggedUser()).thenReturn(user);
 
 		standaloneSetup(controller).build().perform(get("/"))
 				.andExpect(status().isOk())
