@@ -43,9 +43,9 @@ public class EntryControllerTest {
 								.param("difficulty", "easy").param("learningtime", "20"))
 				.andExpect(status().isOk());
 
-		verify(entryRepository).save(
+		verify(entryRepository).saveEntry(
 				new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy")
-						.itTook(20, Entry.TimeType.MINUTES).build());
+						.itTook(20, Entry.TimeType.MINUTES).build(), "user");
 	}
 
 	@Test
@@ -62,9 +62,9 @@ public class EntryControllerTest {
 				)
 				.andExpect(status().isOk());
 
-		verify(entryRepository).save(
+		verify(entryRepository).saveEntry(
 				new Entry().when("yesterday").iveLearnt("new skill").itTook(20, Entry.TimeType.MINUTES)
-						.andItWas("easy").andIveCompleted().build());
+						.andItWas("easy").andIveCompleted().build(), "user");
 	}
 
 	@Test
