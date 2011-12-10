@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
 
@@ -23,13 +24,18 @@ public class EntryController {
 	@Autowired
 	EntryRepository entryRepository;
 
+
 	@RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
-	public String submit(@RequestParam String when, @RequestParam String text,
-			@RequestParam String difficulty) {
-		entryRepository.save(new Entry().when(when).iveLearnt(text)
-				.andItWas(difficulty));
-		return "timeline";
-	}
+	public @ResponseBody String submit(@RequestParam String when, @RequestParam String text, @RequestParam String difficulty, @RequestParam Integer learningtime,
+                                        @RequestParam(required = false) boolean completed
+                                       ) {
+        Entry entry = new Entry().when(when).iveLearnt(text).andItWas(difficulty).itTook(learningtime, Entry.TimeType.MINUTES);
+        entryRepository.save(entry);
+         if (completed) {
+            entry.andIveCompleted();
+        }
+        return "OK";
+    }
 
 	public String fetchEntryListByName(ModelMap model) {
 		String prefix = (String) model.get(SKILL_KEY);
@@ -48,4 +54,19 @@ public class EntryController {
 		}
 		return resultSkills;
 	}
+/*	
+	@RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
+public String submit(@RequestParam String when, @RequestParam String text,
+@RequestParam String difficulty, @RequestParam(required = false) boolean completed) {
+
+        Entry entry = new Entry().when(when).iveLearnt(text)
+                .andItWas(difficulty);
+        if (completed) {
+            entry.andIveCompleted();
+        }
+
+        entryRepository.save(entry);
+
+        return "timeline";
+}*/
 }

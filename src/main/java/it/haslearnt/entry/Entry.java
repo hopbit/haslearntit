@@ -20,7 +20,8 @@ public class Entry extends EntityWithGeneratedId {
 	@Column("difficulty")
 	private String difficulty;
 
-	private boolean completed;
+    @Column("skill_completed")
+	private String completed = "false";
 
 	private int learningTime;
 
@@ -105,11 +106,12 @@ public class Entry extends EntityWithGeneratedId {
 		return this;
 	}
 
-	public void andIveCompleted() {
-		this.completed = true;
+	public Entry andIveCompleted() {
+		this.completed = "true";
+        return this;
 	}
 
 	public boolean isCompleted() {
-		return this.completed;
-	}
+        return Boolean.valueOf(this.completed);
+    }
 }

@@ -3,6 +3,8 @@ package it.haslearnt.timeline;
 import it.haslearnt.entry.EntryRepository;
 import it.haslearnt.security.UserAuthenticationInBackend;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,17 +15,18 @@ public class TimelineController {
 
 	@Autowired
 	public EntryRepository entryRepository;
-	@Autowired
-	public UserAuthenticationInBackend securityBackend;
+	@Resource(name = "userAuthenticationInBackend")
+	public UserAuthenticationInBackend userAuthenticationInBackend;
 
 	@RequestMapping("/")
 	public ModelAndView mainTimelineView() {
-		// User loggedUser = securityBackend.getLoggedUser();
+
+		// User loggedUser = userAuthenticationInBackend.getLoggedUser();
 		// List<Entry> entries =
 		// entryRepository.fetchForUser(loggedUser.name());
 		ModelAndView mav = new ModelAndView("timeline");
-		// List<Entry> entries = Lists.newArrayList(new
-		// Entry().today().iveLearnt("java").andItWas("hard"));
+		// // List<Entry> entries = Lists.newArrayList(new
+		// // Entry().today().iveLearnt("java").andItWas("hard"));
 		// mav.addObject("entries", entries);
 		// mav.addObject("user", loggedUser);
 		return mav;

@@ -62,7 +62,7 @@
 			
 			$("#entry").submit(function() {
 				var date = new Date();
-				$("#wall").prepend(
+				$("#wall").prepend(   //FIXME get rid of this fake implementation :)
 					'<div class="entry-box"><div class="entry-photo"><img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" /></div>' +
 	                '<div style="display: table; float: left;"><div class="entry-text"><a href="#">Paweł Lipiński</a> ' + $('#dropdown-choose-type').text() + 
 	                '<span class="emphasized">' + $('#skill').val() + '</span> today.<br />' +
@@ -73,7 +73,21 @@
 	                '<form class="comment-textfield"><input type="text" id="comment-1-input" placeholder="Leave a comment..."/></form></div></div>' +
 	                '</div><div class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</div></div>'		        
 				);
-				return false;			
+                $.ajax({
+                    url: "/entry/submit",
+                    method: 'post',
+                    data:
+                    {
+                        when: 'today',
+                        text: $('#skill').val(),
+                        difficulty: $('#dropdown-choose-level').text(),
+                        learningtime: $('#learningtime').val()
+                    },
+                    success: function() {
+                        $(this).addClass("done");
+                    }
+                })
+                return false;
 			});
 			
 			$(".comment-textfield").submit(function() {			

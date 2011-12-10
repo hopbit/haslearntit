@@ -27,17 +27,33 @@ public class EntryControllerTest {
 	
 	@Test
 	public void shouldSubmitNewEntry() throws Exception {
+		EntryRepository entryRepository = mock(EntryRepository.class);
+		EntryController entryController = new EntryController();
+		entryController.entryRepository = entryRepository;
+		standaloneSetup(entryController).build()
+				.perform(post("/entry/submit").param("text", "new skill").param("when", "yesterday").param("difficulty", "easy").param("learningtime","20"))
+				.andExpect(status().isOk());
+
+		verify(entryRepository).save(new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy").itTook(20, Entry.TimeType.MINUTES));
+	}
+
+	@Test
+	public void shouldSubmitNewCompletedEntry() throws Exception {
 		standaloneSetup(entryController)
 				.build()
 				.perform(
-						post("/entry/submit").param("text", "new skill")
+						post("/entry/submit")
+                                .param("text", "new skill")
 								.param("when", "yesterday")
-								.param("difficulty", "easy"))
+								.param("difficulty", "easy")
+                                .param("learningtime", "20")
+								.param("completed", "true")
+                )
 				.andExpect(status().isOk());
 
 		verify(entryRepository).save(
-				new Entry().when("yesterday").iveLearnt("new skill")
-						.andItWas("easy"));
+                new Entry().when("yesterday").iveLearnt("new skill").itTook(20, Entry.TimeType.MINUTES)
+                        .andItWas("easy").andIveCompleted());
 	}
 
 	@Test
