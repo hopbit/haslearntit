@@ -2,7 +2,6 @@ package it.haslearnt.entry;
 
 import static org.fest.assertions.Assertions.*;
 import static org.junit.Assert.*;
-import it.haslearnt.entry.Entry.TimeType;
 import it.haslearnt.skill.trends.*;
 
 import java.util.*;
@@ -24,7 +23,7 @@ public class EntryRepositoryTest extends IntegrationTest {
 
 	@Test
 	public void saveNewEntry() {
-		Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+		Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").itTookInMinutes(10).build();
 
 		repository.save(entry);
 
@@ -41,8 +40,8 @@ public class EntryRepositoryTest extends IntegrationTest {
 	public void saveEntriesWithSkills() {
 		final String skillName1 = "something";
 		final String skillName2 = "somethingDifferent";
-		Entry entry1 = new Entry().iveLearnt(skillName1).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
-		Entry entry2 = new Entry().iveLearnt(skillName2).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+		Entry entry1 = new Entry().iveLearnt(skillName1).today().andItWas("easy").itTookInMinutes(10).build();
+		Entry entry2 = new Entry().iveLearnt(skillName2).today().andItWas("easy").itTookInMinutes(10).build();
 
 		repository.saveEntry(entry1, user);
 		repository.saveEntry(entry2, user);
@@ -54,8 +53,8 @@ public class EntryRepositoryTest extends IntegrationTest {
 	@Test
 	public void saveEntriesWithSameSkill() {
 		final String skillName = "something";
-		Entry entry1 = new Entry().iveLearnt(skillName).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
-		Entry entry2 = new Entry().iveLearnt(skillName).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+		Entry entry1 = new Entry().iveLearnt(skillName).today().andItWas("easy").itTookInMinutes(10).build();
+		Entry entry2 = new Entry().iveLearnt(skillName).today().andItWas("easy").itTookInMinutes(10).build();
 
 		repository.saveEntry(entry1, user);
 		repository.saveEntry(entry2, user);
@@ -116,7 +115,7 @@ public class EntryRepositoryTest extends IntegrationTest {
 	@Test
 	public void savingEntryFirstTimeShouldAlsoCreateSkillTrend() {
 		final String skillName = "something";
-		Entry entry = new Entry().iveLearnt(skillName).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+		Entry entry = new Entry().iveLearnt(skillName).today().andItWas("easy").itTookInMinutes(10).build();
 
 		repository.saveEntry(entry, user);
 
@@ -127,7 +126,7 @@ public class EntryRepositoryTest extends IntegrationTest {
 	@Test
 	public void savingEntryNthTimeShouldUpdateSkillTrend() {
 		final String skillName = "something";
-		Entry entry = new Entry().iveLearnt(skillName).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+		Entry entry = new Entry().iveLearnt(skillName).today().andItWas("easy").itTookInMinutes(10).build();
 
 		repository.saveEntry(entry, user);
 		repository.saveEntry(entry, user);

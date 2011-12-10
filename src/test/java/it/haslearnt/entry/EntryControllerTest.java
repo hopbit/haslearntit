@@ -50,7 +50,7 @@ public class EntryControllerTest {
 
 		verify(entryRepository).saveEntry(
 				new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy")
-						.itTook(20, Entry.TimeType.MINUTES).build(), USER_NAME);
+						.itTookInMinutes(20).build(), USER_NAME);
 
 	}
 
@@ -69,7 +69,7 @@ public class EntryControllerTest {
 	}
 
 	private Entry defaultEntry() {
-		return new Entry().when("yesterday").iveLearnt("new skill").itTook(20, Entry.TimeType.MINUTES)
+		return new Entry().when("yesterday").iveLearnt("new skill").itTookInMinutes(20)
 				.andItWas("easy");
 	}
 

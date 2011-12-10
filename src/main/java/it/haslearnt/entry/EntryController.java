@@ -46,8 +46,7 @@ public class EntryController {
 	}
 
 	private Entry buildEntry(String when, String text, String difficulty, Integer learningtime, boolean completed) {
-		Entry entry = new Entry().when(when).iveLearnt(text).andItWas(difficulty)
-				.itTook(learningtime, Entry.TimeType.MINUTES);
+		Entry entry = new Entry().when(when).iveLearnt(text).andItWas(difficulty).itTookInMinutes(learningtime);
 		if (completed) {
 			entry.andIveCompleted();
 		}

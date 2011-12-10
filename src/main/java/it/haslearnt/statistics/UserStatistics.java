@@ -22,4 +22,8 @@ public class UserStatistics {
         return this;
     }
 
+	public int getTotalTimeSpent() {
+		return totalLearningTime;
+	}
+
 }

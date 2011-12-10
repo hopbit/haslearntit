@@ -2,7 +2,6 @@ package it.haslearnt.skill.trends;
 
 import static org.junit.Assert.*;
 import it.haslearnt.entry.*;
-import it.haslearnt.entry.Entry.TimeType;
 
 import java.util.*;
 
@@ -26,9 +25,9 @@ public class LoadingTrendsFromRepositoryTest extends IntegrationTest {
 		String skill1 = "java";
 		String skill2 = "cooking";
 		String skill3 = "oop";
-		Entry entry1 = new Entry().today().iveLearnt(skill1).andItWas("easy").itTook(1, TimeType.MINUTES).build();
-		Entry entry2 = new Entry().today().iveLearnt(skill2).andItWas("easy").itTook(1, TimeType.MINUTES).build();
-		Entry entry3 = new Entry().today().iveLearnt(skill3).andItWas("easy").itTook(1, TimeType.MINUTES).build();
+		Entry entry1 = new Entry().today().iveLearnt(skill1).andItWas("easy").itTookInMinutes(1).build();
+		Entry entry2 = new Entry().today().iveLearnt(skill2).andItWas("easy").itTookInMinutes(1).build();
+		Entry entry3 = new Entry().today().iveLearnt(skill3).andItWas("easy").itTookInMinutes(1).build();
 		entryRepository.saveEntry(entry1, user);
 		entryRepository.saveEntry(entry2, user);
 		entryRepository.saveEntry(entry3, user);

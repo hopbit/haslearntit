@@ -1,7 +1,7 @@
 package it.haslearnt.entry;
 
 import static org.junit.Assert.assertEquals;
-import it.haslearnt.entry.Entry.TimeType;
+
 
 import org.junit.*;
 
@@ -11,7 +11,7 @@ public class AssigningPointsTest {
 
 	@Test
 	public void shouldAssignZeroPointsForZeroLearningTime() throws Exception {
-		Entry entry = sampleEntry.itTook(0, TimeType.MINUTES);
+		Entry entry = sampleEntry.itTookInMinutes(0);
 
 		entry.build();
 
@@ -20,7 +20,7 @@ public class AssigningPointsTest {
 
 	@Test
 	public void calculatePointsForEasy() throws Exception {
-		Entry entry = sampleEntry.andItWas("easy").itTook(10, TimeType.MINUTES);
+		Entry entry = sampleEntry.andItWas("easy").itTookInMinutes(10);
 
 		entry.build();
 
@@ -30,7 +30,7 @@ public class AssigningPointsTest {
 
 	@Test
 	public void calculatePointsForMedium() throws Exception {
-		Entry entry = sampleEntry.andItWas("medium").itTook(10, TimeType.MINUTES);
+		Entry entry = sampleEntry.andItWas("medium").itTookInMinutes(10);
 
 		entry.build();
 
@@ -40,7 +40,7 @@ public class AssigningPointsTest {
 
 	@Test
 	public void calculatePointsForHard() throws Exception {
-		Entry entry = sampleEntry.andItWas("hard").itTook(10, TimeType.MINUTES);
+		Entry entry = sampleEntry.andItWas("hard").itTookInMinutes(10);
 
 		entry.build();
 
