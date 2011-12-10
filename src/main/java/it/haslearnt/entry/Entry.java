@@ -20,6 +20,8 @@ public class Entry extends EntityWithGeneratedId {
 	@Column("difficulty")
 	private String difficulty;
 
+	private boolean completed;
+
 	private int learningTime;
 
 	private TimeType timeType;
@@ -99,4 +101,11 @@ public class Entry extends EntityWithGeneratedId {
 		return this;
 	}
 
+	public void andIveCompleted() {
+		this.completed = true;
+	}
+
+	public boolean isCompleted() {
+		return this.completed;
+	}
 }
