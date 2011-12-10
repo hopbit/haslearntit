@@ -26,7 +26,8 @@ public class SkillTrendsRepository extends CassandraRepository<SkillTrend> {
 
 		List<SkillTrend> result = new ArrayList<SkillTrend>();
 		for (int i = 0; i < number; i++)
-			result.add(entries.get(i));
+			if (i < entries.size())
+				result.add(entries.get(i));
 
 		return result;
 	}

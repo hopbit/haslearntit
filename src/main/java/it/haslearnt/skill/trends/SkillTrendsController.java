@@ -5,7 +5,8 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.*;
+
+import com.google.common.base.*;
 
 @Controller
 public class SkillTrendsController {
@@ -14,10 +15,22 @@ public class SkillTrendsController {
 	Integer numberTop = 5;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/skill/trends")
-	public ModelAndView showTrends() {
+	public @ResponseBody
+	String showTrends() {
 		List<SkillTrend> skillTrends = repository.loadTop(numberTop);
 
-		return new ModelAndView("timeline", Collections.singletonMap("skills", skillTrends));
+		ArrayList<String> skillTrendsJsons = new ArrayList<String>();
+		for (SkillTrend trend : skillTrends) {
+			skillTrendsJsons.add(toJson(trend));
+		}
+		return "{ \"results\": [" + Joiner.on(", ").join(skillTrendsJsons) + "]}";
+	}
+
+	private String toJson(SkillTrend trend) {
+		return "{" +
+				" \"skill\": \"" + trend.skill() + "\",\n" +
+				" \"learntBy\": " + trend.learntBy() +
+				"}";
 	}
 
 }

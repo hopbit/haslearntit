@@ -1,18 +1,19 @@
 package endtoend;
 
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.bio.SocketConnector;
-import org.eclipse.jetty.webapp.WebAppContext;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.Ignore;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.scale7.cassandra.pelops.pool.IThriftPool;
-import org.springframework.beans.factory.annotation.Autowired;
-import setup.IntegrationTest;
+import static org.junit.Assert.*;
+import it.haslearnt.entry.*;
+import it.haslearnt.skill.trends.*;
+
+import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.server.bio.*;
+import org.eclipse.jetty.webapp.*;
+import org.junit.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.*;
+import org.scale7.cassandra.pelops.pool.*;
+import org.springframework.beans.factory.annotation.*;
+
+import setup.*;
 
 public class AddEntryEndToEndTest extends IntegrationTest {
 
@@ -20,8 +21,14 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 	private WebDriver driver;
 	private Server server;
 
-    @Autowired
-    IThriftPool thriftPool;
+	@Autowired
+	IThriftPool thriftPool;
+
+	@Autowired
+	SkillTrendsRepository repository;
+
+	@Autowired
+	EntryRepository entryRepository;
 
 	@Test
 	public void shouldDisplayPage() throws Exception {
@@ -35,8 +42,26 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 		driver.findElement(By.id("entry"));
 	}
 
-    @Test
-    @Ignore
+	@Test
+	@Ignore
+	public void shouldDisplayTopTrends() throws Exception {
+		server = createServer();
+		addContextToServer(server);
+		server.start();
+
+		driver = new FirefoxDriver();
+
+		driver.navigate().to("http://localhost:" + PORT + "/");
+
+		Thread.sleep(300);
+
+		String trendsSection = driver.findElement(By.id("trends-list")).getText();
+
+		assertTrue(trendsSection.contains("test"));
+	}
+
+	@Test
+	@Ignore
 	public void shouldAddEntry() throws Exception {
 		server = createServer();
 		addContextToServer(server);
@@ -46,23 +71,25 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 
 		driver.navigate().to("http://localhost:" + PORT + "/");
 
-        driver.findElement(By.id("learningtime")).sendKeys("20");
-        driver.findElement(By.id("entry")).submit();
+		driver.findElement(By.id("learningtime")).sendKeys("20");
+		driver.findElement(By.id("entry")).submit();
 
-        //FIXME this test does no verifications! blocked by not-yet-implemented timeline feature
+		// FIXME this test does no verifications! blocked by not-yet-implemented
+		// timeline feature
 	}
-	
-    @Test
-    @Ignore
+
+	@Test
+	@Ignore
 	public void shouldAddCompletedEntry() throws Exception {
-        //as above
-        //FIXME this test does no verifications! blocked by not-yet-implemented timeline feature
+		// as above
+		// FIXME this test does no verifications! blocked by not-yet-implemented
+		// timeline feature
 	}
 
 	@After
 	public void shutdownSeleniumAndServer() throws Exception {
-        driver.close();
-        server.stop();
+		driver.close();
+		server.stop();
 	}
 
 	private static Server createServer() {

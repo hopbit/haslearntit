@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="it.haslearnt.skill.trends.SkillTrend"%>
 <%@ page contentType="text/html; charset=UTF-8" %><!DOCTYPE HTML>
 <html>
 <head>
@@ -99,6 +101,17 @@
                         '</p><span class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</span></div><div class="entry-hr"></div>');
 				return false;
 			});
+			
+			$.ajax({
+                url: "/skill/trends",
+                method: 'get',                
+                dataType: 'json',
+                success: function(data) {
+                    $(data.results).each(function(i, elem) {
+                    	$('#trends-list').append("<li><a href='#'>" + elem.skill + "</a><br />" + elem.learntBy + " users</li>")
+                    });
+                }
+            })
 		});
 	}
 	google.setOnLoadCallback(OnLoad);
@@ -331,14 +344,9 @@
             </section>
         </section>
         <section id="right-sidebar" class="sidebar rounded">
-            <section>
+            <section id="trends">
                 <p class="title">Trends:</p>
-                <ol>
-                    <li><a href="#">JAVA cośtam</a><br />128 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
-                    <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
-                    <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
+                <ol id="trends-list">                    
                 </ol>
             </section>
             <hr />

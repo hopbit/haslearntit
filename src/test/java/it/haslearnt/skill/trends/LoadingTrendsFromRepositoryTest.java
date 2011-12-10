@@ -64,7 +64,7 @@ public class LoadingTrendsFromRepositoryTest extends IntegrationTest {
 
 		assertNotNull(skillTrend);
 		assertEquals("skill1", skillTrend.skill());
-		assertEquals(10, skillTrend.learnedBy());
+		assertEquals(10, skillTrend.learntBy());
 
 	}
 }

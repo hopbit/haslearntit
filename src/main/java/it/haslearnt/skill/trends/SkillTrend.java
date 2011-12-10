@@ -61,7 +61,7 @@ public class SkillTrend implements Comparable<SkillTrend> {
 		return skill;
 	}
 
-	public int learnedBy() {
+	public int learntBy() {
 		return Integer.valueOf(numberOfPeople);
 	}
 }
