@@ -72,7 +72,8 @@ public class TimelineControllerTest {
 
 		standaloneSetup(controller).build().perform(get("/"))
 				.andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.view().name("timeline"));
+				.andExpect(MockMvcResultMatchers.view().name("timeline"))
+				.andExpect(MockMvcResultMatchers.model().attribute("entries", new ArrayList()));
 	}
 
 }

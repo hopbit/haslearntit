@@ -7,6 +7,7 @@ import it.haslearnt.statistics.UserStaticticsRepository;
 import it.haslearnt.statistics.UserStatistics;
 import it.haslearnt.user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -29,16 +30,17 @@ public class TimelineController {
 	@RequestMapping("/")
 	public ModelAndView mainTimelineView() {
 		ModelAndView mav = new ModelAndView("timeline");
+		List<Entry> entries = new ArrayList<Entry>();
 		User loggedUser = userAuthenticationInBackend.getLoggedUser();
 		if (loggedUser != null) {
 			String userName = loggedUser.name();
-			List<Entry> entries = entryRepository.fetchForUser(userName);
-			
 			UserStatistics loadStatisticsForUser = userStatisticsRepository.loadStatisticsForUser(userName);
 			mav.addObject("entries", entries);
+			entries = entryRepository.fetchForUser(userName);
 			mav.addObject("user", loggedUser);
 			mav.addObject("userStatistics", loadStatisticsForUser);
 		}
+		mav.addObject("entries", entries);
 		return mav;
 	}
 

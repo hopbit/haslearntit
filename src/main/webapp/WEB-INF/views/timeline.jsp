@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="it.haslearnt.skill.trends.SkillTrend"%>
 <%@ page contentType="text/html; charset=UTF-8" %><!DOCTYPE HTML>
 <html>
 <head>
@@ -102,6 +104,17 @@
                         '</p><span class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</span></div><div class="entry-hr"></div>');
 				return false;
 			});
+			
+			$.ajax({
+                url: "/skill/trends",
+                method: 'get',                
+                dataType: 'json',
+                success: function(data) {
+                    $(data.results).each(function(i, elem) {
+                    	$('#trends-list').append("<li><a href='#'>" + elem.skill + "</a><br />" + elem.learntBy + " users</li>")
+                    });
+                }
+            })
 		});
 	}
 	google.setOnLoadCallback(OnLoad);
@@ -192,14 +205,19 @@
                     </form>
                 </div>
                 <div id="wall">
-                    <div class="entry-box">
+<%--                 	<c:forEach items="${entries}" var="entry" > --%>
+                	<% java.util.List entries = (java.util.List) request.getAttribute("entries");
+                		for(java.util.Iterator it = entries.iterator();it.hasNext();){
+                			it.haslearnt.entry.Entry entry = (it.haslearnt.entry.Entry)it.next();	
+                	%>
+                	<div class="entry-box">
                         <div class="entry-photo">
                             <img src="http://gravatar.com/avatar/b36fee01ac1166d8dd46f3c2e7649be6" />
                         </div>
                         <div style="display: table; float: left;">
                             <div class="entry-text">
-                                <a href="#">Krzysztof Jelski</a> has been learning <span class="emphasized">HTML &amp; CSS</span> today.<br />
-                                It was easy and it took him DUPA (of total 18 hours)<br /> He earned 15 points!
+                                <a href="#">Krzysztof Jelski</a> has been learning <span class="emphasized"> <%=entry.what() %></span> today.<br />
+                                It was easy and it took him <%=entry.getLearningTime()%> hours (of total 18 hours)<br /> He earned  points!
                             </div>
                             <div class="comment-box">
                                 <a href="#" style="color: #aaa;" onclick="$('#comment-1').show();">Leave a comment</a>
@@ -211,7 +229,13 @@
                             </div>
                         </div>
                         <div class="entry-date">Wczoraj o 19:52</div>
-                    </div>
+                    </div>	
+                	<%		
+                		}
+                	%>
+                	
+                	 
+                    
                     <div class="entry-box">
                         <div class="entry-photo">
                             <img
@@ -334,14 +358,9 @@
             </section>
         </section>
         <section id="right-sidebar" class="sidebar rounded">
-            <section>
+            <section id="trends">
                 <p class="title">Trends:</p>
-                <ol>
-                    <li><a href="#">JAVA cośtam</a><br />128 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
-                    <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
-                    <li><a href="#">MySQL cośtam</a><br />110 users</li>
-                    <li><a href="#">HTML5 &amp; CSS3</a><br />98 users</li>
+                <ol id="trends-list">                    
                 </ol>
             </section>
             <hr />
