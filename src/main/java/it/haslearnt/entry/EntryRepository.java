@@ -3,9 +3,13 @@ package it.haslearnt.entry;
 import static org.apache.cassandra.thrift.ConsistencyLevel.ONE;
 import it.haslearnt.cassandra.mapping.CassandraRepository;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cassandra.thrift.Column;
+import org.apache.cassandra.thrift.SlicePredicate;
+import org.apache.cassandra.utils.ByteBufferUtil;
 import org.scale7.cassandra.pelops.Bytes;
 import org.scale7.cassandra.pelops.Mutator;
 import org.springframework.stereotype.Repository;
@@ -27,8 +31,13 @@ public class EntryRepository extends CassandraRepository<Entry> {
 	public void saveEntry(Entry entry, String user) {
 		save(entry);
 		Mutator mutator = pool.createMutator();
+		
 		Column column = mutator.newColumn(getNewEntryColumnName(user), entry.id());
 		mutator.writeColumn("UserEntries", user, column);
+		
+		Column skillColumn = mutator.newColumn(entry.what());
+		mutator.writeColumn("SkillEntries", "SkillRowKey", skillColumn);
+		
 		mutator.execute(ONE);
 	}
 
@@ -37,9 +46,13 @@ public class EntryRepository extends CassandraRepository<Entry> {
 		return "entry" + noOfEntries;
 	}
 
-	public List<String> fetchEntriesBySkillName(String skillName) {
-		
-		return null;
+	public List<String> fetchSkills() {
+		List<Column> columns = pool.createSelector().getColumnsFromRow("SkillEntries", "SkillRowKey", false, ONE);
+		List<String> skills = Lists.newArrayList();
+		for (Column column : columns) {
+			skills.add(Bytes.toUTF8(column.getName()));
+		}
+		return skills;
 	}
 
 }
