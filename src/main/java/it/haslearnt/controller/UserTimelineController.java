@@ -24,13 +24,14 @@ public class UserTimelineController {
     UserRepository userRepository;
 
     static String userTimeLineKey = "userTimeline";
+    static String userTimelineView = "userTimeline";
 
     @RequestMapping(method = RequestMethod.GET)
     public String showUserTimeline(String userName, Model model) {
         verifyUserExists(userName);
         List<Entry> userTimeLine = entryRepository.fetchForUser(userName);
         model.addAttribute(userTimeLineKey, userTimeLine);
-        return userTimeLineKey;
+        return userTimelineView;
     }
 
     private void verifyUserExists(String userName) {
