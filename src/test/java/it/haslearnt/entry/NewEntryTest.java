@@ -36,12 +36,16 @@ public class NewEntryTest extends IntegrationTest {
 	public void fetchEntryForUser() {
 		Entry entry = new Entry().today().iveLearnt("java").andItWas("hard").build();
 		Entry entry2 = new Entry().today().iveLearnt("net").andItWas("hard").build();
+		Entry entry3 = new Entry().today().iveLearnt("C++").andItWas("hard").build();
 
 		repository.saveEntry(entry, "tomek");
 		repository.saveEntry(entry2, "tomek");
+		repository.saveEntry(entry3, "rafal");
 
-		List<Entry> fetchedEntries = repository.fetchForUser("tomek");
+		List<Entry> fetchedEntries4Tomek = repository.fetchForUser("tomek");
+		List<Entry> fetchedEntries4Rafal = repository.fetchForUser("rafal");
 
-		assertThat(fetchedEntries).containsOnly(entry, entry2);
+		assertThat(fetchedEntries4Tomek).containsOnly(entry, entry2);
+		assertThat(fetchedEntries4Rafal).containsOnly(entry3);
 	}
 }
