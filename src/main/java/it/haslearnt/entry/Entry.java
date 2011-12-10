@@ -13,6 +13,12 @@ import org.joda.time.Duration;
 @Entity("Entries")
 public class Entry extends EntityWithGeneratedId {
 
+	public enum DifficultyLevel {
+		EASY,
+		MEDIUM,
+		HARD
+	}
+
 	@Column("skill")
 	private String skill;
 
@@ -27,9 +33,8 @@ public class Entry extends EntityWithGeneratedId {
 
 	private int learningTime;
 
-
 	@Column("points")
-	private String points;
+	private String points = "0";
 
 	public String what() {
 		return skill;
@@ -87,30 +92,7 @@ public class Entry extends EntityWithGeneratedId {
 	}
 
 	public Entry build() {
-		calculatePoints();
 		return this;
-	}
-
-	private void calculatePoints() {
-		points = Double.toString(learningTime * difficultyFactor());
-	}
-
-	public int getLearningTime() {
-		return learningTime;
-	}
-
-	private double difficultyFactor() {
-		if ("easy".equals(difficulty)) {
-			return 1;
-		}
-		if ("medium".equals(difficulty)) {
-			return 1.2;
-		}
-		if ("hard".equals(difficulty)) {
-			return 1.4;
-		}
-
-		return 0;
 	}
 
 	public int points() {
@@ -134,5 +116,17 @@ public class Entry extends EntityWithGeneratedId {
 	public Duration getLearingDuration() {
 		return Duration.standardMinutes(learningTime);
 	}
-		
+	
+	public String getDifficulty() {
+		return difficulty;
+	}
+
+	public int getLearningTime() {
+		return learningTime;
+	}
+
+	public Entry gainedPoints(int points) {
+		this.points = String.valueOf(points);
+		return this;
+	}
 }

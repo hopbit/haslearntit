@@ -1,3 +1,8 @@
+/*
+ * Copyright: this code is distributed under WTFPL version2
+ * In short: You just DO WHAT THE FUCK YOU WANT TO.
+ */
+
 package it.haslearnt.entry;
 
 import static org.fest.assertions.Assertions.*;
@@ -23,7 +28,12 @@ public class EntryRepositoryTest extends IntegrationTest {
 
 	@Test
 	public void saveNewEntry() {
-		Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").itTookInMinutes(10).build();
+		Entry entry = new Entry().
+				iveLearnt("something").
+				today().andItWas("easy").
+				itTookInMinutes(10).
+				gainedPoints(10).
+				build();
 
 		repository.save(entry);
 

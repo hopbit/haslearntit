@@ -1,6 +1,7 @@
 package it.haslearnt.entry;
 
 import static org.fest.assertions.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.*;
@@ -31,6 +32,7 @@ public class EntryControllerTest {
         entryController.entryRepository = entryRepository;
         entryController.authenticationInBackend = mock(UserAuthenticationInBackend.class);
         entryController.userStatisticsRepository = mock(UserStaticticsRepository.class);
+		entryController.entryPointsCalculator = mock(EntryPointsCalculator.class);
         when(entryController.authenticationInBackend.getLoggedUserDetails()).thenReturn(loggedUserDetails);
         when(loggedUserDetails.getUsername()).thenReturn(USER_NAME);
     }
@@ -124,7 +126,34 @@ public class EntryControllerTest {
                 .andExpect(status().isOk());
 
         verify(entryController.userStatisticsRepository).addNewTimeForUser(USER_NAME, 20);
+	}
 
-    }
+	@Test
+	public void shouldCalculatePoints() throws Exception {
+		//given
+		Entry entryToCalculatePoints = new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy")
+				.itTookInMinutes(20).build();
 
+		given(entryController.entryPointsCalculator.calculate(entryToCalculatePoints.getDifficulty(), 
+				entryToCalculatePoints.getLearningTime(), entryToCalculatePoints.getSkill())).willReturn(10);
+
+		//when
+		standaloneSetup(entryController).build()
+				.perform(createRequestParams()).andExpect(status().isOk());
+
+		//then
+		Entry entry = new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy")
+				.itTookInMinutes(20).gainedPoints(10).build();
+
+		verify(entryRepository).saveEntry(entry.build(), USER_NAME);
+	}
+
+	private DefaultRequestBuilder createRequestParams() {
+		return post("/entry/submit")
+				.param("text", "new skill")
+				.param("when", "yesterday")
+				.param("difficulty", "easy")
+				.param("learningtime", "20")
+				.param("completed", "false");
+	}
 }

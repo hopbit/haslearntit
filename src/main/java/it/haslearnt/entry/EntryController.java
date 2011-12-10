@@ -31,7 +31,10 @@ public class EntryController {
     UserAuthenticationInBackend authenticationInBackend;
 
     @Autowired
-    UserStaticticsRepository userStatisticsRepository;
+	UserStaticticsRepository userStatisticsRepository;
+	
+	@Autowired
+	EntryPointsCalculator entryPointsCalculator;
 
     @RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
     public @ResponseBody
@@ -49,6 +52,8 @@ public class EntryController {
         if (completed) {
             entry.andIveCompleted();
         }
+		int points = entryPointsCalculator.calculate(entry.getDifficulty(), entry.getLearningTime(), entry.getSkill());
+		entry.gainedPoints(points);
         entry.build();
         return entry;
     }
@@ -74,5 +79,4 @@ public class EntryController {
         }
         return resultSkills;
     }
-
 }
