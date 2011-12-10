@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class ParseUserFromSubdomainParserFilter implements Filter {
+public class UserFromSubdomainParserFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }

@@ -18,7 +18,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ParseUserFromSubdomainParserFilterTest {
+public class UserFromSubdomainParserFilterTest {
 
     @Mock
     private ServletRequest request;
@@ -32,7 +32,7 @@ public class ParseUserFromSubdomainParserFilterTest {
 
     @Test public void shouldNotAppendAnythingWhenMasterDomainGiven() throws IOException, ServletException {
         // given
-        ParseUserFromSubdomainParserFilter parser = prepareServerPath(masterDomain);
+        UserFromSubdomainParserFilter parser = prepareServerPath(masterDomain);
 
         // when
         parser.doFilter(request, response, chain);
@@ -48,7 +48,7 @@ public class ParseUserFromSubdomainParserFilterTest {
 
     @Test public void shouldAppendUsernameWhenSubDomainGiven() throws IOException, ServletException {
         // given
-        ParseUserFromSubdomainParserFilter parser = prepareServerPath(bob + "." + masterDomain);
+        UserFromSubdomainParserFilter parser = prepareServerPath(bob + "." + masterDomain);
 
         // when
         parser.doFilter(request, response, chain);
@@ -61,7 +61,7 @@ public class ParseUserFromSubdomainParserFilterTest {
     @Test
     public void shouldAppendUsernameWhenLocalhostSubdomain() throws IOException, ServletException {
         //given
-        ParseUserFromSubdomainParserFilter parser = prepareServerPath(bob + ".localhost");
+        UserFromSubdomainParserFilter parser = prepareServerPath(bob + ".localhost");
 
         // when
         parser.doFilter(request, response, chain);
@@ -74,7 +74,7 @@ public class ParseUserFromSubdomainParserFilterTest {
     @Test
     public void shouldNotAppendUsernameWhenLocalhostWithoutSubdomain() throws IOException, ServletException {
         //given
-        ParseUserFromSubdomainParserFilter parser = prepareServerPath("localhost");
+        UserFromSubdomainParserFilter parser = prepareServerPath("localhost");
 
         // when
         parser.doFilter(request, response, chain);
@@ -84,8 +84,8 @@ public class ParseUserFromSubdomainParserFilterTest {
         assertUsernameNotSet();
     }
 
-    private ParseUserFromSubdomainParserFilter prepareServerPath(String masterDomain) {
-        ParseUserFromSubdomainParserFilter parser = new ParseUserFromSubdomainParserFilter();
+    private UserFromSubdomainParserFilter prepareServerPath(String masterDomain) {
+        UserFromSubdomainParserFilter parser = new UserFromSubdomainParserFilter();
         given(request.getServerName()).willReturn(masterDomain);
         return parser;
     }
