@@ -39,14 +39,15 @@ public class StaticticsControllerTest {
 	@Test
 	public void shouldGetHoursFromService() {
 		// given
-		Mockito.when(service.getHoursForUser("mariusz")).thenReturn(5);
+		final String userName = "mariusz";
+		Mockito.when(service.getHoursForUser(userName)).thenReturn(5);
 
 		// when
-		ModelAndView totalLearningTime = controler.getTotalLearningTime("mariusz");
+		ModelAndView totalLearningTime = controler.getTotalLearningTime(userName);
 
 		// then
 		Assert.assertEquals(5, totalLearningTime.getModel().get("hours"));
-		Mockito.verify(service).getHoursForUser("mariusz");
+		Mockito.verify(service).getHoursForUser(userName);
 	}
 
 }
