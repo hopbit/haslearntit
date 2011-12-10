@@ -2,7 +2,7 @@ package it.haslearnt.entry;
 
 import com.google.gson.Gson;
 import it.haslearnt.security.UserAuthenticationInBackend;
-import it.haslearnt.service.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsService;
 
 import java.util.List;
 

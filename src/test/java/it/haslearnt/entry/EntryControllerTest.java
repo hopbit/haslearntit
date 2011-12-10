@@ -7,7 +7,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.*
 import static org.springframework.test.web.server.setup.MockMvcBuilders.*;
 import it.haslearnt.security.AuthenticationUserDetails;
 import it.haslearnt.security.UserAuthenticationInBackend;
-import it.haslearnt.service.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsService;
 
 import java.util.Arrays;
 import java.util.List;

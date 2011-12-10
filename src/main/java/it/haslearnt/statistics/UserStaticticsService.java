@@ -1,4 +1,4 @@
-package it.haslearnt.service;
+package it.haslearnt.statistics;
 
 import org.springframework.stereotype.Component;
 
