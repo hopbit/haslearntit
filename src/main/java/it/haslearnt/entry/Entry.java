@@ -3,6 +3,7 @@ package it.haslearnt.entry;
 import it.haslearnt.cassandra.mapping.*;
 
 import org.apache.commons.lang.builder.*;
+import org.joda.time.Duration;
 
 @Entity("Entries")
 public class Entry extends EntityWithGeneratedId {
@@ -114,4 +115,8 @@ public class Entry extends EntityWithGeneratedId {
 	public boolean isCompleted() {
         return Boolean.valueOf(this.completed);
     }
+
+	public Duration getLearingDuration() {
+		return Duration.standardMinutes(learningTime);
+	}
 }
