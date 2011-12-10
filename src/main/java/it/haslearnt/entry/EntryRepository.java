@@ -1,20 +1,24 @@
 package it.haslearnt.entry;
 
-import com.google.common.collect.Lists;
-import it.haslearnt.cassandra.mapping.CassandraRepository;
+import static org.apache.cassandra.thrift.ConsistencyLevel.*;
+import static org.springframework.util.Assert.*;
+import it.haslearnt.cassandra.mapping.*;
+import it.haslearnt.skill.trends.*;
+
+import java.util.*;
+
 import org.apache.cassandra.thrift.Column;
-import org.scale7.cassandra.pelops.Bytes;
-import org.scale7.cassandra.pelops.Mutator;
-import org.springframework.stereotype.Repository;
+import org.scale7.cassandra.pelops.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
 
-import java.util.List;
-
-import static org.apache.cassandra.thrift.ConsistencyLevel.ONE;
-import static org.springframework.util.Assert.hasText;
-import static org.springframework.util.Assert.isTrue;
+import com.google.common.collect.*;
 
 @Repository
 public class EntryRepository extends CassandraRepository<Entry> {
+
+	@Autowired
+	SkillTrendsRepository skillTrendsRepository;
 
 	public List<Entry> fetchForUser(String user) {
 		List<Column> columns = pool.createSelector().getColumnsFromRow("UserEntries", user, true, ONE);
@@ -25,22 +29,43 @@ public class EntryRepository extends CassandraRepository<Entry> {
 		return entries;
 	}
 
-    public List<Entry> fetchForUser(String user, int limit, int offset) {
-        isTrue(limit > 0); isTrue(offset >= 0); hasText(user);
-        return fetchForUser(user);
+	public List<Entry> fetchForUser(String user, int limit, int offset) {
+		isTrue(limit > 0);
+		isTrue(offset >= 0);
+		hasText(user);
+		return fetchForUser(user);
 	}
 
 	public void saveEntry(Entry entry, String user) {
 		save(entry);
 		Mutator mutator = pool.createMutator();
-		
+
+		saveUserEntry(entry, user, mutator);
+		updateSkills(entry, mutator);
+		updateSkillTrends(entry);
+
+		mutator.execute(ONE);
+	}
+
+	private void saveUserEntry(Entry entry, String user, Mutator mutator) {
 		Column column = mutator.newColumn(getNewEntryColumnName(user), entry.id());
 		mutator.writeColumn("UserEntries", user, column);
-		
+	}
+
+	private void updateSkills(Entry entry, Mutator mutator) {
 		Column skillColumn = mutator.newColumn(entry.what());
 		mutator.writeColumn("SkillEntries", "SkillRowKey", skillColumn);
-		
-		mutator.execute(ONE);
+	}
+
+	private void updateSkillTrends(Entry entry) {
+		SkillTrend skillTrend = skillTrendsRepository.load(entry.what());
+
+		if (skillTrend != null)
+			skillTrend.learntBy(skillTrend.learntBy() + 1);
+		else
+			skillTrend = new SkillTrend().withSkill(entry.what()).learntBy(1);
+
+		skillTrendsRepository.save(skillTrend);
 	}
 
 	private String getNewEntryColumnName(String user) {

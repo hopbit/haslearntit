@@ -87,6 +87,7 @@
 			                '</div><div class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</div></div>'		        
 						);
                         $(this).addClass("done");
+                        updateTrends();
                     },
                     error: function(){
                     	alert('error');
@@ -105,16 +106,7 @@
 				return false;
 			});
 			
-			$.ajax({
-                url: "/skill/trends",
-                method: 'get',                
-                dataType: 'json',
-                success: function(data) {
-                    $(data.results).each(function(i, elem) {
-                    	$('#trends-list').append("<li><a href='#'>" + elem.skill + "</a><br />" + elem.learntBy + " users</li>")
-                    });
-                }
-            })
+			updateTrends();
 		});
 	}
 	google.setOnLoadCallback(OnLoad);
@@ -125,6 +117,20 @@
 			left : 0
 		});
 		div.hide();
+	}
+	
+	function updateTrends(){
+		$.ajax({
+            url: "/skill/trends",
+            method: 'get',                
+            dataType: 'json',
+            success: function(data) {
+               	$('#trends-list').html("");
+                $(data.results).each(function(i, elem) {
+                	$('#trends-list').append("<li><a href='#'>" + elem.skill + "</a><br />" + elem.learntBy + " users</li>")
+                });
+            }
+        });
 	}
 </script>
 </head>
