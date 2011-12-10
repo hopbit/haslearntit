@@ -64,7 +64,7 @@
 				var date = new Date();
                 $.ajax({
                     url: "/entry/submit",
-                    method: 'post',
+                    type: "POST",
                     data:
                     {
                         when: 'today',
@@ -85,6 +85,9 @@
 			                '</div><div class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</div></div>'		        
 						);
                         $(this).addClass("done");
+                    },
+                    error: function(){
+                    	alert('error');
                     }
                 })
                 return false;

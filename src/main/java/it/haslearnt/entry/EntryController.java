@@ -2,6 +2,7 @@ package it.haslearnt.entry;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,18 +25,24 @@ public class EntryController {
 	@Autowired
 	EntryRepository entryRepository;
 
+	Logger logger = Logger.getLogger(EntryController.class);
 
 	@RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
-	public @ResponseBody String submit(@RequestParam String when, @RequestParam String text, @RequestParam String difficulty, @RequestParam Integer learningtime,
-                                        @RequestParam(required = false) boolean completed
-                                       ) {
-        Entry entry = new Entry().when(when).iveLearnt(text).andItWas(difficulty).itTook(learningtime, Entry.TimeType.MINUTES);
-        entryRepository.save(entry);
-         if (completed) {
-            entry.andIveCompleted();
-        }
-        return "OK";
-    }
+	public @ResponseBody
+	String submit(@RequestParam String when, @RequestParam String text, @RequestParam String difficulty,
+			@RequestParam Integer learningtime,
+										@RequestParam(required = false) boolean completed
+										) {
+		logger.error(" >>>>>>>>>>>>>>>>>>>>>>>>>> Entering submit");
+		Entry entry = new Entry().when(when).iveLearnt(text).andItWas(difficulty)
+				.itTook(learningtime, Entry.TimeType.MINUTES);
+		if (completed) {
+			entry.andIveCompleted();
+		}
+		entry.build();
+		entryRepository.save(entry);
+		return "OK";
+	}
 
 	public String fetchEntryListByName(ModelMap model) {
 		String prefix = (String) model.get(SKILL_KEY);
@@ -54,19 +61,19 @@ public class EntryController {
 		}
 		return resultSkills;
 	}
-/*	
-	@RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
-public String submit(@RequestParam String when, @RequestParam String text,
-@RequestParam String difficulty, @RequestParam(required = false) boolean completed) {
-
-        Entry entry = new Entry().when(when).iveLearnt(text)
-                .andItWas(difficulty);
-        if (completed) {
-            entry.andIveCompleted();
-        }
-
-        entryRepository.save(entry);
-
-        return "timeline";
-}*/
+	/*
+	 * @RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
+	 * public String submit(@RequestParam String when, @RequestParam String
+	 * text,
+	 * 
+	 * @RequestParam String difficulty, @RequestParam(required = false) boolean
+	 * completed) {
+	 * 
+	 * Entry entry = new Entry().when(when).iveLearnt(text)
+	 * .andItWas(difficulty); if (completed) { entry.andIveCompleted(); }
+	 * 
+	 * entryRepository.save(entry);
+	 * 
+	 * return "timeline"; }
+	 */
 }
