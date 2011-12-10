@@ -40,6 +40,7 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 	}
 
 	@Test
+	@Ignore
 	public void shouldAddEntry() throws Exception {
 		server = createServer();
 		addContextToServer(server);
@@ -62,8 +63,6 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 			}
 		});
 
-		// FIXME this test does no verifications! blocked by not-yet-implemented
-		// timeline feature
 	}
 
 	@Test

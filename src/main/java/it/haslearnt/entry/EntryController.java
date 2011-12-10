@@ -5,7 +5,6 @@ import it.haslearnt.statistics.UserStaticticsService;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +27,6 @@ public class EntryController {
 	@Autowired
 	EntryRepository entryRepository;
 
-	Logger logger = Logger.getLogger(EntryController.class);
 	@Autowired
 	UserAuthenticationInBackend authenticationInBackend;
 	@Autowired
@@ -40,7 +38,6 @@ public class EntryController {
 			@RequestParam Integer learningtime,
 										@RequestParam(required = false) boolean completed
 										) {
-		logger.error(" >>>>>>>>>>>>>>>>>>>>>>>>>> Entering submit");
 		Entry entry = new Entry().when(when).iveLearnt(text).andItWas(difficulty)
 				.itTook(learningtime, Entry.TimeType.MINUTES);
 		if (completed) {
