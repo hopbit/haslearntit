@@ -6,6 +6,7 @@ import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -19,6 +20,19 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 	private Server server;
 
 	@Test
+	public void shouldDisplayPage() throws Exception {
+		server = createServer();
+		addContextToServer(server);
+		server.start();
+
+		driver = new FirefoxDriver();
+
+		driver.navigate().to("http://localhost:" + PORT + "/");
+		driver.findElement(By.id("entry"));
+	}
+
+    @Test
+    @Ignore
 	public void shouldAddEntry() throws Exception {
 		server = createServer();
 		addContextToServer(server);
@@ -30,6 +44,14 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 
 		driver.findElement(By.id("entry")).submit();
 
+        //FIXME this test does no verifications! blocked by not-yet-implemented timeline feature
+	}
+	
+    @Test
+    @Ignore
+	public void shouldAddCompletedEntry() throws Exception {
+        //as above
+        //FIXME this test does no verifications! blocked by not-yet-implemented timeline feature
 	}
 
 	@After
