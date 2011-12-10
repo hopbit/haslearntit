@@ -1,8 +1,13 @@
 package it.haslearnt.entry;
 
-import it.haslearnt.cassandra.mapping.*;
+import it.haslearnt.cassandra.mapping.Column;
+import it.haslearnt.cassandra.mapping.Entity;
+import it.haslearnt.cassandra.mapping.EntityWithGeneratedId;
 
-import org.apache.commons.lang.builder.*;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.joda.time.Duration;
 
 @Entity("Entries")
@@ -21,7 +26,7 @@ public class Entry extends EntityWithGeneratedId {
 	@Column("difficulty")
 	private String difficulty;
 
-    @Column("skill_completed")
+	@Column("skill_completed")
 	private String completed = "false";
 
 	private int learningTime;
@@ -83,16 +88,23 @@ public class Entry extends EntityWithGeneratedId {
 	}
 
 	private void calculatePoints() {
-		this.points = Double.toString(learningTime * difficultyFactor());
+		points = Double.toString(learningTime * difficultyFactor());
+	}
+
+	public int getLearningTime() {
+		return learningTime;
 	}
 
 	private double difficultyFactor() {
-		if ("easy".equals(difficulty))
+		if ("easy".equals(difficulty)) {
 			return 1;
-		if ("medium".equals(difficulty))
+		}
+		if ("medium".equals(difficulty)) {
 			return 1.2;
-		if ("hard".equals(difficulty))
+		}
+		if ("hard".equals(difficulty)) {
 			return 1.4;
+		}
 
 		return 0;
 	}
@@ -108,15 +120,16 @@ public class Entry extends EntityWithGeneratedId {
 	}
 
 	public Entry andIveCompleted() {
-		this.completed = "true";
-        return this;
+		completed = "true";
+		return this;
 	}
 
 	public boolean isCompleted() {
-        return Boolean.valueOf(this.completed);
-    }
+		return Boolean.valueOf(completed);
+	}
 
 	public Duration getLearingDuration() {
 		return Duration.standardMinutes(learningTime);
 	}
+		
 }

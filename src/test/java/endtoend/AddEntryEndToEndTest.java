@@ -1,22 +1,22 @@
 package endtoend;
 
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.bio.SocketConnector;
-import org.eclipse.jetty.webapp.WebAppContext;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.scale7.cassandra.pelops.pool.IThriftPool;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.*;
+import it.haslearnt.entry.*;
+import it.haslearnt.skill.trends.*;
 
-import setup.IntegrationTest;
+import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.server.bio.*;
+import org.eclipse.jetty.webapp.*;
+import org.junit.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.support.ui.*;
+import org.scale7.cassandra.pelops.pool.*;
+import org.springframework.beans.factory.annotation.*;
 
-import com.google.common.base.Predicate;
+import setup.*;
+
+import com.google.common.base.*;
 
 public class AddEntryEndToEndTest extends IntegrationTest {
 
@@ -26,6 +26,12 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 
 	@Autowired
 	IThriftPool thriftPool;
+
+	@Autowired
+	SkillTrendsRepository repository;
+
+	@Autowired
+	EntryRepository entryRepository;
 
 	@Test
 	public void shouldDisplayPage() throws Exception {
@@ -41,7 +47,7 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 
 	@Test
 	@Ignore
-	public void shouldAddEntry() throws Exception {
+	public void shouldDisplayTopTrends() throws Exception {
 		server = createServer();
 		addContextToServer(server);
 		server.start();
@@ -50,10 +56,29 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 
 		driver.navigate().to("http://localhost:" + PORT + "/");
 
+		Thread.sleep(300);
+
+		String trendsSection = driver.findElement(By.id("trends-list")).getText();
+
+		assertTrue(trendsSection.contains("test"));
+	}
+
+	@Test
+	@Ignore
+	public void shouldAddEntry() throws Exception {
+		server = createServer();
+		addContextToServer(server);
+		server.start();
+		driver = new FirefoxDriver();
+
+		driver.navigate().to("http://localhost:" + PORT + "/");
+
 		driver.findElement(By.id("skill")).sendKeys("szydełkowanie");
 		driver.findElement(By.id("learningtime")).sendKeys("20");
 		driver.findElement(By.id("entry")).submit();
 
+		// FIXME this test does no verifications! blocked by not-yet-implemented
+		// timeline feature
 		WebDriverWait wait = new WebDriverWait(driver, 3);
 		wait.until(new Predicate<WebDriver>() {
 

@@ -1,7 +1,7 @@
 package it.haslearnt.entry;
 
 import it.haslearnt.security.UserAuthenticationInBackend;
-import it.haslearnt.statistics.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsRepository;
 
 import java.util.List;
 
@@ -29,25 +29,34 @@ public class EntryController {
 
 	@Autowired
 	UserAuthenticationInBackend authenticationInBackend;
+
 	@Autowired
-	UserStaticticsService userStatisticsService;
+	UserStaticticsRepository userStatisticsService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
 	public @ResponseBody
 	String submit(@RequestParam String when, @RequestParam String text, @RequestParam String difficulty,
-			@RequestParam Integer learningtime,
-										@RequestParam(required = false) boolean completed
-										) {
+			@RequestParam Integer learningtime, @RequestParam(required = false) boolean completed) {
+
+		Entry entry = buildEntry(when, text, difficulty, learningtime, completed);
+		entryRepository.saveEntry(entry, getLoggedUsername());
+		userStatisticsService.addLearningTimeForUser(getLoggedUsername(),
+				learningtime);
+		return "OK";
+	}
+
+	private Entry buildEntry(String when, String text, String difficulty, Integer learningtime, boolean completed) {
 		Entry entry = new Entry().when(when).iveLearnt(text).andItWas(difficulty)
 				.itTook(learningtime, Entry.TimeType.MINUTES);
 		if (completed) {
 			entry.andIveCompleted();
 		}
 		entry.build();
-		entryRepository.save(entry);
-		userStatisticsService.addLearningTimeForUser(authenticationInBackend.getLoggedUserDetails().getUsername(),
-				learningtime);
-		return "OK";
+		return entry;
+	}
+
+	protected String getLoggedUsername() {
+		return authenticationInBackend.getLoggedUserDetails().getUsername();
 	}
 
 	@ResponseBody
