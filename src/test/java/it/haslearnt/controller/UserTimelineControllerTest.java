@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.scale7.cassandra.pelops.exceptions.ModelException;
 import org.springframework.ui.Model;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserTimerControllerTest {
+public class UserTimelineControllerTest {
 
     @Mock
     Model model;
@@ -34,14 +35,14 @@ public class UserTimerControllerTest {
 
     String userName ="bob";
 
-    UserTimerController userTimerController;
+    UserTimelineController userTimerController;
 
     @Mock
     User user;
 
     @Before
     public void setUp() {
-        userTimerController = new UserTimerController();
+        userTimerController = new UserTimelineController();
         userTimerController.entryRepository = entryRepository;
         userTimerController.userRepository = userRepository;
     }
@@ -57,14 +58,25 @@ public class UserTimerControllerTest {
         String toView = userTimerController.showUserTimeline(userName, model);
 
         //then
-        verify(model).addAttribute(UserTimerController.userTimeLineKey,userTimeLineEntryList);
-        assertEquals(UserTimerController.userTimeLineKey, toView);
+        verify(model).addAttribute(UserTimelineController.userTimeLineKey,userTimeLineEntryList);
+        assertEquals(UserTimelineController.userTimeLineKey, toView);
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void shouldReturn404IfGivenUserNotExist() {
         //given
         given(userRepository.load(userName)).willReturn(null);
+
+        // when
+        String toView = userTimerController.showUserTimeline(userName, model);
+
+        //then exception is thrown
+    }
+
+     @Test(expected = ResourceNotFoundException.class)
+    public void shouldReturn404OnDBException() {
+        //given
+        given(userRepository.load(userName)).willThrow(ModelException.class);
 
         // when
         String toView = userTimerController.showUserTimeline(userName, model);
