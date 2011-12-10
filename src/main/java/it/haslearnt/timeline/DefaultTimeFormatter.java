@@ -5,32 +5,35 @@
 
 package it.haslearnt.timeline;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.Minutes;
 
 public class DefaultTimeFormatter {
+	
+	public static String DAY = "day";
+	public static String HOUR = "hour";
+	public static String MIN = "min";
 
-	public String format(DateTime dateFrom, DateTime dateTo) {
-		Minutes minutes = Minutes.minutesBetween(dateFrom, dateTo);
-		int minutesInt = minutes.getMinutes();
-		int moduloMins = minutesInt % DateTimeConstants.MINUTES_PER_HOUR;
-		int hoursInt = minutes.toStandardHours().getHours();
+
+	public String format(org.joda.time.Duration duration) {
+		long dd = duration.getStandardDays();
+		long hh = duration.getStandardHours() - dd*24;
+		long min = duration.getStandardMinutes() - duration.getStandardHours()*60;
 		
-		String output = "";
-
-		if (hoursInt > 1) {
-			output += hoursInt + " hours ";
-		} else if (hoursInt != 0) {
-			output += hoursInt + " hour ";
+		StringBuffer sb = new StringBuffer();
+		if (dd>0) {
+			sb.append(dd).append(" ").append(getCardinalName(dd,DAY)).append(" ");
 		}
-
-		if (moduloMins == 1) {
-			output += moduloMins + " min ";
-		} else if (moduloMins > 1) {
-			output += moduloMins + " mins ";
+		if (hh>0) {
+			sb.append(hh).append(" ").append(getCardinalName(hh,HOUR)).append(" ");
 		}
-
-		return output + "ago";
+		if (min>0) {
+			sb.append(min).append(" ").append(getCardinalName(min,MIN));
+		}
+		
+		return sb.toString().trim();
+	}
+	
+	
+	private String getCardinalName(long amount, String uom){
+		return amount>1?uom+"s":uom;
 	}
 }

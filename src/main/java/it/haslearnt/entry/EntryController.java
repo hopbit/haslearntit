@@ -1,7 +1,7 @@
 package it.haslearnt.entry;
 
 import it.haslearnt.security.UserAuthenticationInBackend;
-import it.haslearnt.statistics.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsRepository;
 
 import java.util.List;
 
@@ -29,8 +29,9 @@ public class EntryController {
 
 	@Autowired
 	UserAuthenticationInBackend authenticationInBackend;
+
 	@Autowired
-	UserStaticticsService userStatisticsService;
+	UserStaticticsRepository userStatisticsService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
 	public @ResponseBody
