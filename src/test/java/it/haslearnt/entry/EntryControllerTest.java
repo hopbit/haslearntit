@@ -44,18 +44,18 @@ public class EntryControllerTest {
 	@SuppressWarnings("unchecked")
 	public void shouldFetchEntryListByName() throws Exception {
 		String skillName = "scala";
-		Entry iveLearnt = new Entry().iveLearnt("scala1");
+		String suggestedSkill = "scala1";
 		when(entryRepository.fetchEntriesBySkillName(skillName)).thenReturn(
-				Arrays.asList(iveLearnt));
+				Arrays.asList(suggestedSkill));
 		ModelMap model = createInputModel(skillName);
 
 
 		String fetchEntryListByName = entryController
 				.fetchEntryListByName(model);
 		
-		List<Entry> entries = (List<Entry>) model.get(EntryController.FOUND_ENTRIES_KEY);
+		List<String> skills = (List<String>) model.get(EntryController.FOUND_SKILLS_KEY);
 		assertThat(EntryController.SUGGESTIONS_SKILLS_VIEW).isEqualTo(fetchEntryListByName);
-		assertThat(entries).containsOnly(iveLearnt);
+		assertThat(skills).containsOnly(suggestedSkill);
 	}
 
 	private ModelMap createInputModel(String skillName) {

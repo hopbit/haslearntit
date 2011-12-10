@@ -14,7 +14,7 @@ public class EntryController {
 
 	static final String SUGGESTIONS_SKILLS_VIEW = "suggestionSkills";
 
-	static final String FOUND_ENTRIES_KEY = "entries";
+	static final String FOUND_SKILLS_KEY = "entries";
 
 	static final String SKILL_KEY = "skill";
 
@@ -31,8 +31,8 @@ public class EntryController {
 
 	public String fetchEntryListByName(ModelMap model) {
 		String skill = (String) model.get(SKILL_KEY);
-		List<Entry> entries = entryRepository.fetchEntriesBySkillName(skill);
-		model.put(FOUND_ENTRIES_KEY, entries);
+		List<String> suggestedSkills = entryRepository.fetchEntriesBySkillName(skill);
+		model.put(FOUND_SKILLS_KEY, suggestedSkills);
 		return SUGGESTIONS_SKILLS_VIEW;
 	}
 }
