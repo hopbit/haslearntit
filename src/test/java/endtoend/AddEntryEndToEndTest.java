@@ -7,6 +7,9 @@ import org.junit.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.*;
 
+import org.scale7.cassandra.pelops.Selector;
+import org.scale7.cassandra.pelops.pool.IThriftPool;
+import org.springframework.beans.factory.annotation.Autowired;
 import setup.*;
 
 public class AddEntryEndToEndTest extends IntegrationTest {
@@ -14,6 +17,9 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 	private static final int PORT = 6345;
 	private WebDriver driver;
 	private Server server;
+
+    @Autowired
+    IThriftPool thriftPool;
 
 	@Test
 	public void shouldAddEntry() throws Exception {
@@ -25,14 +31,15 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 
 		driver.navigate().to("http://localhost:" + PORT + "/");
 
-		driver.findElement(By.id("entry")).submit();
+        driver.findElement(By.id("learningtime")).sendKeys("20");
+        driver.findElement(By.id("entry")).submit();
 
-	}
+    }
 
 	@After
 	public void shutdownSeleniumAndServer() throws Exception {
-		driver.close();
-		server.stop();
+        driver.close();
+        server.stop();
 	}
 
 	private static Server createServer() {

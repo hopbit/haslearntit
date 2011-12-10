@@ -16,9 +16,10 @@ public class EntryControllerTest {
 		EntryController entryController = new EntryController();
 		entryController.entryRepository = entryRepository;
 		standaloneSetup(entryController).build()
-				.perform(post("/entry/submit").param("text", "new skill").param("when", "yesterday").param("difficulty", "easy"))
+				.perform(post("/entry/submit").param("text", "new skill").param("when", "yesterday")
+                        .param("difficulty", "easy").param("learningtime", "20"))
 				.andExpect(status().isOk());
 
-		verify(entryRepository).save(new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy"));
+		verify(entryRepository).save(new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy").itTook(20, Entry.TimeType.MINUTES));
 	}
 }

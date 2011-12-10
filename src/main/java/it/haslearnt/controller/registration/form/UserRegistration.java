@@ -28,7 +28,7 @@ public class UserRegistration {
     @RequestMapping(method = RequestMethod.GET)
     public String getRegistrationForm(Model model) {
         model.addAttribute("userRegistrationForm", new UserRegistrationForm());
-        return "registration/form";
+        return "/WEB-INF/views/registration/registrationForm.jsp";
     }
 
     @RequestMapping(method = RequestMethod.POST)
