@@ -1,33 +1,21 @@
 package it.haslearnt.timeline;
 
+import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
-
+@RunWith(JUnitParamsRunner.class)
 public class PreetyTimeFormaterTest {
 
-//    @Test
-//    public void shouldConvertOneMinute() {
-//        testConvert(1, "1 minute");
-//    }
-
     @Test
-    @Parameters(method="")
-    public void shouldConvertMinutes() {
-        testConvert(25, "25 minutes");
-    }
-
-    @Test
-    public void shouldConvertMoreThen60minutes() throws Exception {
-        testConvert(61, "1 hour 1 minutes");
-    }
-
-     @Parameters({
-             "25, 25 minutes",
-             "61, 1 hour 1 minutes" })
-    private void testConvert(int minutes, String expectedText) {
+    @Parameters({
+            "1, 1 minute",
+            "25, 25 minutes",
+            "61, 1 hour 1 minutes"})
+    public void testConvert(int minutes, String expectedText) {
         // given
         PreetyTimeFormater preetyTimeFormater = new PreetyTimeFormater();
 
