@@ -51,6 +51,7 @@ public class EntryController {
         return "OK";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/skillSuggestions")
     @ResponseBody
     public String fetchSuggestedSkills(@RequestParam String prefix) {
         List<String> allSkills = entryRepository.fetchSkills();

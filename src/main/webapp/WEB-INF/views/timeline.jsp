@@ -102,6 +102,10 @@
                         '</p><span class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</span></div><div class="entry-hr"></div>');
 				return false;
 			});
+
+			$("input#skill").autocomplete({
+                source: "/skillSuggestions?prefix=" + $('#skill').value()
+            });
 		});
 	}
 	google.setOnLoadCallback(OnLoad);

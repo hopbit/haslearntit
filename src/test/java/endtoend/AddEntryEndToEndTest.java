@@ -1,5 +1,8 @@
 package endtoend;
 
+import com.google.common.base.Function;
+import it.haslearnt.entry.Entry;
+import it.haslearnt.entry.EntryRepository;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.bio.SocketConnector;
@@ -8,7 +11,9 @@ import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.scale7.cassandra.pelops.pool.IThriftPool;
@@ -18,6 +23,11 @@ import setup.IntegrationTest;
 
 import com.google.common.base.Predicate;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
+import static org.fest.assertions.Assertions.assertThat;
+
 public class AddEntryEndToEndTest extends IntegrationTest {
 
 	private static final int PORT = 6345;
@@ -26,6 +36,9 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 
 	@Autowired
 	IThriftPool thriftPool;
+
+    @Autowired
+    EntryRepository entryRepository;
 
 	@Test
 	public void shouldDisplayPage() throws Exception {
@@ -72,6 +85,39 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 		// FIXME this test does no verifications! blocked by not-yet-implemented
 		// timeline feature
 	}
+
+    @Test
+    public void shouldAutocompleteSkill() throws Exception {
+        server = createServer();
+        addContextToServer(server);
+        server.start();
+        String expectedSkill = "scala";
+//        Entry entry = new Entry().iveLearnt(expectedSkill).today().andItWas("easy").itTook(10, Entry.TimeType.MINUTES).build();
+//        entryRepository.saveEntry(entry, "dummy user");
+        driver = new FirefoxDriver();
+        driver.navigate().to("http://localhost:" + PORT + "/");
+        driver.findElement(By.id("learningtime")).sendKeys("20");
+        driver.findElement(By.id("skill")).sendKeys(expectedSkill);
+        driver.findElement(By.id("entry")).submit();
+
+        driver.navigate().to("http://localhost:" + PORT + "/");
+        driver.findElement(By.id("skill")).sendKeys("sca");
+        List<WebElement> hints = new WebDriverWait(driver, 5).until(new Function<WebDriver, List<WebElement>>() {
+            @Override
+            public List<WebElement> apply(@Nullable WebDriver input) {
+                List<WebElement> elements = driver.findElements(By.className("ui-corner-all"));
+                if (elements.isEmpty())   {
+                        throw new NoSuchElementException("ui-corner-all");
+                    }
+
+                return elements;
+            }
+        }
+        );
+        for (WebElement hint : hints) {
+            assertThat(hint.getText()).contains(expectedSkill);
+        }
+    }
 
 	@After
 	public void shutdownSeleniumAndServer() throws Exception {
