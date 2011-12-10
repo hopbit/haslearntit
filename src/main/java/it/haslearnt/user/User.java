@@ -44,4 +44,16 @@ public class User {
         this.name = name;
         return this;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

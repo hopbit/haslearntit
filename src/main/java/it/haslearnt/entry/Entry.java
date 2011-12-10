@@ -43,8 +43,17 @@ public class Entry extends EntityWithGeneratedId {
 		return when;
 	}
 
-	public String howDifficult() {
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
+
+    public String howDifficult() {
 		return difficulty;
+
 	}
 
 	public Entry iveLearnt(String skill) {
