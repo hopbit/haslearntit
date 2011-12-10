@@ -31,18 +31,20 @@ public class UserTimelineController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String showUserTimeline(String userName, Model model) {
-        verifyUserExists(userName);
+        User user = tryToGetUser(userName);
         List<Entry> userTimeLine = entryRepository.fetchForUser(userName,limit,offset);
         model.addAttribute(userTimeLineKey, userTimeLine);
+        model.addAttribute("user", user);
         return userTimelineView;
     }
 
-    private void verifyUserExists(String userName) {
+    private User tryToGetUser(String userName) {
         try {
             User user = userRepository.load(userName);
             if (user == null) {
                 throw new ResourceNotFoundException("No user with user name " + userName);
             }
+            return user;
         } catch (ModelException e) {
             throw new ResourceNotFoundException("No user with user name " + userName, e);
         }
