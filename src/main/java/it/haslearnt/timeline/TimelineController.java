@@ -3,6 +3,8 @@ package it.haslearnt.timeline;
 import it.haslearnt.entry.Entry;
 import it.haslearnt.entry.EntryRepository;
 import it.haslearnt.security.UserAuthenticationInBackend;
+import it.haslearnt.statistics.UserStaticticsRepository;
+import it.haslearnt.statistics.UserStatistics;
 import it.haslearnt.user.User;
 
 import java.util.ArrayList;
@@ -19,9 +21,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class TimelineController {
 
 	@Autowired
-	EntryRepository entryRepository;
+	private EntryRepository entryRepository;
 	@Resource(name = "userAuthenticationInBackend")
-	public UserAuthenticationInBackend userAuthenticationInBackend;
+	private UserAuthenticationInBackend userAuthenticationInBackend;
+	@Autowired
+	private UserStaticticsRepository userStatisticsRepository;
 
 	@RequestMapping("/")
 	public ModelAndView mainTimelineView() {
@@ -30,8 +34,11 @@ public class TimelineController {
 		User loggedUser = userAuthenticationInBackend.getLoggedUser();
 		if (loggedUser != null) {
 			String userName = loggedUser.name();
+			UserStatistics loadStatisticsForUser = userStatisticsRepository.loadStatisticsForUser(userName);
+			mav.addObject("entries", entries);
 			entries = entryRepository.fetchForUser(userName);
 			mav.addObject("user", loggedUser);
+			mav.addObject("userStatistics", loadStatisticsForUser);
 		}
 		mav.addObject("entries", entries);
 		return mav;
@@ -47,4 +54,15 @@ public class TimelineController {
 		return "login";
 	}
 
+	public void setEntryRepository(EntryRepository entryRepository) {
+		this.entryRepository = entryRepository;
+	}
+	
+	public void setUserAuthenticationInBackend(UserAuthenticationInBackend userAuthenticationInBackend) {
+		this.userAuthenticationInBackend = userAuthenticationInBackend;
+	}
+	
+	public void setUserStatisticsRepository(UserStaticticsRepository userStatisticsRepository) {
+		this.userStatisticsRepository = userStatisticsRepository;
+	}
 }
