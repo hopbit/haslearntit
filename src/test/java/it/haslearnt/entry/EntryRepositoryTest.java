@@ -16,7 +16,7 @@ import setup.IntegrationTest;
 import setup.*;
 import static junit.framework.Assert.assertTrue;
 
-public class NewEntryTest extends IntegrationTest {
+public class EntryRepositoryTest extends IntegrationTest {
 
 	@Autowired
 	EntryRepository repository;

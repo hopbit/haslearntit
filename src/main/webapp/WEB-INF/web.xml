@@ -24,6 +24,16 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+    <!-- username in domain is added to request: e.g.: bob.haslearnt.it add userNamee=bob -->
+    <filter>
+		<filter-name>userFromSubdomainParserFilter</filter-name>
+		<filter-class>it.haslearnt.filter.UserFromSubdomainParserFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>userFromSubdomainParserFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

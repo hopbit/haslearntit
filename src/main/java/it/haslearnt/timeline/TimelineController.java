@@ -1,7 +1,11 @@
 package it.haslearnt.timeline;
 
+import it.haslearnt.entry.Entry;
 import it.haslearnt.entry.EntryRepository;
 import it.haslearnt.security.UserAuthenticationInBackend;
+import it.haslearnt.user.User;
+
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -14,21 +18,20 @@ import org.springframework.web.servlet.ModelAndView;
 public class TimelineController {
 
 	@Autowired
-	public EntryRepository entryRepository;
+	EntryRepository entryRepository;
 	@Resource(name = "userAuthenticationInBackend")
 	public UserAuthenticationInBackend userAuthenticationInBackend;
 
 	@RequestMapping("/")
 	public ModelAndView mainTimelineView() {
-
-		// User loggedUser = userAuthenticationInBackend.getLoggedUser();
-		// List<Entry> entries =
-		// entryRepository.fetchForUser(loggedUser.name());
 		ModelAndView mav = new ModelAndView("timeline");
-		// // List<Entry> entries = Lists.newArrayList(new
-		// // Entry().today().iveLearnt("java").andItWas("hard"));
-		// mav.addObject("entries", entries);
-		// mav.addObject("user", loggedUser);
+		User loggedUser = userAuthenticationInBackend.getLoggedUser();
+		if (loggedUser != null) {
+			String userName = loggedUser.name();
+			List<Entry> entries = entryRepository.fetchForUser(userName);
+			mav.addObject("entries", entries);
+			mav.addObject("user", loggedUser);
+		}
 		return mav;
 	}
 
