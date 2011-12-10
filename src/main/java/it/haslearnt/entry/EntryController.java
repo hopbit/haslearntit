@@ -23,10 +23,17 @@ public class EntryController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/entry/submit")
 	public String submit(@RequestParam String when, @RequestParam String text,
-			@RequestParam String difficulty) {
-		entryRepository.save(new Entry().when(when).iveLearnt(text)
-				.andItWas(difficulty));
-		return "timeline";
+			@RequestParam String difficulty, @RequestParam(required = false) boolean completed) {
+
+        Entry entry = new Entry().when(when).iveLearnt(text)
+                .andItWas(difficulty);
+        if (completed) {
+            entry.andIveCompleted();
+        }
+
+        entryRepository.save(entry);
+
+        return "timeline";
 	}
 
 	public String fetchEntryListByName(ModelMap model) {

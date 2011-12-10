@@ -41,6 +41,24 @@ public class EntryControllerTest {
 	}
 
 	@Test
+	public void shouldSubmitNewCompletedEntry() throws Exception {
+		standaloneSetup(entryController)
+				.build()
+				.perform(
+						post("/entry/submit")
+                                .param("text", "new skill")
+								.param("when", "yesterday")
+								.param("difficulty", "easy")
+								.param("completed", "true")
+                )
+				.andExpect(status().isOk());
+
+		verify(entryRepository).save(
+				new Entry().when("yesterday").iveLearnt("new skill")
+						.andItWas("easy").andIveCompleted());
+	}
+
+	@Test
 	@SuppressWarnings("unchecked")
 	public void shouldFetchEntryListByName() throws Exception {
 		String skillName = "scala";
