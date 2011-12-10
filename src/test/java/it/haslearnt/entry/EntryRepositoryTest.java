@@ -1,25 +1,25 @@
 package it.haslearnt.entry;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertFalse;
+import static org.fest.assertions.Assertions.*;
+import static org.junit.Assert.*;
 import it.haslearnt.entry.Entry.TimeType;
+import it.haslearnt.skill.trends.*;
 
-import java.util.List;
+import java.util.*;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.*;
+import org.springframework.beans.factory.annotation.*;
 
-
-import setup.IntegrationTest;
 import setup.*;
-import static junit.framework.Assert.assertTrue;
 
 public class EntryRepositoryTest extends IntegrationTest {
 
 	@Autowired
 	EntryRepository repository;
+
+	@Autowired
+	SkillTrendsRepository skillTrendsRepository;
+
 	private String user = "tomrek";
 
 	@Test
@@ -36,7 +36,7 @@ public class EntryRepositoryTest extends IntegrationTest {
 		assertEquals("easy", fetchedEntry.howDifficult());
 		assertEquals(10, fetchedEntry.points());
 	}
-	
+
 	@Test
 	public void saveEntriesWithSkills() {
 		final String skillName1 = "something";
@@ -46,11 +46,11 @@ public class EntryRepositoryTest extends IntegrationTest {
 
 		repository.saveEntry(entry1, user);
 		repository.saveEntry(entry2, user);
-		
+
 		List<String> skills = repository.fetchSkills();
 		assertThat(skills).containsOnly(skillName1, skillName2);
 	}
-	
+
 	@Test
 	public void saveEntriesWithSameSkill() {
 		final String skillName = "something";
@@ -59,11 +59,10 @@ public class EntryRepositoryTest extends IntegrationTest {
 
 		repository.saveEntry(entry1, user);
 		repository.saveEntry(entry2, user);
-		
+
 		List<String> skills = repository.fetchSkills();
 		assertThat(skills).containsOnly(skillName);
 	}
-
 
 	@Test
 	public void fetchEntryForUser() {
@@ -81,37 +80,59 @@ public class EntryRepositoryTest extends IntegrationTest {
 		assertThat(fetchedEntries4Tomek).containsOnly(entry, entry2);
 		assertThat(fetchedEntries4Rafal).containsOnly(entry3);
 	}
-	
 
-    @Test
-    public void saveNewEntryWithSkillNotCompleted() {
-        // given
-        // entry already prepared
-        Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").build();
+	@Test
+	public void saveNewEntryWithSkillNotCompleted() {
+		// given
+		// entry already prepared
+		Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").build();
 
-        //when
-        repository.save(entry);
+		// when
+		repository.save(entry);
 
-        //then
-        assertNotNull(entry.id());
-        Entry fetchedEntry = repository.load(entry.id());
-        assertNotNull(fetchedEntry);
-        assertFalse(fetchedEntry.isCompleted());
-    }
+		// then
+		assertNotNull(entry.id());
+		Entry fetchedEntry = repository.load(entry.id());
+		assertNotNull(fetchedEntry);
+		assertFalse(fetchedEntry.isCompleted());
+	}
 
-     @Test
-    public void saveNewEntryWithSkillCompleted() {
-        // given
+	@Test
+	public void saveNewEntryWithSkillCompleted() {
+		// given
 
-        Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").andIveCompleted().build();
+		Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").andIveCompleted().build();
 
-        //when
-        repository.save(entry);
+		// when
+		repository.save(entry);
 
-        //then
-        assertNotNull(entry.id());
-        Entry fetchedEntry = repository.load(entry.id());
-        assertNotNull(fetchedEntry);
-        assertTrue(fetchedEntry.isCompleted());
-    }
+		// then
+		assertNotNull(entry.id());
+		Entry fetchedEntry = repository.load(entry.id());
+		assertNotNull(fetchedEntry);
+		assertTrue(fetchedEntry.isCompleted());
+	}
+
+	@Test
+	public void savingEntryFirstTimeShouldAlsoCreateSkillTrend() {
+		final String skillName = "something";
+		Entry entry = new Entry().iveLearnt(skillName).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+
+		repository.saveEntry(entry, user);
+
+		SkillTrend skillTrend = skillTrendsRepository.load(skillName);
+		assertNotNull(skillTrend);
+	}
+
+	@Test
+	public void savingEntryNthTimeShouldUpdateSkillTrend() {
+		final String skillName = "something";
+		Entry entry = new Entry().iveLearnt(skillName).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+
+		repository.saveEntry(entry, user);
+		repository.saveEntry(entry, user);
+
+		SkillTrend skillTrend = skillTrendsRepository.load(skillName);
+		assertEquals(2, skillTrend.learntBy());
+	}
 }
