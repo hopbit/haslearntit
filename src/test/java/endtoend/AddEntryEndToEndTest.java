@@ -45,7 +45,6 @@ public class AddEntryEndToEndTest extends IntegrationTest {
 		server = createServer();
 		addContextToServer(server);
 		server.start();
-
 		driver = new FirefoxDriver();
 
 		driver.navigate().to("http://localhost:" + PORT + "/");
