@@ -23,34 +23,34 @@ public class DefaultTimeFormatterTest {
 
 	@Test
 	public void shouldReturnMinuteForOneMinute() {
-		expectResultForDifferenceInSeconds(SECONDS_PER_MINUTE, "1 min ago");
+		expectResultForDifferenceInSeconds(SECONDS_PER_MINUTE, "1 min");
 
 	}
 
 	@Test
 	public void shouldReturnMinutesIfUnderOneHour() {
-		expectResultForDifferenceInSeconds(SECONDS_PER_MINUTE * 2, "2 mins ago");
+		expectResultForDifferenceInSeconds(SECONDS_PER_MINUTE * 2, "2 mins");
 
 	}
 
 	@Test
 	public void shouldReturnJustHourIfExactlyOneHour() {
-		expectResultForDifferenceInSeconds(SECONDS_PER_HOUR, "1 hour ago");
+		expectResultForDifferenceInSeconds(SECONDS_PER_HOUR, "1 hour");
 	}
 
 	@Test
 	public void shouldReturnHourAndMinsIfOverOneHour() {
-		expectResultForDifferenceInSeconds(SECONDS_PER_HOUR + SECONDS_PER_MINUTE * 15, "1 hour 15 mins ago");
+		expectResultForDifferenceInSeconds(SECONDS_PER_HOUR + SECONDS_PER_MINUTE * 15, "1 hour 15 mins");
 	}
 
 	@Test
 	public void shouldReturnHoursAndMinsIfOverTwoHours() {
-		expectResultForDifferenceInSeconds(SECONDS_PER_HOUR * 2 + SECONDS_PER_MINUTE * 17, "2 hours 17 mins ago");
+		expectResultForDifferenceInSeconds(SECONDS_PER_HOUR * 2 + SECONDS_PER_MINUTE * 17, "2 hours 17 mins");
 	}
 
 	@Test
 	public void shouldReturnHoursIfOverOneDay() {
-		expectResultForDifferenceInSeconds(SECONDS_PER_HOUR * 25 + SECONDS_PER_MINUTE * 17, "25 hours 17 mins ago");
+		expectResultForDifferenceInSeconds(SECONDS_PER_HOUR * 25 + SECONDS_PER_MINUTE * 17, "25 hours 17 mins");
 	}
 
 	private void expectResultForDifferenceInSeconds(int seconds, String expected) {

@@ -31,6 +31,6 @@ public class DefaultTimeFormatter {
 			output += moduloMins + " mins ";
 		}
 
-		return output + "ago";
+		return output.trim();
 	}
 }
