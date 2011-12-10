@@ -8,43 +8,67 @@ import static org.springframework.test.web.server.setup.MockMvcBuilders.standalo
 import it.haslearnt.entry.Entry;
 import it.haslearnt.entry.EntryRepository;
 import it.haslearnt.security.SpringSecurityUserAuthenticationInBackend;
+import it.haslearnt.statistics.UserStaticticsRepository;
+import it.haslearnt.statistics.UserStatistics;
 import it.haslearnt.user.User;
 
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.server.result.MockMvcResultMatchers;
 
 import com.google.common.collect.Lists;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TimelineControllerTest {
 
 	TimelineController controller = new TimelineController();
 	ArrayList<Entry> entries = Lists.newArrayList(new Entry().today().iveLearnt("java").andItWas("easy"));
+	@Mock
+	UserStaticticsRepository userStatisticRepository;
 	User user = new User().withName("user");
+	@Mock
+	private EntryRepository entryRepository;
+	@Mock
+	private SpringSecurityUserAuthenticationInBackend userAuthenticationInBackend;
 
 	@Before
 	public void setUp() throws Exception {
-		controller.entryRepository = mock(EntryRepository.class);
-		controller.userAuthenticationInBackend = mock(SpringSecurityUserAuthenticationInBackend.class);
+		controller.setEntryRepository(entryRepository);
+		controller.setUserAuthenticationInBackend(userAuthenticationInBackend);
+		controller.setUserStatisticsRepository(userStatisticRepository);
 	}
 
 	@Test
 	public void shouldServeTimelineView() throws Exception {
-		when(controller.userAuthenticationInBackend.getLoggedUser()).thenReturn(user);
-		when(controller.entryRepository.fetchForUser("user")).thenReturn(entries);
+		//given
+		String ourUser = "user";
+		
+		UserStatistics userStatistics = new UserStatistics();
+		when(userAuthenticationInBackend.getLoggedUser()).thenReturn(user);
+		when(userStatisticRepository.loadStatisticsForUser(ourUser)).thenReturn(userStatistics);
+		when(entryRepository.fetchForUser(ourUser)).thenReturn(entries);
 
+		//when
 		standaloneSetup(controller).build().perform(get("/"))
+		
+		//then
 				.andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.view().name("timeline"))
 				.andExpect(MockMvcResultMatchers.model().attribute("entries", entries))
-				.andExpect(MockMvcResultMatchers.model().attribute("user", user));
+				.andExpect(MockMvcResultMatchers.model().attribute("user", user))
+				.andExpect(MockMvcResultMatchers.model().attribute("userStatistics", userStatistics));
+		
 	}
 
 	@Test
 	public void shouldShowEmptyView4AnonymousUser() throws Exception {
-		when(controller.userAuthenticationInBackend.getLoggedUser()).thenReturn(null);
+		when(userAuthenticationInBackend.getLoggedUser()).thenReturn(null);
 
 		standaloneSetup(controller).build().perform(get("/"))
 				.andExpect(status().isOk())
