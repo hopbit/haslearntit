@@ -38,7 +38,7 @@ public class EntryRepository extends CassandraRepository<Entry> {
 	}
 
 	public List<String> fetchEntriesBySkillName(String skillName) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
