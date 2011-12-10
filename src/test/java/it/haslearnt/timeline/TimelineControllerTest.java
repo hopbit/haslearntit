@@ -13,13 +13,11 @@ import it.haslearnt.user.User;
 import java.util.ArrayList;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.web.server.result.MockMvcResultMatchers;
 
 import com.google.common.collect.Lists;
 
-@Ignore
 public class TimelineControllerTest {
 
 	TimelineController controller = new TimelineController();
@@ -42,6 +40,15 @@ public class TimelineControllerTest {
 				.andExpect(MockMvcResultMatchers.view().name("timeline"))
 				.andExpect(MockMvcResultMatchers.model().attribute("entries", entries))
 				.andExpect(MockMvcResultMatchers.model().attribute("user", user));
+	}
+
+	@Test
+	public void shouldShowEmptyView4AnonymousUser() throws Exception {
+		when(controller.userAuthenticationInBackend.getLoggedUser()).thenReturn(null);
+
+		standaloneSetup(controller).build().perform(get("/"))
+				.andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.view().name("timeline"));
 	}
 
 }
