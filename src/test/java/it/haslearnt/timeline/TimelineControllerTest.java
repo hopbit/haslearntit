@@ -11,15 +11,18 @@ import it.haslearnt.security.SpringSecurityUserAuthenticationInBackend;
 import it.haslearnt.user.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import junit.framework.Assert;
+import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.web.server.result.MockMvcResultMatchers;
 
 import com.google.common.collect.Lists;
+import org.springframework.web.servlet.ModelAndView;
 
-@Ignore
 public class TimelineControllerTest {
 	TimelineController controller = new TimelineController();
 	ArrayList<Entry> entries = Lists.newArrayList(new Entry().today().iveLearnt("java").andItWas("easy"));
@@ -33,6 +36,7 @@ public class TimelineControllerTest {
 	}
 
 	@Test
+    @Ignore
 	public void shouldServeTimelineView() throws Exception {
 
 		when(controller.entryRepository.fetchForUser("user")).thenReturn(entries);
@@ -44,5 +48,14 @@ public class TimelineControllerTest {
 				.andExpect(MockMvcResultMatchers.model().attribute("entries", entries))
 				.andExpect(MockMvcResultMatchers.model().attribute("user", user));
 	}
+
+    @Test
+    public void shouldServeTimelineEntries() throws Exception {
+
+        ModelAndView modelAndView = controller.mainTimelineView();
+
+        List<EntryDto> entries1 = (List) modelAndView.getModelMap().get("entries");
+        Assertions.assertThat(entries1).hasSize(1);
+    }
 
 }

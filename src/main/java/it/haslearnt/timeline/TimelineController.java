@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class TimelineController {
 
@@ -18,14 +21,10 @@ public class TimelineController {
 
 	@RequestMapping("/")
 	public ModelAndView mainTimelineView() {
-		// User loggedUser = securityBackend.getLoggedUser();
-		// List<Entry> entries =
-		// entryRepository.fetchForUser(loggedUser.name());
 		ModelAndView mav = new ModelAndView("timeline");
-		// List<Entry> entries = Lists.newArrayList(new
-		// Entry().today().iveLearnt("java").andItWas("hard"));
-		// mav.addObject("entries", entries);
-		// mav.addObject("user", loggedUser);
+        List<EntryDto> entries = new ArrayList<EntryDto>();
+        entries.add(new EntryDto("dupa"));
+        mav.addObject("entries", entries);
 		return mav;
 	}
 

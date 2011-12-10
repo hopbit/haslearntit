@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %><!DOCTYPE HTML>
-<%@taglib uri="http://www.haslearnt.it/tld" prefix="hl" %>
 <html>
 <head>
 <meta charset=utf-8>
@@ -204,7 +203,7 @@
                         <div style="display: table; float: left;">
                             <div class="entry-text">
                                 <a href="#">Piotr Przybylak</a> has learnt <span class="emphasized">Kamasutra</span> today.<br /> It
-                                was hard and it took him ${hl:format(23*60)} (of total 152738392 hours)<br /> He earned 69 points!
+                                was hard and it took him 60 hours (of total 152738392 hours)<br /> He earned 69 points!
                             </div>
                             <div class="comment-box comments">
                                 <div comment-id="1">
