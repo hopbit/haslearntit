@@ -6,7 +6,6 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.concurrent.TimeUnit;
 
-import it.haslearnt.entry.Entry.TimeType;
 
 import org.joda.time.Duration;
 import org.junit.Test;
@@ -37,7 +36,7 @@ public class EntryTest {
     
     @Test
 	public void shouldReturnLearningTimeInMinutes() {
-    	entry.itTook(10, TimeType.MINUTES);
+    	entry.itTookInMinutes(10);
     	
     	Duration learingDuration = entry.getLearingDuration();
     	

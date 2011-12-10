@@ -13,10 +13,6 @@ import org.joda.time.Duration;
 @Entity("Entries")
 public class Entry extends EntityWithGeneratedId {
 
-	public enum TimeType {
-		MINUTES
-	}
-
 	@Column("skill")
 	private String skill;
 
@@ -31,7 +27,6 @@ public class Entry extends EntityWithGeneratedId {
 
 	private int learningTime;
 
-	private TimeType timeType;
 
 	@Column("points")
 	private String points;
@@ -113,9 +108,8 @@ public class Entry extends EntityWithGeneratedId {
 		return (int) Double.valueOf(points).doubleValue();
 	}
 
-	public Entry itTook(int learningTime, TimeType timeType) {
+	public Entry itTookInMinutes(int learningTime) {
 		this.learningTime = learningTime;
-		this.timeType = timeType;
 		return this;
 	}
 
