@@ -1,9 +1,15 @@
 package it.haslearnt.skill.trends;
 
-public class SkillTrend {
+import it.haslearnt.cassandra.mapping.*;
 
+@Entity("SkillTrends")
+public class SkillTrend implements Comparable<SkillTrend> {
+
+	@Id
 	private String skill;
-	private int numberOfPeople;
+
+	@Column("numberOfPeople")
+	private String numberOfPeople;
 
 	public SkillTrend withSkill(String skill) {
 		this.skill = skill;
@@ -11,8 +17,7 @@ public class SkillTrend {
 	}
 
 	public SkillTrend learntBy(int numberOfPeople) {
-
-		this.numberOfPeople = numberOfPeople;
+		this.numberOfPeople = Integer.toString(numberOfPeople);
 		return this;
 	}
 
@@ -20,7 +25,7 @@ public class SkillTrend {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + numberOfPeople;
+		result = prime * result + ((numberOfPeople == null) ? 0 : numberOfPeople.hashCode());
 		result = prime * result + ((skill == null) ? 0 : skill.hashCode());
 		return result;
 	}
@@ -34,7 +39,10 @@ public class SkillTrend {
 		if (getClass() != obj.getClass())
 			return false;
 		SkillTrend other = (SkillTrend) obj;
-		if (numberOfPeople != other.numberOfPeople)
+		if (numberOfPeople == null) {
+			if (other.numberOfPeople != null)
+				return false;
+		} else if (!numberOfPeople.equals(other.numberOfPeople))
 			return false;
 		if (skill == null) {
 			if (other.skill != null)
@@ -44,4 +52,16 @@ public class SkillTrend {
 		return true;
 	}
 
+	@Override
+	public int compareTo(SkillTrend o) {
+		return Integer.valueOf(o.numberOfPeople) - Integer.valueOf(numberOfPeople);
+	}
+
+	public String skill() {
+		return skill;
+	}
+
+	public int learnedBy() {
+		return Integer.valueOf(numberOfPeople);
+	}
 }

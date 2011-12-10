@@ -199,7 +199,7 @@
                         <div style="display: table; float: left;">
                             <div class="entry-text">
                                 <a href="#">Krzysztof Jelski</a> has been learning <span class="emphasized">HTML &amp; CSS</span> today.<br />
-                                It was easy and it took him 3 hours (of total 18 hours)<br /> He earned 15 points!
+                                It was easy and it took him DUPA (of total 18 hours)<br /> He earned 15 points!
                             </div>
                             <div class="comment-box">
                                 <a href="#" style="color: #aaa;" onclick="$('#comment-1').show();">Leave a comment</a>
@@ -220,7 +220,7 @@
                         <div style="display: table; float: left;">
                             <div class="entry-text">
                                 <a href="#">Piotr Przybylak</a> has learnt <span class="emphasized">Kamasutra</span> today.<br /> It
-                                was hard and it took him 23 hours (of total 152738392 hours)<br /> He earned 69 points!
+                                was hard and it took him 60 hours (of total 152738392 hours)<br /> He earned 69 points!
                             </div>
                             <div class="comment-box comments">
                                 <div comment-id="1">

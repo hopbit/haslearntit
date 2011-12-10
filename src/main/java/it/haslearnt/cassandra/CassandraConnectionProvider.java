@@ -5,13 +5,11 @@
 
 package it.haslearnt.cassandra;
 
-import static it.haslearnt.cassandra.CassandraColumnFamilyManager.addColumnFamilyIfNeeded;
-import static it.haslearnt.cassandra.CassandraColumnFamilyManager.recreateColumnFamily;
+import static it.haslearnt.cassandra.CassandraColumnFamilyManager.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import org.scale7.cassandra.pelops.spring.CommonsBackedPoolFactoryBean;
+import org.scale7.cassandra.pelops.spring.*;
 
 public class CassandraConnectionProvider extends CommonsBackedPoolFactoryBean {
 
@@ -24,6 +22,7 @@ public class CassandraConnectionProvider extends CommonsBackedPoolFactoryBean {
 			put("Entries", "UTF8Type");
 			put("UserEntries", "UTF8Type");
 			put("SkillEntries", "UTF8Type");
+			put("SkillTrends", "UTF8Type");
 			put("Users", "UTF8Type");
 			put("UserOpenId", "UTF8Type");
 		}

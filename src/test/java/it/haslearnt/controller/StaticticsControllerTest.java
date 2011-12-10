@@ -1,6 +1,6 @@
 package it.haslearnt.controller;
 
-import it.haslearnt.service.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsService;
 
 import org.junit.Assert;
 import org.junit.Before;
