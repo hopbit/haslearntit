@@ -3,6 +3,7 @@ package it.haslearnt.entry;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
 import it.haslearnt.entry.Entry.TimeType;
 
 import java.util.*;
@@ -12,6 +13,7 @@ import org.junit.*;
 import org.springframework.beans.factory.annotation.*;
 
 import setup.*;
+import static junit.framework.Assert.assertTrue;
 
 public class NewEntryTest extends IntegrationTest {
 
@@ -63,4 +65,36 @@ public class NewEntryTest extends IntegrationTest {
 		
 		Assertions.assertThat(skills).containsOnly(scala1);
 	}
+
+    @Test
+    public void saveNewEntryWithSkillNotCompleted() {
+        // given
+        // entry already prepared
+        Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").build();
+
+        //when
+        repository.save(entry);
+
+        //then
+        assertNotNull(entry.id());
+        Entry fetchedEntry = repository.load(entry.id());
+        assertNotNull(fetchedEntry);
+        assertFalse(fetchedEntry.isCompleted());
+    }
+
+     @Test
+    public void saveNewEntryWithSkillCompleted() {
+        // given
+
+        Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").andIveCompleted().build();
+
+        //when
+        repository.save(entry);
+
+        //then
+        assertNotNull(entry.id());
+        Entry fetchedEntry = repository.load(entry.id());
+        assertNotNull(fetchedEntry);
+        assertTrue(fetchedEntry.isCompleted());
+    }
 }
