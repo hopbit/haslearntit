@@ -7,9 +7,11 @@ import org.junit.*;
 
 public class AssigningPointsTest {
 
+	Entry sampleEntry = new Entry().today().iveLearnt("java");
+
 	@Test
 	public void shouldAssignZeroPointsForZeroLearningTime() throws Exception {
-		Entry entry = new Entry().today().iveLearnt("java").andItWas("hard").itTook(0, TimeType.MINUTES);
+		Entry entry = sampleEntry.itTook(0, TimeType.MINUTES);
 
 		entry.build();
 
@@ -18,7 +20,7 @@ public class AssigningPointsTest {
 
 	@Test
 	public void calculatePointsForEasy() throws Exception {
-		Entry entry = new Entry().today().iveLearnt("java").andItWas("easy").itTook(10, TimeType.MINUTES);
+		Entry entry = sampleEntry.andItWas("easy").itTook(10, TimeType.MINUTES);
 
 		entry.build();
 
@@ -27,13 +29,22 @@ public class AssigningPointsTest {
 	}
 
 	@Test
+	public void calculatePointsForMedium() throws Exception {
+		Entry entry = sampleEntry.andItWas("medium").itTook(10, TimeType.MINUTES);
+
+		entry.build();
+
+		assertEquals(12, entry.points());
+
+	}
+
+	@Test
 	public void calculatePointsForHard() throws Exception {
-		Entry entry = new Entry().today().iveLearnt("java").andItWas("hard").itTook(10, TimeType.MINUTES);
+		Entry entry = sampleEntry.andItWas("hard").itTook(10, TimeType.MINUTES);
 
 		entry.build();
 
 		assertEquals(14, entry.points());
 
 	}
-
 }

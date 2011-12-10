@@ -1,16 +1,17 @@
 package endtoend;
 
-import org.eclipse.jetty.server.*;
-import org.eclipse.jetty.server.bio.*;
-import org.eclipse.jetty.webapp.*;
-import org.junit.*;
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.*;
-
-import org.scale7.cassandra.pelops.Selector;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.bio.SocketConnector;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.junit.After;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.scale7.cassandra.pelops.pool.IThriftPool;
 import org.springframework.beans.factory.annotation.Autowired;
-import setup.*;
+import setup.IntegrationTest;
 
 public class AddEntryEndToEndTest extends IntegrationTest {
 
