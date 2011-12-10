@@ -1,6 +1,6 @@
 package it.haslearnt.controller;
 
-import it.haslearnt.service.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

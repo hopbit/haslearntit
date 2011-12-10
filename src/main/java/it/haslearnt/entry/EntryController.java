@@ -1,7 +1,8 @@
 package it.haslearnt.entry;
 
+import com.google.gson.Gson;
 import it.haslearnt.security.UserAuthenticationInBackend;
-import it.haslearnt.service.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsService;
 
 import java.util.List;
 
@@ -52,11 +53,11 @@ public class EntryController {
         return "OK";
     }
 
-    public String fetchEntryListByName(ModelMap model) {
-        String prefix = (String) model.get(SKILL_KEY);
+    @ResponseBody
+    public String fetchSuggestedSkills(@RequestParam String prefix) {
         List<String> allSkills = entryRepository.fetchSkills();
-        model.put(FOUND_SKILLS_KEY, findMatchingSkills(prefix, allSkills));
-        return SUGGESTIONS_SKILLS_VIEW;
+        List<String> matchingSkills = findMatchingSkills(prefix.toLowerCase(), allSkills);
+        return new Gson().toJson(matchingSkills);
     }
 
     private List<String> findMatchingSkills(String prefix,

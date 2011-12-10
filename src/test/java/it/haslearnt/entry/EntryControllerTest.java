@@ -7,11 +7,13 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.*
 import static org.springframework.test.web.server.setup.MockMvcBuilders.*;
 import it.haslearnt.security.AuthenticationUserDetails;
 import it.haslearnt.security.UserAuthenticationInBackend;
-import it.haslearnt.service.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsService;
 
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
@@ -66,16 +68,34 @@ public class EntryControllerTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void shouldFetchSkillsListByName() throws Exception {
-        String suggestedSkill = "scala1";
-        when(entryRepository.fetchSkills()).thenReturn(Arrays.asList(suggestedSkill, "java"));
-        ModelMap model = createInputModel("scala");
+    public void shouldFetchSuggestedSkillsBasicCase() throws Exception {
+        String foundSkill = "scala1";
+        mockRepositoryShouldFetchSkills(foundSkill, "java");
 
-        String fetchEntryListByName = entryController.fetchEntryListByName(model);
+        String suggestedSkills = entryController.fetchSuggestedSkills("scala");
 
-        List<String> skills = (List<String>) model.get(EntryController.FOUND_SKILLS_KEY);
-        assertThat(EntryController.SUGGESTIONS_SKILLS_VIEW).isEqualTo(fetchEntryListByName);
-        assertThat(skills).containsOnly(suggestedSkill);
+        List<String> skills = getSkillsFromJson(suggestedSkills);
+        assertThat(skills).containsOnly(foundSkill);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void shouldFetchSuggestedSkillsVerifyCaseInsensitive() throws Exception {
+        String foundSkill = "scala123";
+        mockRepositoryShouldFetchSkills(foundSkill, "java");
+
+        String suggestedSkills = entryController.fetchSuggestedSkills("ScAlA");
+
+        List<String> skills = getSkillsFromJson(suggestedSkills);
+        assertThat(skills).containsOnly(foundSkill);
+    }
+
+    private void mockRepositoryShouldFetchSkills(String... skills) {
+        when(entryRepository.fetchSkills()).thenReturn( Arrays.asList(skills));
+    }
+
+    private List<String> getSkillsFromJson(String suggestedSkills) {
+        return new Gson().fromJson(suggestedSkills, new TypeToken<List<String>>(){}.getType());
     }
 
     @Test
