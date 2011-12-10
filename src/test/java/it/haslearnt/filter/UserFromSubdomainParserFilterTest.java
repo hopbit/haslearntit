@@ -46,7 +46,7 @@ public class UserFromSubdomainParserFilterTest {
         verify(request, times(0)).setAttribute(any(String.class), any());
     }
 
-    @Test public void shouldAppendUsernameWhenSubDomainGiven() throws IOException, ServletException {
+    @Test public void shouldAddUsernameAsRequestParamWhenSubDomainGiven() throws IOException, ServletException {
         // given
         UserFromSubdomainParserFilter parser = prepareServerPath(bob + "." + masterDomain);
 
@@ -59,7 +59,7 @@ public class UserFromSubdomainParserFilterTest {
     }
 
     @Test
-    public void shouldAppendUsernameWhenLocalhostSubdomain() throws IOException, ServletException {
+    public void shouldAddUsernameAsRequestParamWhenLocalhostSubdomain() throws IOException, ServletException {
         //given
         UserFromSubdomainParserFilter parser = prepareServerPath(bob + ".localhost");
 
