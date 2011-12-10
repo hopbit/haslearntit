@@ -6,7 +6,7 @@ import static org.springframework.test.web.server.request.MockMvcRequestBuilders
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.server.setup.MockMvcBuilders.standaloneSetup;
 
-import org.junit.Test;
+import org.junit.*;
 
 public class EntryControllerTest {
 
@@ -19,6 +19,6 @@ public class EntryControllerTest {
 				.perform(post("/entry/submit").param("text", "new skill").param("when", "yesterday").param("difficulty", "easy"))
 				.andExpect(status().isOk());
 
-		verify(entryRepository).save(new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy"));
+		verify(entryRepository).save(new Entry().when("yesterday").iveLearnt("new skill").andItWas("easy").build());
 	}
 }

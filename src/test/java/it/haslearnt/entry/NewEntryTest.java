@@ -3,6 +3,7 @@ package it.haslearnt.entry;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import it.haslearnt.entry.Entry.TimeType;
 
 import java.util.*;
 
@@ -18,7 +19,7 @@ public class NewEntryTest extends IntegrationTest {
 
 	@Test
 	public void saveNewEntry() {
-		Entry entry = new Entry().iveLearnt("something").today().andItWas("hard");
+		Entry entry = new Entry().iveLearnt("something").today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
 
 		repository.save(entry);
 
@@ -27,13 +28,14 @@ public class NewEntryTest extends IntegrationTest {
 		assertNotNull(fetchedEntry);
 		assertEquals("something", fetchedEntry.what());
 		assertEquals("today", fetchedEntry.when());
-		assertEquals("hard", fetchedEntry.howDifficult());
+		assertEquals("easy", fetchedEntry.howDifficult());
+		assertEquals(10, fetchedEntry.points());
 	}
 
 	@Test
 	public void fetchEntryForUser() {
-		Entry entry = new Entry().today().iveLearnt("java").andItWas("hard");
-		Entry entry2 = new Entry().today().iveLearnt("net").andItWas("hard");
+		Entry entry = new Entry().today().iveLearnt("java").andItWas("hard").build();
+		Entry entry2 = new Entry().today().iveLearnt("net").andItWas("hard").build();
 
 		repository.saveEntry(entry, "tomek");
 		repository.saveEntry(entry2, "tomek");

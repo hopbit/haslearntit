@@ -26,7 +26,8 @@ public class Entry extends EntityWithGeneratedId {
 
 	private TimeType timeType;
 
-	private int points;
+	@Column("points")
+	private String points;
 
 	public String what() {
 		return skill;
@@ -74,17 +75,20 @@ public class Entry extends EntityWithGeneratedId {
 		return this;
 	}
 
-	public void build() {
+	public Entry build() {
 		calculatePoints();
+		return this;
 	}
 
 	private void calculatePoints() {
-		this.points = (int) (learningTime * difficultyFactor());
+		this.points = Double.toString(learningTime * difficultyFactor());
 	}
 
 	private double difficultyFactor() {
 		if ("easy".equals(difficulty))
 			return 1;
+		if ("medium".equals(difficulty))
+			return 1.2;
 		if ("hard".equals(difficulty))
 			return 1.4;
 
@@ -92,7 +96,7 @@ public class Entry extends EntityWithGeneratedId {
 	}
 
 	public int points() {
-		return points;
+		return (int) Double.valueOf(points).doubleValue();
 	}
 
 	public Entry itTook(int learningTime, TimeType timeType) {
