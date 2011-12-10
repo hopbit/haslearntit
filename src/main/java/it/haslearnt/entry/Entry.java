@@ -1,16 +1,15 @@
 package it.haslearnt.entry;
 
-import it.haslearnt.cassandra.mapping.Column;
-import it.haslearnt.cassandra.mapping.Entity;
-import it.haslearnt.cassandra.mapping.EntityWithGeneratedId;
+import it.haslearnt.cassandra.mapping.*;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.builder.*;
 
 @Entity("Entries")
 public class Entry extends EntityWithGeneratedId {
+
+	public enum TimeType {
+		MINUTES
+	}
 
 	@Column("skill")
 	private String skill;
@@ -20,6 +19,14 @@ public class Entry extends EntityWithGeneratedId {
 
 	@Column("difficulty")
 	private String difficulty;
+
+	private boolean completed;
+
+	private int learningTime;
+
+	private TimeType timeType;
+
+	private int points;
 
 	public String what() {
 		return skill;
@@ -67,4 +74,38 @@ public class Entry extends EntityWithGeneratedId {
 		return this;
 	}
 
+	public void build() {
+		calculatePoints();
+	}
+
+	private void calculatePoints() {
+		this.points = (int) (learningTime * difficultyFactor());
+	}
+
+	private double difficultyFactor() {
+		if ("easy".equals(difficulty))
+			return 1;
+		if ("hard".equals(difficulty))
+			return 1.4;
+
+		return 0;
+	}
+
+	public int points() {
+		return points;
+	}
+
+	public Entry itTook(int learningTime, TimeType timeType) {
+		this.learningTime = learningTime;
+		this.timeType = timeType;
+		return this;
+	}
+
+	public void andIveCompleted() {
+		this.completed = true;
+	}
+
+	public boolean isCompleted() {
+		return this.completed;
+	}
 }
