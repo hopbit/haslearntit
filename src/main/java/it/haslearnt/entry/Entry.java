@@ -8,6 +8,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.joda.time.Duration;
 
 @Entity("Entries")
 public class Entry extends EntityWithGeneratedId {
@@ -126,4 +127,9 @@ public class Entry extends EntityWithGeneratedId {
 	public boolean isCompleted() {
 		return Boolean.valueOf(completed);
 	}
+
+	public Duration getLearingDuration() {
+		return Duration.standardMinutes(learningTime);
+	}
+		
 }
