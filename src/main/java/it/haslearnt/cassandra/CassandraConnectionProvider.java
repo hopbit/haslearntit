@@ -23,6 +23,7 @@ public class CassandraConnectionProvider extends CommonsBackedPoolFactoryBean {
 			put("Notes", "LongType");
 			put("Entries", "UTF8Type");
 			put("UserEntries", "UTF8Type");
+			put("SkillEntries", "UTF8Type");
 			put("Users", "UTF8Type");
 			put("UserOpenId", "UTF8Type");
 		}

@@ -31,7 +31,7 @@ public class EntryController {
 
 	public String fetchEntryListByName(ModelMap model) {
 		String skill = (String) model.get(SKILL_KEY);
-		List<String> suggestedSkills = entryRepository.fetchEntriesBySkillName(skill);
+		List<String> suggestedSkills = entryRepository.fetchSkills();
 		model.put(FOUND_SKILLS_KEY, suggestedSkills);
 		return SUGGESTIONS_SKILLS_VIEW;
 	}

@@ -5,18 +5,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import it.haslearnt.entry.Entry.TimeType;
 
-import java.util.*;
+import java.util.List;
 
-import org.fest.assertions.Assertions;
-import org.junit.*;
-import org.springframework.beans.factory.annotation.*;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import setup.*;
+import setup.IntegrationTest;
 
 public class NewEntryTest extends IntegrationTest {
 
 	@Autowired
 	EntryRepository repository;
+	private String user = "tomrek";
 
 	@Test
 	public void saveNewEntry() {
@@ -32,6 +32,34 @@ public class NewEntryTest extends IntegrationTest {
 		assertEquals("easy", fetchedEntry.howDifficult());
 		assertEquals(10, fetchedEntry.points());
 	}
+	
+	@Test
+	public void saveEntriesWithSkills() {
+		final String skillName1 = "something";
+		final String skillName2 = "somethingDifferent";
+		Entry entry1 = new Entry().iveLearnt(skillName1).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+		Entry entry2 = new Entry().iveLearnt(skillName2).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+
+		repository.saveEntry(entry1, user);
+		repository.saveEntry(entry2, user);
+		
+		List<String> skills = repository.fetchSkills();
+		assertThat(skills).containsOnly(skillName1, skillName2);
+	}
+	
+	@Test
+	public void saveEntriesWithSameSkill() {
+		final String skillName = "something";
+		Entry entry1 = new Entry().iveLearnt(skillName).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+		Entry entry2 = new Entry().iveLearnt(skillName).today().andItWas("easy").itTook(10, TimeType.MINUTES).build();
+
+		repository.saveEntry(entry1, user);
+		repository.saveEntry(entry2, user);
+		
+		List<String> skills = repository.fetchSkills();
+		assertThat(skills).containsOnly(skillName);
+	}
+
 
 	@Test
 	public void fetchEntryForUser() {
@@ -50,17 +78,4 @@ public class NewEntryTest extends IntegrationTest {
 		assertThat(fetchedEntries4Rafal).containsOnly(entry3);
 	}
 	
-	@Test
-	@Ignore
-	public void fetchEntriesByName()  {
-		String scala1 = "scala1";
-		Entry scala = new Entry().iveLearnt(scala1).today().andItWas("hard");
-		Entry java = new Entry().iveLearnt("java").today().andItWas("easy");
-		repository.save(scala);
-		repository.save(java);
-		
-		List<String> skills = repository.fetchEntriesBySkillName("scala");
-		
-		Assertions.assertThat(skills).containsOnly(scala1);
-	}
 }
