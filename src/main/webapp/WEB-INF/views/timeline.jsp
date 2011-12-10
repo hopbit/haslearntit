@@ -62,17 +62,6 @@
 			
 			$("#entry").submit(function() {
 				var date = new Date();
-				$("#wall").prepend(   //FIXME get rid of this fake implementation :)
-					'<div class="entry-box"><div class="entry-photo"><img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" /></div>' +
-	                '<div style="display: table; float: left;"><div class="entry-text"><a href="#">Paweł Lipiński</a> ' + $('#dropdown-choose-type').text() + 
-	                '<span class="emphasized">' + $('#skill').val() + '</span> today.<br />' +
-	                'It was ' + $('#dropdown-choose-level').text() + ' and it took him ' + $('#learningtime').val() + ' ' + $('#dropdown-choose-time').text() + 
-	                '(of total 18 hours)<br /> He earned 15 points!' +
-	                '</div><div class="comment-box"><a href="#" style="color: #aaa;" onclick="$(\'#comment-1\').show();">Leave a comment</a>' +
-	                '</div><div id="comment-1" class="comment-box comments" style="display: table; display: none;"><div class="comment-input">' +
-	                '<form class="comment-textfield"><input type="text" id="comment-1-input" placeholder="Leave a comment..."/></form></div></div>' +
-	                '</div><div class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</div></div>'		        
-				);
                 $.ajax({
                     url: "/entry/submit",
                     method: 'post',
@@ -84,6 +73,17 @@
                         learningtime: $('#learningtime').val()
                     },
                     success: function() {
+						$("#wall").prepend(   //FIXME get rid of this fake implementation :)
+							'<div class="entry-box"><div class="entry-photo"><img src="http://gravatar.com/avatar/0606d1268f2a8198d7fd601c7350acb9" /></div>' +
+			                '<div style="display: table; float: left;"><div class="entry-text"><a href="#">Paweł Lipiński</a> ' + $('#dropdown-choose-type').text() + 
+			                '<span class="emphasized">' + $('#skill').val() + '</span> today.<br />' +
+			                'It was ' + $('#dropdown-choose-level').text() + ' and it took him ' + $('#learningtime').val() + ' ' + $('#dropdown-choose-time').text() + 
+			                '(of total 18 hours)<br /> He earned 15 points!' +
+			                '</div><div class="comment-box"><a href="#" style="color: #aaa;" onclick="$(\'#comment-1\').show();">Leave a comment</a>' +
+			                '</div><div id="comment-1" class="comment-box comments" style="display: table; display: none;"><div class="comment-input">' +
+			                '<form class="comment-textfield"><input type="text" id="comment-1-input" placeholder="Leave a comment..."/></form></div></div>' +
+			                '</div><div class="entry-date">Dzisiaj, ' + date.getHours() + ':' + date.getMinutes() +'</div></div>'		        
+						);
                         $(this).addClass("done");
                     }
                 })
