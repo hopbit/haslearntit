@@ -1,7 +1,7 @@
 package it.haslearnt.entry;
 
 import it.haslearnt.security.UserAuthenticationInBackend;
-import it.haslearnt.service.UserStaticticsService;
+import it.haslearnt.statistics.UserStaticticsService;
 
 import java.util.List;
 
