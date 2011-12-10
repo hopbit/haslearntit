@@ -25,11 +25,14 @@ public class UserTimelineController {
 
     static String userTimeLineKey = "userTimeline";
     static String userTimelineView = "userTimeline";
+    static int offset = 0;
+    static int limit = 10;
+
 
     @RequestMapping(method = RequestMethod.GET)
     public String showUserTimeline(String userName, Model model) {
         verifyUserExists(userName);
-        List<Entry> userTimeLine = entryRepository.fetchForUser(userName);
+        List<Entry> userTimeLine = entryRepository.fetchForUser(userName,limit,offset);
         model.addAttribute(userTimeLineKey, userTimeLine);
         return userTimelineView;
     }

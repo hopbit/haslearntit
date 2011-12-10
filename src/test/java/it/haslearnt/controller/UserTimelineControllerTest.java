@@ -51,14 +51,14 @@ public class UserTimelineControllerTest {
     @Test
     public void shouldShowUserTimeLineAndReturnView() {
         //given
-        given(entryRepository.fetchForUser(userName)).willReturn(userTimeLineEntryList);
+        given(entryRepository.fetchForUser(userName, UserTimelineController.limit, UserTimelineController.offset)).willReturn(userTimeLineEntryList);
         given(userRepository.load(userName)).willReturn(user);
 
         //when
         String toView = userTimerController.showUserTimeline(userName, model);
 
         //then
-        verify(model).addAttribute(UserTimelineController.userTimeLineKey,userTimeLineEntryList);
+        verify(model).addAttribute(UserTimelineController.userTimeLineKey, userTimeLineEntryList);
         assertEquals(UserTimelineController.userTimeLineKey, toView);
     }
 
