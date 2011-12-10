@@ -1,5 +1,6 @@
 <%@page import="java.util.List"%>
 <%@page import="it.haslearnt.skill.trends.SkillTrend"%>
+<%@page import="it.haslearnt.timeline.PreetyTimeFormaterJSTLFunction"%>
 <%@ page contentType="text/html; charset=UTF-8" %><!DOCTYPE HTML>
 <html>
 <head>
@@ -217,7 +218,7 @@
                         <div style="display: table; float: left;">
                             <div class="entry-text">
                                 <a href="#">Krzysztof Jelski</a> has been learning <span class="emphasized"> <%=entry.what() %></span> today.<br />
-                                It was easy and it took him <%=entry.getLearningTime()%> hours (of total 18 hours)<br /> He earned  points!
+                                It was easy and it took him <%= PreetyTimeFormaterJSTLFunction.format(entry.getLearingDuration())%> (of total 18 hours)<br /> He earned  points!
                             </div>
                             <div class="comment-box">
                                 <a href="#" style="color: #aaa;" onclick="$('#comment-1').show();">Leave a comment</a>
