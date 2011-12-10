@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.common.collect.Lists;
+
 @Controller
 public class EntryController {
 
@@ -30,9 +32,20 @@ public class EntryController {
 	}
 
 	public String fetchEntryListByName(ModelMap model) {
-		String skill = (String) model.get(SKILL_KEY);
-		List<String> suggestedSkills = entryRepository.fetchSkills();
-		model.put(FOUND_SKILLS_KEY, suggestedSkills);
+		String prefix = (String) model.get(SKILL_KEY);
+		List<String> allSkills = entryRepository.fetchSkills();
+		model.put(FOUND_SKILLS_KEY, findMatchingSkills(prefix, allSkills));
 		return SUGGESTIONS_SKILLS_VIEW;
+	}
+
+	private List<String> findMatchingSkills(String prefix,
+			List<String> skills) {
+		List<String> resultSkills = Lists.newArrayList();
+		for (String skill : skills) {
+			if (skill.startsWith(prefix)) {
+				resultSkills.add(skill);
+			}
+		}
+		return resultSkills;
 	}
 }

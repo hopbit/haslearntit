@@ -11,7 +11,6 @@ import static org.springframework.test.web.server.setup.MockMvcBuilders.standalo
 import java.util.Arrays;
 import java.util.List;
 
-import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
@@ -41,36 +40,19 @@ public class EntryControllerTest {
 						.andItWas("easy"));
 	}
 
-//	@Test
-//	@SuppressWarnings("unchecked")
-//	public void shouldFetchEntryListByName() throws Exception {
-//		String skillName = "scala";
-//		String suggestedSkill = "scala1";
-//		when(entryRepository.fetchSkills(skillName)).thenReturn(
-//				Arrays.asList(suggestedSkill));
-//		ModelMap model = createInputModel(skillName);
-//
-//
-//		String fetchEntryListByName = entryController
-//				.fetchEntryListByName(model);
-//		
-//		List<String> skills = (List<String>) model.get(EntryController.FOUND_SKILLS_KEY);
-//		assertThat(EntryController.SUGGESTIONS_SKILLS_VIEW).isEqualTo(fetchEntryListByName);
-//		assertThat(skills).containsOnly(suggestedSkill);
-//	}
-//	
-//	@Test
-//	public void fetchEntriesByName()  {
-//		String scala1 = "scala1";
-//		Entry scala = new Entry().iveLearnt(scala1).today().andItWas("hard").build();
-//		Entry java = new Entry().iveLearnt("java").today().andItWas("easy").build();
-//		repository.save(scala);
-//		repository.save(java);
-//		
-//		List<String> skills = repository.fetchSkills("scala");
-//		
-//		Assertions.assertThat(skills).containsOnly(scala1);
-//	}
+	@Test
+	@SuppressWarnings("unchecked")
+	public void shouldFetchSkillsListByName() throws Exception {
+		String suggestedSkill = "scala1";
+		when(entryRepository.fetchSkills()).thenReturn( Arrays.asList(suggestedSkill, "java"));
+		ModelMap model = createInputModel("scala");
+
+		String fetchEntryListByName = entryController .fetchEntryListByName(model);
+		
+		List<String> skills = (List<String>) model.get(EntryController.FOUND_SKILLS_KEY);
+		assertThat(EntryController.SUGGESTIONS_SKILLS_VIEW).isEqualTo(fetchEntryListByName);
+		assertThat(skills).containsOnly(suggestedSkill);
+	}
 
 	private ModelMap createInputModel(String skillName) {
 		ModelMap model = new ModelMap();
