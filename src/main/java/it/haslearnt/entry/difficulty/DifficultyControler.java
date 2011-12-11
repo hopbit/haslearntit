@@ -19,7 +19,6 @@ public class DifficultyControler {
 	@RequestMapping("/skill/difficulty")
 	@ResponseBody
 	public String getDifficultyLevel(@RequestParam("skill") String skill) {
-		System.out.println("getDifficultyLevel skill return: " + difficultyRepository.getDifficultyFor(skill));
 		return difficultyRepository.getDifficultyFor(skill);
 	}
 

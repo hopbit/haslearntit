@@ -30,11 +30,11 @@ public class EntryPointsCalculator {
 	private double difficultyFactor(String difficulty) {
 		Entry.DifficultyLevel level = Entry.DifficultyLevel.valueOf(difficulty);
 		switch (level) {
-			case EASY:
+			case easy:
 				return 1;
-			case MEDIUM:
+			case medium:
 				return 1.2;
-			case HARD:
+			case hard:
 				return 1.4;
 			default:
 				throw new IllegalStateException("Unsupported level " + difficulty);

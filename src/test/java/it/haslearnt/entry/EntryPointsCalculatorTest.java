@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 
 
@@ -36,7 +37,7 @@ public class EntryPointsCalculatorTest {
 	@Test
 	public void shouldAssignZeroPointsForZeroLearningTime() {
 		//given
-		String difficulty = Entry.DifficultyLevel.EASY.name();
+		String difficulty = Entry.DifficultyLevel.easy.name();
 		Entry entry = sampleEntry.andItWas(difficulty).itTookInMinutes(0);
 
 
@@ -49,7 +50,7 @@ public class EntryPointsCalculatorTest {
 
 	@Test
 	public void calculatePointsForEasy() {
-		Entry entry = sampleEntry.andItWas(Entry.DifficultyLevel.EASY.name()).itTookInMinutes(10);
+		Entry entry = sampleEntry.andItWas(Entry.DifficultyLevel.easy.name()).itTookInMinutes(10);
 
 		//when
 		int points = sut.calculate(entry.getDifficulty(), entry.getLearningTime(), entry.getSkill());
@@ -60,7 +61,7 @@ public class EntryPointsCalculatorTest {
 
 	@Test
 	public void calculatePointsForMedium() {
-		Entry entry = sampleEntry.andItWas(Entry.DifficultyLevel.MEDIUM.name()).itTookInMinutes(10);
+		Entry entry = sampleEntry.andItWas(Entry.DifficultyLevel.medium.name()).itTookInMinutes(10);
 
 	//when
 	int points = sut.calculate(entry.getDifficulty(), entry.getLearningTime(), entry.getSkill());
@@ -72,7 +73,7 @@ public class EntryPointsCalculatorTest {
 
 	@Test
 	public void calculatePointsForHard() {
-		Entry entry = sampleEntry.andItWas(Entry.DifficultyLevel.HARD.name()).itTookInMinutes(10);
+		Entry entry = sampleEntry.andItWas(Entry.DifficultyLevel.hard.name()).itTookInMinutes(10);
 
 		//when
 		int points = sut.calculate(entry.getDifficulty(), entry.getLearningTime(), entry.getSkill());
@@ -86,7 +87,7 @@ public class EntryPointsCalculatorTest {
 		//given
 		String skill = "nazwaSkila";
 		given(skillRepository.isNew(skill)).willReturn(true);
-		Entry entry = sampleEntry.andItWas(Entry.DifficultyLevel.EASY.name()).itTookInMinutes(10).iveLearnt(skill);
+		Entry entry = sampleEntry.andItWas(Entry.DifficultyLevel.easy.name()).itTookInMinutes(10).iveLearnt(skill);
 
 		//when
 		int points = sut.calculate(entry.getDifficulty(), entry.getLearningTime(), entry.getSkill());
@@ -94,4 +95,5 @@ public class EntryPointsCalculatorTest {
 		//then
 		assertThat(points).isEqualTo(20);
 	}
+	
 }

@@ -1,11 +1,13 @@
 package it.haslearnt.entry;
 
-import static org.fest.assertions.Assertions.*;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.server.setup.MockMvcBuilders.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.server.setup.MockMvcBuilders.standaloneSetup;
 import it.haslearnt.security.AuthenticationUserDetails;
 import it.haslearnt.security.UserAuthenticationInBackend;
 import it.haslearnt.statistics.UserStaticticsRepository;
@@ -147,7 +149,7 @@ public class EntryControllerTest {
 
 		verify(entryRepository).saveEntry(entry.build(), USER_NAME);
 	}
-
+	
 	private DefaultRequestBuilder createRequestParams() {
 		return post("/entry/submit")
 				.param("text", "new skill")

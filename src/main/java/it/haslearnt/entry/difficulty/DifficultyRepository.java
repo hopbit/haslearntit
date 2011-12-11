@@ -12,21 +12,21 @@ import org.scale7.cassandra.pelops.Selector;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class DifficultyRepository extends CassandraRepository<Entry>{
+public class DifficultyRepository extends CassandraRepository<Entry> {
+
 	public String getDifficultyFor(String skill) {
-		List<CounterColumn> columns = pool.createSelector()
-				.getCounterColumnsFromRow("DifficultyLevel", Bytes.fromUTF8("all"), 
-						Selector.newColumnsPredicate(skill, skill+"\255", false, 3), ConsistencyLevel.ONE);
-		String maxDiff="medium";
-		long maxVal=0;
+		List<CounterColumn> columns = pool.createSelector().getCounterColumnsFromRow("DifficultyLevel", Bytes.fromUTF8("all"),
+				Selector.newColumnsPredicate(skill, skill + "\255", false, 3), ConsistencyLevel.ONE);
+		String maxDiff = "medium";
+		long maxVal = 0;
 		for (CounterColumn counterColumn : columns) {
-			if (maxVal<counterColumn.value){
-				maxVal=counterColumn.value;
-				String temp=Bytes.toUTF8(counterColumn.name);
-				maxDiff=temp.split("\0")[1];
+			if (maxVal < counterColumn.value) {
+				maxVal = counterColumn.value;
+				String temp = Bytes.toUTF8(counterColumn.name);
+				maxDiff = temp.split("\0")[1];
 			}
 		}
-		
+
 		return maxDiff;
 	}
 }

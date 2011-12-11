@@ -14,9 +14,9 @@ import org.joda.time.Duration;
 public class Entry extends EntityWithGeneratedId {
 
 	public enum DifficultyLevel {
-		EASY,
-		MEDIUM,
-		HARD
+		easy,
+		medium,
+		hard
 	}
 
 	@Column("skill")
