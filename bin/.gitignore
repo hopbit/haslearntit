@@ -1,0 +1,11 @@
+.idea
+target
+tmp
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings
+velocity.log
+local_repository

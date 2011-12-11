@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http>
+         <security:session-management session-fixation-protection="migrateSession"/>
+
+         <!-- Make sure you are not sending name/password in plain text on open channel. Use SSL (https) instead -->
+         <security:intercept-url pattern="/login.jsp" requires-channel="https" />
+         <security:intercept-url pattern="/j_spring_security_check" requires-channel="https" />
+         <security:intercept-url pattern="/j_spring_security_logout" requires-channel="https"/>
+         <security:intercept-url pattern="/**" />
+
+         <!-- form name -->
+         <security:form-login login-page="/login.jsp" login-processing-url="/j_spring_security_check"
+                     always-use-default-target="true" default-target-url="/"/>
+
+         <!-- logout -->
+         <security:logout logout-url="/j_spring_security_logout"/>
+
+         <!-- remember me -->
+         <security:remember-me key="rememberMeKey" user-service-ref="userDetailsService"/>
+
+        <!-- openid -->
+        <security:openid-login authentication-failure-handler-ref="openIDAuthenticationFailureHandler" user-service-ref="userOpenIdDetailsService" >
+            <security:attribute-exchange>
+                <security:openid-attribute name="axContactEmail" type="http://axschema.org/contact/email" required="true"/>
+                <security:openid-attribute name="oiContactEmail" type="http://schema.openid.net/contact/email" required="true"/>
+                <security:openid-attribute name="axNamePersonFullname" type="http://axschema.org/namePerson" required="true"/>
+                <security:openid-attribute name="axNamePersonFriendlyName" type="http://axschema.org/namePerson/friendly" required="true"/>
+                <security:openid-attribute name="axNamePersonFirstName" type="http://axschema.org/namePerson/first" required="true"/>
+                <security:openid-attribute name="axNamePersonLastName" type="http://axschema.org/namePerson/last" required="true"/>
+            </security:attribute-exchange>
+        </security:openid-login>
+    </security:http>
+
+
+    <bean id="userAuthenticationInBackend" class="it.haslearnt.security.SpringSecurityUserAuthenticationInBackend">
+        <constructor-arg index="0" ref="userRepository"/>
+    </bean>
+
+    <!-- openid -->
+
+    <bean id="userOpenIdDetailsService" name="userOpenIdAuthenticationProvider" class="it.haslearnt.security.openid.AuthenticationWithOpenIdUserDetailsGetter">
+        <constructor-arg index="0" ref="userOpenIdRepository"/>
+        <constructor-arg index="1" ref="userRepository"/>
+    </bean>
+
+    <bean id="openIDAuthenticationFailureHandler" class="it.haslearnt.security.openid.OpenIDAuthenticationFailureHandler">
+        <constructor-arg index="0" value="/openIdRegistration"/>
+        <constructor-arg index="1" ref="normalizedOpenIdAttributesBuilder"/>
+    </bean>
+
+    <bean id="normalizedOpenIdAttributesBuilder" class="it.haslearnt.security.openid.NormalizedOpenIdAttributesBuilder">
+        <property name="emailAddressAttributeNames">
+            <set value-type="java.lang.String">
+                <value type="java.lang.String">axContactEmail</value>
+                <value type="java.lang.String">oiContactEmail</value>
+            </set>
+        </property>
+        <property name="firstNameAttributeNames">
+            <set value-type="java.lang.String">
+                <value type="java.lang.String">axNamePersonFirstName</value>
+            </set>
+        </property>
+        <property name="lastNameAttributeNames">
+            <set value-type="java.lang.String">
+                <value type="java.lang.String">axNamePersonLastName</value>
+            </set>
+        </property>
+        <property name="fullNameAttributeNames">
+            <set value-type="java.lang.String">
+                <value type="java.lang.String">axNamePersonFullname</value>
+                <value type="java.lang.String">axNamePersonFriendlyName</value>
+            </set>
+        </property>
+    </bean>
+    
+
+    <!-- authentication manager and password hashing -->
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="daoAuthenticationProvider"/>
+    </security:authentication-manager>
+
+    <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService"/>
+        <property name="saltSource">
+            <bean class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+                <property name="userPropertyToUse" value="username"/>
+            </bean>
+        </property>
+        <property name="passwordEncoder" ref="passwordEncoder"/>
+    </bean>
+
+    <bean id="userDetailsService"  name="userAuthenticationProvider" class="it.haslearnt.security.AuthenticationDetailsGetter">
+        <constructor-arg index="0" ref="userRepository"/>
+    </bean>
+
+    <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+        <constructor-arg index="0" value="256"/>
+    </bean>
+
+</beans>

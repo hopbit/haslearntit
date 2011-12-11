@@ -18,54 +18,67 @@ import static org.springframework.util.Assert.hasText;
 
 public class CassandraColumnFamilyManager {
 
-    public static void recreateColumnFamily(Cluster cluster, String keyspace, final String columnFamily, String comparator) throws Exception {
-        hasText(keyspace); hasText(columnFamily); hasText(comparator);
-        boolean hasMatchingColumnFamilies = hasMatchingColumnFamilies(columnFamily, cluster, keyspace);
-        ColumnFamilyManager columnFamilyManager = Pelops.createColumnFamilyManager(cluster, keyspace);
-        if (hasMatchingColumnFamilies) {
-            columnFamilyManager.dropColumnFamily(columnFamily);
-            columnFamilyManager.addColumnFamily(new CfDef(keyspace, columnFamily).setComparator_type(comparator));
-        } else {
-            columnFamilyManager.addColumnFamily(new CfDef(keyspace, columnFamily).setComparator_type(comparator));
-        }
-    }
+	public static void recreateColumnFamily(Cluster cluster, String keyspace, String columnFamily, String comparator,
+			ColumnFamilyType columnFamilyType) throws Exception {
+		hasText(keyspace);
+		hasText(columnFamily);
+		hasText(comparator);
+		boolean hasMatchingColumnFamilies = hasMatchingColumnFamilies(columnFamily, cluster, keyspace);
+		ColumnFamilyManager columnFamilyManager = Pelops.createColumnFamilyManager(cluster, keyspace);
+		CfDef cf = new CfDef(keyspace, columnFamily).setComparator_type(comparator);
+		switch (columnFamilyType) {
+		case CounterColumnType:
+			cf.setDefault_validation_class(ColumnFamilyManager.CFDEF_VALIDATION_CLASS_COUNTER);
+		}
+		if (hasMatchingColumnFamilies) {
+			columnFamilyManager.dropColumnFamily(columnFamily);
+		}
+		columnFamilyManager.addColumnFamily(cf);
+	}
 
-    public static void addColumnFamilyIfNeeded(Cluster cluster, String keyspace, final String columnFamily, String comparator) throws Exception {
-        hasText(keyspace); hasText(columnFamily); hasText(comparator);
-        boolean hasMatchingColumnFamilies = hasMatchingColumnFamilies(columnFamily, cluster, keyspace);
-        ColumnFamilyManager columnFamilyManager = Pelops.createColumnFamilyManager(cluster, keyspace);
-        if (!hasMatchingColumnFamilies) {
-            columnFamilyManager.addColumnFamily(new CfDef(keyspace, columnFamily).setComparator_type(comparator));
-        }
-    }
+	public static void addColumnFamilyIfNeeded(Cluster cluster, String keyspace, final String columnFamily, String comparator,
+			ColumnFamilyType columnFamilyType) throws Exception {
+		hasText(keyspace);
+		hasText(columnFamily);
+		hasText(comparator);
+		boolean hasMatchingColumnFamilies = hasMatchingColumnFamilies(columnFamily, cluster, keyspace);
+		ColumnFamilyManager columnFamilyManager = Pelops.createColumnFamilyManager(cluster, keyspace);
+		CfDef cf = new CfDef(keyspace, columnFamily).setComparator_type(comparator);
+		if (!hasMatchingColumnFamilies) {
+			switch (columnFamilyType) {
+			case CounterColumnType:
+				cf.setDefault_validation_class(ColumnFamilyManager.CFDEF_VALIDATION_CLASS_COUNTER);
+			}
+			columnFamilyManager.addColumnFamily(cf);
+		}
+	}
 
-    private static boolean hasMatchingColumnFamilies(String columnFamily, Cluster cluster, String keyspace) throws Exception {
-        KeyspaceManager keyspaceManager = Pelops.createKeyspaceManager(cluster);
-        KsDef keyspaceSchema = keyspaceManager.getKeyspaceSchema(keyspace);
-        return !Collections2.filter(keyspaceSchema.getCf_defs(), new ColumnFamilyMatchNamePredicate(columnFamily)).isEmpty();
-    }
+	private static boolean hasMatchingColumnFamilies(String columnFamily, Cluster cluster, String keyspace) throws Exception {
+		KeyspaceManager keyspaceManager = Pelops.createKeyspaceManager(cluster);
+		KsDef keyspaceSchema = keyspaceManager.getKeyspaceSchema(keyspace);
+		return !Collections2.filter(keyspaceSchema.getCf_defs(), new ColumnFamilyMatchNamePredicate(columnFamily)).isEmpty();
+	}
 
+	public static void cleanColumnFamilies(Cluster cluster, String keyspace) throws Exception {
+		hasText(keyspace);
+		KeyspaceManager keyspaceManager = Pelops.createKeyspaceManager(cluster);
+		ColumnFamilyManager columnFamilyManager = Pelops.createColumnFamilyManager(cluster, keyspace);
+		KsDef ksDef = keyspaceManager.getKeyspaceSchema(keyspace);
+		for (CfDef cf : ksDef.getCf_defs()) {
+			columnFamilyManager.truncateColumnFamily(cf.getName());
+		}
+	}
 
-    public static void cleanColumnFamilies(Cluster cluster, String keyspace) throws Exception {
-        hasText(keyspace);
-        KeyspaceManager keyspaceManager = Pelops.createKeyspaceManager(cluster);
-        ColumnFamilyManager columnFamilyManager = Pelops.createColumnFamilyManager(cluster, keyspace);
-        KsDef ksDef = keyspaceManager.getKeyspaceSchema(keyspace);
-        for (CfDef cf : ksDef.getCf_defs()) {
-            columnFamilyManager.truncateColumnFamily(cf.getName());
-        }
-    }
+	private static class ColumnFamilyMatchNamePredicate implements Predicate<CfDef> {
+		private final String columnFamily;
 
-    private static class ColumnFamilyMatchNamePredicate implements Predicate<CfDef> {
-        private final String columnFamily;
+		public ColumnFamilyMatchNamePredicate(String columnFamily) {
+			this.columnFamily = columnFamily;
+		}
 
-        public ColumnFamilyMatchNamePredicate(String columnFamily) {
-            this.columnFamily = columnFamily;
-        }
-
-        @Override
-        public boolean apply(@javax.annotation.Nullable CfDef input) {
-            return input != null && columnFamily.equals(input.getName());
-        }
-    }
+		@Override
+		public boolean apply(@javax.annotation.Nullable CfDef input) {
+			return input != null && columnFamily.equals(input.getName());
+		}
+	}
 }

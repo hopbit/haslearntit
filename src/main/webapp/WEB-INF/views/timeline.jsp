@@ -1,4 +1,4 @@
-<%@page import="java.util.List"%>
+	<%@page import="java.util.List"%>
 <%@page import="it.haslearnt.skill.trends.SkillTrend"%>
 <%@page import="it.haslearnt.timeline.PreetyTimeFormaterJSTLFunction"%>
 <%@ page contentType="text/html; charset=UTF-8" %><!DOCTYPE HTML>
@@ -35,6 +35,22 @@
 
 			$("div.clickable").click(function() {
 				window.location = $(this).attr("url");
+			});
+			
+			$("#skill").keyup(function(){
+				var skillVal = $(this).val();
+				
+                $.ajax({
+                    url: "/skill/difficulty",
+                    method: 'post',
+                    data:
+                    {
+                        skill: skillVal
+                    },
+                    success: function(result) {
+						$("#dropdown-choose-level").text(result);
+                    }
+                })
 			});
 
 			$(".clickable-text").click(function(e) {

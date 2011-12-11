@@ -43,8 +43,15 @@ public class EntryRepository extends CassandraRepository<Entry> {
 		saveUserEntry(entry, user, mutator);
 		updateSkills(entry, mutator);
 		updateSkillTrends(entry);
+		updateDifficultyStatistics(entry, mutator);
 
 		mutator.execute(ONE);
+	}
+
+	private void updateDifficultyStatistics(Entry entry, Mutator mutator) {
+		Bytes counterColumn = Bytes.fromUTF8(entry.what() + "\0" + entry.howDifficult());
+		Bytes counterRow = Bytes.fromUTF8("all");
+		mutator.writeCounterColumn("DifficultyLevel", counterRow, counterColumn, 1);
 	}
 
 	private void saveUserEntry(Entry entry, String user, Mutator mutator) {
